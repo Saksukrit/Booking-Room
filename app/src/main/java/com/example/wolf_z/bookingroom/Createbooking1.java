@@ -63,6 +63,11 @@ public class Createbooking1 extends Activity implements TimePickerDialog.OnTimeS
         txttime.setText(timeFormat.format(calendar.getTime()));
     }
 
+    public void getdatetime() {
+        txtdate.getText();
+        txttime.getText();
+    }
+
     @Override
     public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
         calendar.set(year, monthOfYear, dayOfMonth);

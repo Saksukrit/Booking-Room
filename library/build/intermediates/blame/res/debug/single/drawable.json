@@ -12,7 +12,15 @@
         "source": "F:\\Android\\BookingRoom\\library\\res\\drawable\\done_background_color.xml"
     },
     {
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\debug\\drawable\\done_background_color.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\drawable\\done_background_color.xml"
+    },
+    {
         "merged": "D:\\Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\debug\\drawable\\done_background_color.xml",
         "source": "D:\\Project\\BookingRoom\\library\\res\\drawable\\done_background_color.xml"
+    },
+    {
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\debug\\drawable\\done_background_color_dark.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\drawable\\done_background_color_dark.xml"
     }
 ]

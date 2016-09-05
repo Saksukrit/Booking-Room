@@ -4,8 +4,20 @@
         "source": "D:\\Project\\BookingRoom\\library\\res\\color\\date_picker_year_selector.xml"
     },
     {
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\color\\done_text_color_dark.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\color\\done_text_color_dark.xml"
+    },
+    {
         "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\color\\done_text_color_dark.xml",
         "source": "F:\\Android\\BookingRoom\\library\\res\\color\\done_text_color_dark.xml"
+    },
+    {
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\color\\done_text_color.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\color\\done_text_color.xml"
+    },
+    {
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\color\\date_picker_year_selector.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\color\\date_picker_year_selector.xml"
     },
     {
         "merged": "D:\\Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\color\\date_picker_selector.xml",
@@ -22,6 +34,10 @@
     {
         "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\color\\date_picker_year_selector.xml",
         "source": "F:\\Android\\BookingRoom\\library\\res\\color\\date_picker_year_selector.xml"
+    },
+    {
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\color\\date_picker_selector.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\color\\date_picker_selector.xml"
     },
     {
         "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\color\\date_picker_selector.xml",

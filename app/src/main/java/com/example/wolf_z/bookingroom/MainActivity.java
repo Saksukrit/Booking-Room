@@ -20,10 +20,8 @@ public class MainActivity extends AppCompatActivity {
         createbooking = (Button) findViewById(R.id.createbooking);
 
 
-        String[] list = {"Aerith Gainsborough", "Barret Wallace", "Cait Sith"
-                , "Cid Highwind", "Cloud Strife", "RedXIII", "Sephiroth"
-                , "Tifa Lockhart", "Vincent Valentine", "Yuffie Kisaragi"
-                , "ZackFair"};
+        String[] list = {"JPS", "Docker", "UI UX"
+                , "Servlet", "Kotlin", "Project"};
 
         CustomAdapter_subject adapter = new CustomAdapter_subject(getApplicationContext(), list);
 

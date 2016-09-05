@@ -20,10 +20,10 @@ public class BookingDetail extends AppCompatActivity {
 
         back = (Button) findViewById(R.id.back);
 
-        String[] list = {"Aerith Gainsborough", "Barret Wallace", "Cait Sith"
-                , "Cid Highwind", "Cloud Strife", "RedXIII", "Sephiroth"
-                , "Tifa Lockhart", "Vincent Valentine", "Yuffie Kisaragi"
-                , "ZackFair"};
+        String[] list = {"Harry", "Oliver", "Jack"
+                , "Alfie", "Charlie", "Thomas", "Jacob"
+                , "James", "William", "Daniel"
+                , "Riley"};
 
         CustomAdapter_Pname adapter = new CustomAdapter_Pname(getApplicationContext(), list);
 

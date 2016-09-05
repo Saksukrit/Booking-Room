@@ -4,6 +4,50 @@
         "source": "F:\\Android\\BookingRoom\\library\\res\\layout\\date_picker_dialog.xml"
     },
     {
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_dialog.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\layout\\date_picker_dialog.xml"
+    },
+    {
+        "merged": "D:\\Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_dialog.xml",
+        "source": "D:\\Project\\BookingRoom\\library\\res\\layout\\date_picker_dialog.xml"
+    },
+    {
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_header_view.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\layout\\date_picker_header_view.xml"
+    },
+    {
+        "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_view_animator.xml",
+        "source": "F:\\Android\\BookingRoom\\library\\res\\layout\\date_picker_view_animator.xml"
+    },
+    {
+        "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_done_button.xml",
+        "source": "F:\\Android\\BookingRoom\\library\\res\\layout\\date_picker_done_button.xml"
+    },
+    {
+        "merged": "D:\\Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_view_animator.xml",
+        "source": "D:\\Project\\BookingRoom\\library\\res\\layout\\date_picker_view_animator.xml"
+    },
+    {
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\time_header_label.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\layout\\time_header_label.xml"
+    },
+    {
+        "merged": "D:\\Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\year_label_text_view.xml",
+        "source": "D:\\Project\\BookingRoom\\library\\res\\layout\\year_label_text_view.xml"
+    },
+    {
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\year_label_text_view.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\layout\\year_label_text_view.xml"
+    },
+    {
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_selected_date.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\layout\\date_picker_selected_date.xml"
+    },
+    {
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_view_animator.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\layout\\date_picker_view_animator.xml"
+    },
+    {
         "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_header_view.xml",
         "source": "F:\\Android\\BookingRoom\\library\\res\\layout\\date_picker_header_view.xml"
     },
@@ -12,24 +56,20 @@
         "source": "D:\\Project\\BookingRoom\\library\\res\\layout\\time_picker_dialog.xml"
     },
     {
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\time_picker_dialog.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\layout\\time_picker_dialog.xml"
+    },
+    {
         "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\time_picker_dialog.xml",
         "source": "F:\\Android\\BookingRoom\\library\\res\\layout\\time_picker_dialog.xml"
     },
     {
-        "merged": "D:\\Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_dialog.xml",
-        "source": "D:\\Project\\BookingRoom\\library\\res\\layout\\date_picker_dialog.xml"
+        "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_done_button.xml",
+        "source": "D:\\Booking Project\\BookingRoom\\library\\res\\layout\\date_picker_done_button.xml"
     },
     {
         "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_selected_date.xml",
         "source": "F:\\Android\\BookingRoom\\library\\res\\layout\\date_picker_selected_date.xml"
-    },
-    {
-        "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_done_button.xml",
-        "source": "F:\\Android\\BookingRoom\\library\\res\\layout\\date_picker_done_button.xml"
-    },
-    {
-        "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_view_animator.xml",
-        "source": "F:\\Android\\BookingRoom\\library\\res\\layout\\date_picker_view_animator.xml"
     },
     {
         "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\time_header_label.xml",
@@ -52,15 +92,7 @@
         "source": "D:\\Project\\BookingRoom\\library\\res\\layout\\date_picker_selected_date.xml"
     },
     {
-        "merged": "D:\\Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\date_picker_view_animator.xml",
-        "source": "D:\\Project\\BookingRoom\\library\\res\\layout\\date_picker_view_animator.xml"
-    },
-    {
         "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\year_label_text_view.xml",
         "source": "F:\\Android\\BookingRoom\\library\\res\\layout\\year_label_text_view.xml"
-    },
-    {
-        "merged": "D:\\Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\release\\layout\\year_label_text_view.xml",
-        "source": "D:\\Project\\BookingRoom\\library\\res\\layout\\year_label_text_view.xml"
     }
 ]
