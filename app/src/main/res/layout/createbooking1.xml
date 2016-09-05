@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Create Booking"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Subject" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="fill_parent"
+            android:layout_height="22dp" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Meeting Type"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/problem"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="การประชุมเพื่อแก้ปัญหา" />
+
+            <RadioButton
+                android:id="@+id/brainstorming"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="การประชุมเพื่อระดมความคิด" />
+
+            <RadioButton
+                android:id="@+id/training"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="การประชุมเพื่อการฝึกอบรม" />
+        </RadioGroup>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="120dp"
+            android:layout_weight="0.02"
+            android:hint="Detail" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="fill_parent"
+            android:layout_height="21dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtdate"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="unselected" />
+
+            <Button
+                android:id="@+id/setDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="clickdate"
+                android:text="set" />
+        </LinearLayout>
+
+        <android.support.v4.widget.Space
+            android:layout_width="fill_parent"
+            android:layout_height="15dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:text="Time"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txttime"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="unselected" />
+
+            <Button
+                android:id="@+id/setTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="clicktime"
+                android:text="set" />
+        </LinearLayout>
+
+        <android.support.v4.widget.Space
+            android:layout_width="fill_parent"
+            android:layout_height="25dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Participant"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="fill_parent"
+            android:layout_height="15dp" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="search name" />
+
+        <android.support.v4.widget.Space
+            android:layout_width="fill_parent"
+            android:layout_height="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Department"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/department"
+            android:layout_width="fill_parent"
+            android:layout_height="107dp">
+
+            <RadioButton
+                android:id="@+id/mobile"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Mobile" />
+
+            <RadioButton
+                android:id="@+id/analyst"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Analyst" />
+
+            <RadioButton
+                android:id="@+id/business"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Business" />
+        </RadioGroup>
+
+        <android.support.v4.widget.Space
+            android:layout_width="fill_parent"
+            android:layout_height="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name list"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/namelist"
+            android:layout_width="fill_parent"
+            android:layout_height="187dp"
+            android:layout_weight="0.98">
+
+        </ListView>
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:onClick="submit"
+            android:text="submit" />
+
+    </LinearLayout>
+</ScrollView>
