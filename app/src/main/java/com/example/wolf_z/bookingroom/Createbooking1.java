@@ -82,7 +82,7 @@ public class Createbooking1 extends Activity implements TimePickerDialog.OnTimeS
     }
 
     public void submit(View view) {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainBookingActivity.class);
         startActivity(intent);
         Toast.makeText(getApplicationContext(), "Create booking complete", Toast.LENGTH_LONG).show();
         finish();

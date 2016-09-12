@@ -1,6 +1,5 @@
 package com.example.wolf_z.bookingroom;
 
-import android.app.ListActivity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +37,7 @@ public class BookingDetail extends AppCompatActivity {
     }
 
     public void back(View view) {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainBookingActivity.class);
         startActivity(intent);
         finish();
     }

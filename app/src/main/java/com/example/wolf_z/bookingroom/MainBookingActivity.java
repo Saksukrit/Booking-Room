@@ -13,7 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainBookingActivity extends AppCompatActivity {
     Button createbooking;
 
 //    JSONParser jParser = new JSONParser();
