@@ -9,18 +9,11 @@ import android.widget.Button;
 import android.widget.ListView;
 
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class MainBookingActivity extends AppCompatActivity {
-    Button createbooking;
+    private Button createbooking;
+
 
 //    JSONParser jParser = new JSONParser();
-
-
-
-
 
 
     @Override
@@ -50,7 +43,7 @@ public class MainBookingActivity extends AppCompatActivity {
     }
 
     public void onClickcreatebooking(View view) {
-        Intent intent = new Intent(getApplicationContext(), Createbooking1.class);
+        Intent intent = new Intent(getApplicationContext(), Createbooking.class);
         startActivity(intent);
         finish();
     }

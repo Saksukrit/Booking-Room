@@ -1,13 +1,5 @@
 [
     {
-        "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\date_picker_dialog.xml",
-        "source": "F:\\Android\\BookingRoom\\library\\res\\layout-sw600dp\\date_picker_dialog.xml"
-    },
-    {
-        "merged": "D:\\Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\date_picker_dialog.xml",
-        "source": "D:\\Project\\BookingRoom\\library\\res\\layout-sw600dp\\date_picker_dialog.xml"
-    },
-    {
         "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\debug\\layout-sw600dp-v13\\date_picker_dialog.xml",
         "source": "D:\\Booking Project\\BookingRoom\\library\\res\\layout-sw600dp\\date_picker_dialog.xml"
     }

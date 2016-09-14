@@ -1,23 +1,7 @@
 [
     {
-        "merged": "D:\\Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\time_picker_dialog.xml",
-        "source": "D:\\Project\\BookingRoom\\library\\build\\intermediates\\bundles\\debug\\res\\layout-land\\time_picker_dialog.xml"
-    },
-    {
-        "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\date_picker_dialog.xml",
-        "source": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\bundles\\debug\\res\\layout-land\\date_picker_dialog.xml"
-    },
-    {
         "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\date_picker_dialog.xml",
         "source": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\bundles\\debug\\res\\layout-land\\date_picker_dialog.xml"
-    },
-    {
-        "merged": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\time_picker_dialog.xml",
-        "source": "F:\\Android\\BookingRoom\\library\\build\\intermediates\\bundles\\debug\\res\\layout-land\\time_picker_dialog.xml"
-    },
-    {
-        "merged": "D:\\Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\date_picker_dialog.xml",
-        "source": "D:\\Project\\BookingRoom\\library\\build\\intermediates\\bundles\\debug\\res\\layout-land\\date_picker_dialog.xml"
     },
     {
         "merged": "D:\\Booking Project\\BookingRoom\\library\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\time_picker_dialog.xml",

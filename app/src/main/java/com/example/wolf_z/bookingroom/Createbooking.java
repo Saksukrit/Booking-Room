@@ -18,7 +18,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 
-public class Createbooking1 extends Activity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+public class Createbooking extends Activity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
     private static final String TIME_PATTERN = "HH:mm";
 

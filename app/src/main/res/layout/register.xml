@@ -7,7 +7,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="5dip">
+        android:padding="15dip">
 
         <!-- View Title Label -->
 
@@ -18,41 +18,156 @@
             android:text="Register"
             android:textSize="25sp"
             android:textStyle="bold" />
-        <!-- Name Label -->
 
-        <EditText
-            android:id="@+id/registerName"
-            android:layout_width="fill_parent"
+        <!-- Name Label -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="bottom">
+
+            <EditText
+                android:id="@+id/registerName"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:hint="Enter your Displayname" />
+        </android.support.design.widget.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Enter your Displayname" />
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp">
+
+            <View
+                android:id="@+id/view_name"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="#aaaaaa" />
+
+            <View
+                android:id="@+id/second_view_name"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E74C3C"
+                android:visibility="invisible" />
+        </FrameLayout>
 
         <!-- Email Label -->
 
-        <EditText
-            android:id="@+id/registerEmail"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter your Email ID"
-            android:inputType="textEmailAddress" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/email_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="bottom">
 
+            <EditText
+                android:id="@+id/registerEmail"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:hint="Enter your Email ID"
+                android:inputType="textEmailAddress" />
+        </android.support.design.widget.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp">
+
+            <View
+                android:id="@+id/view_email"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="#aaaaaa" />
+
+            <View
+                android:id="@+id/second_view_email"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E74C3C"
+                android:visibility="invisible" />
+        </FrameLayout>
         <!-- Password Label -->
 
-        <EditText
-            android:id="@+id/registerPassword"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter Password"
-            android:inputType="textPassword" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/password_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="bottom">
 
-        <EditText
-            android:id="@+id/registerDepartment"
-            android:layout_width="fill_parent"
+            <EditText
+                android:id="@+id/registerPassword"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:hint="Enter Password"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Enter Department"
-            android:inputType="textPassword" />
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp">
+
+            <View
+                android:id="@+id/view_password"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="#aaaaaa" />
+
+            <View
+                android:id="@+id/second_view_password"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E74C3C"
+                android:visibility="invisible" />
+        </FrameLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/deparment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="bottom">
+
+            <EditText
+                android:id="@+id/registerDepartment"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:hint="Enter Department"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp">
+
+            <View
+                android:id="@+id/view_deparment"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="#aaaaaa" />
+
+            <View
+                android:id="@+id/second_view_deparment"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E74C3C"
+                android:visibility="invisible" />
+        </FrameLayout>
 
         <!-- Error message -->
-
         <TextView
             android:id="@+id/register_error"
             android:layout_width="fill_parent"
@@ -68,18 +183,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="#ff6347"
-            android:onClick="registerUser"
             android:text="Register"
             android:textColor="#fff" />
 
         <!-- Link to Login Screen -->
 
         <Button
+            android:id="@+id/btnLogin"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
             android:background="@null"
-            android:onClick="navigatetoLoginActivity"
             android:text="Login"
             android:textColor="#228b22"
             android:textStyle="bold" />
