@@ -49,8 +49,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         errorMsg = (TextView) findViewById(R.id.login_error);
-
-
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);

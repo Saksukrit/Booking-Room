@@ -1,20 +1,38 @@
 package com.example.wolf_z.bookingroom;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.datetimepicker.date.DatePickerDialog;
 import com.android.datetimepicker.time.RadialPickerLayout;
 import com.android.datetimepicker.time.TimePickerDialog;
+import com.google.gson.Gson;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,9 +42,10 @@ import java.util.Locale;
 public class Createbooking extends Activity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
     private static final String TIME_PATTERN = "HH:mm";
-
+    private ProgressDialog prgDialog;
     private TextView txtdate;
     private TextView txttime;
+    private TextView txttotime;
     private Calendar calendar;
     private DateFormat dateFormat;
     private SimpleDateFormat timeFormat;
@@ -40,19 +59,46 @@ public class Createbooking extends Activity implements TimePickerDialog.OnTimeSe
     private EditText ETsubject;
     private EditText ETdetail;
     private EditText ETsearch;
+    private BookBean bookBean = new BookBean();
+    private RadioGroup meeting_type;
+    private RadioButton meetingButton;
+    private RadioGroup department_type;
+    private RadioButton departmentButton;
+    private String setDate;
+    private String setTime;
+    private String setToTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.createbooking);
-
+        prgDialog = new ProgressDialog(this);
+        prgDialog.setMessage("Please wait...");
+        prgDialog.setCancelable(false);
         calendar = Calendar.getInstance();
         dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
         timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
 
         txtdate = (TextView) findViewById(R.id.txtdate);
-        txttime = (TextView) findViewById(R.id.txttime);
+        setDate = txtdate.getText().toString();
 
+        txttime = (TextView) findViewById(R.id.txttime);
+        setTime = txttime.getText().toString();
+
+        txttotime = (TextView) findViewById(R.id.txttotime);
+        setToTime = txttotime.getText().toString();
+
+        /** meeting_type */
+        meeting_type = (RadioGroup) findViewById(R.id.meeting_type);
+        int meetingselectedId = meeting_type.getCheckedRadioButtonId();
+        meetingButton = (RadioButton) findViewById(meetingselectedId);
+
+        /** department_type */
+        department_type = (RadioGroup) findViewById(R.id.department_type);
+        int departmentselectedId = department_type.getCheckedRadioButtonId();
+        meetingButton = (RadioButton) findViewById(departmentselectedId);
+
+        /** AnimationUtils */
         anim = AnimationUtils.loadAnimation(Createbooking.this, R.anim.scale);
 
         view_subject = findViewById(R.id.view_subject);
@@ -119,10 +165,24 @@ public class Createbooking extends Activity implements TimePickerDialog.OnTimeSe
         btnsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainBookingActivity.class);
-                startActivity(intent);
-                Toast.makeText(getApplicationContext(), "Create booking complete", Toast.LENGTH_LONG).show();
-                finish();
+//                String URL = "http://157.179.8.120:8080/BookingRoomService/bookingrest/restservice/dobooking";
+                /**  Params **/
+                bookBean.setSubject(ETsubject.getText().toString());
+                bookBean.setMeeting_type(meetingButton.getText().toString());
+                bookBean.setDate("");
+                bookBean.setTime("");
+                bookBean.setTotime("");
+                bookBean.setDetail(ETdetail.getText().toString());
+                bookBean.setProjid(1);
+                bookBean.setRoomid(1);
+
+
+//                new doCreateBooking().execute(URL);
+
+//                Intent intent = new Intent(getApplicationContext(), MainBookingActivity.class);
+//                startActivity(intent);
+//                Toast.makeText(getApplicationContext(), "Create booking complete", Toast.LENGTH_LONG).show();
+//                finish();
             }
         });
 
@@ -137,11 +197,6 @@ public class Createbooking extends Activity implements TimePickerDialog.OnTimeSe
         txttime.setText(timeFormat.format(calendar.getTime()));
     }
 
-    public void getdatetime() {
-        txtdate.getText();
-        txttime.getText();
-    }
-
     @Override
     public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
         calendar.set(year, monthOfYear, dayOfMonth);
@@ -154,5 +209,88 @@ public class Createbooking extends Activity implements TimePickerDialog.OnTimeSe
         calendar.set(Calendar.MINUTE, minute);
         update();
     }
+
+    /****************************************************************************/
+    private class doCreateBooking extends AsyncTask<String, Void, String> {
+
+        String result = "";
+
+        @Override
+        protected void onPreExecute() {
+            //Start Progress Dialog (Message)
+            prgDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                /** POST **/
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(urls[0]);
+
+
+                Gson gson = new Gson();
+                StringEntity stringEntity = new StringEntity(gson.toJson(bookBean));
+
+                httpPost.setEntity(stringEntity);
+                httpPost.setHeader("Content-type", "application/json");
+
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+
+                HttpEntity httpEntity = httpResponse.getEntity();
+                if (httpEntity != null) {
+                    result = EntityUtils.toString(httpEntity);
+                }
+
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            prgDialog.dismiss();
+
+            String tag = "";
+            String status = "";
+            String error_msg = "";
+            try {
+
+                JSONObject jsonObject = new JSONObject(result);
+
+                tag = jsonObject.getString("tag").toString();
+                status = jsonObject.getString("status").toString();
+                error_msg = jsonObject.getString("error_msg").toString();
+
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+
+            if (error_msg == "") {
+                String success = "Create Book Success!";
+                Toast toast = Toast.makeText(getBaseContext(), success, Toast.LENGTH_LONG);
+                toast.show();
+                Intent homeIntent = new Intent(getApplicationContext(), MainBookingActivity.class);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
+            } else {
+                String OutputData = " Ops! : Booking " + status + " "
+                        + " ," + error_msg;
+                Toast toast = Toast.makeText(getBaseContext(), OutputData, Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
+
+    }
+
 
 }

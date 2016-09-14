@@ -5,7 +5,6 @@ public class BookBean {
     private String subject;
     private String meeting_type;
     private String date;
-    private String duration;
     private String time;
     private String totime;
     private String detail;
@@ -18,14 +17,6 @@ public class BookBean {
 
     public void setTotime(String totime) {
         this.totime = totime;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
     }
 
     public int getBookingid() {
