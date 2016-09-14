@@ -18,10 +18,42 @@
             android:textSize="30dp"
             android:textStyle="bold" />
 
-        <EditText
-            android:layout_width="fill_parent"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/subject_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="bottom">
+
+            <EditText
+                android:id="@+id/ETsubject"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:hint="Subject"
+                android:singleLine="true"
+                android:textSize="18sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Subject" />
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp">
+
+            <View
+                android:id="@+id/view_subject"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="#aaaaaa" />
+
+            <View
+                android:id="@+id/second_view_subject"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E74C3C"
+                android:visibility="invisible" />
+        </FrameLayout>
 
         <android.support.v4.widget.Space
             android:layout_width="fill_parent"
@@ -57,11 +89,42 @@
                 android:text="การประชุมเพื่อการฝึกอบรม" />
         </RadioGroup>
 
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="120dp"
-            android:layout_weight="0.02"
-            android:hint="Detail" />
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/detail_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="bottom">
+
+            <EditText
+                android:id="@+id/ETdetail"
+                android:layout_width="fill_parent"
+                android:layout_height="120dp"
+                android:layout_weight="0.02"
+                android:background="#00000000"
+                android:hint="Detail"
+                android:textSize="16sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp">
+
+            <View
+                android:id="@+id/view_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="#aaaaaa" />
+
+            <View
+                android:id="@+id/second_view_detail"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E74C3C"
+                android:visibility="invisible" />
+        </FrameLayout>
 
         <android.support.v4.widget.Space
             android:layout_width="fill_parent"
@@ -85,10 +148,9 @@
                 android:hint="unselected" />
 
             <Button
-                android:id="@+id/setDate"
+                android:id="@+id/btnsetDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="clickdate"
                 android:text="set" />
         </LinearLayout>
 
@@ -114,10 +176,9 @@
                 android:hint="unselected" />
 
             <Button
-                android:id="@+id/setTime"
+                android:id="@+id/btnsetTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="clicktime"
                 android:text="set" />
         </LinearLayout>
 
@@ -136,10 +197,42 @@
             android:layout_width="fill_parent"
             android:layout_height="15dp" />
 
-        <EditText
-            android:layout_width="fill_parent"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/search_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="bottom">
+
+            <EditText
+                android:id="@+id/ETsearch"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:hint="search name"
+                android:singleLine="true"
+                android:textSize="18sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="search name" />
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp">
+
+            <View
+                android:id="@+id/view_search"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="#aaaaaa" />
+
+            <View
+                android:id="@+id/second_view_search"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#E74C3C"
+                android:visibility="invisible" />
+        </FrameLayout>
 
         <android.support.v4.widget.Space
             android:layout_width="fill_parent"
@@ -196,11 +289,10 @@
         </ListView>
 
         <Button
-            android:id="@+id/submit"
+            android:id="@+id/btnsubmit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:onClick="submit"
             android:text="submit" />
 
     </LinearLayout>
