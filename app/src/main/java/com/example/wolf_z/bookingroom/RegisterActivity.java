@@ -49,7 +49,6 @@ public class RegisterActivity extends Activity {
     private View view_password;
     private Button btnregister;
     private Button btnlogin;
-    private CustomOnItemSelected_department cod = new CustomOnItemSelected_department();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

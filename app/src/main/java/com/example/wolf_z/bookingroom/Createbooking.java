@@ -17,9 +17,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.datetimepicker.date.DatePickerDialog;
-import com.android.datetimepicker.time.RadialPickerLayout;
-import com.android.datetimepicker.time.TimePickerDialog;
 import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.google.gson.Gson;
 
@@ -38,22 +35,18 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
 
-public class Createbooking extends Activity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
+public class Createbooking extends Activity {
 
     private static final String TIME_PATTERN = "HH:mm";
     private ProgressDialog prgDialog;
-    private TextView txtdate;
-    private TextView txttime;
-    private TextView txttotime;
-    private Calendar calendar;
-    private DateFormat dateFormat;
-    private SimpleDateFormat timeFormat;
-    private Button btnsetDate;
-    private Button btnsetTime;
+    private Spinner timeHr;
+    private Spinner timeMin;
+    private Spinner totimeHr;
+    private Spinner totimeMin;
     private Button btnsubmit;
     private Animation anim;
     private View view_subject;
@@ -66,10 +59,13 @@ public class Createbooking extends Activity implements TimePickerDialog.OnTimeSe
     private RadioGroup meeting_type;
     private RadioButton meetingButton;
     private Spinner department_type;
+    private Spinner room;
+    private Spinner projector;
 
     private String setDate;
     private String setTime;
     private String setToTime;
+    private String meetingselected = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,31 +74,82 @@ public class Createbooking extends Activity implements TimePickerDialog.OnTimeSe
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
-        calendar = Calendar.getInstance();
-        dateFormat = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
-        timeFormat = new SimpleDateFormat(TIME_PATTERN, Locale.getDefault());
 
-        txtdate = (TextView) findViewById(R.id.txtdate);
-        setDate = txtdate.getText().toString();
-
-        txttime = (TextView) findViewById(R.id.txttime);
-        setTime = txttime.getText().toString();
-
-        txttotime = (TextView) findViewById(R.id.txttotime);
-        setToTime = txttotime.getText().toString();
 
         /** meeting_type */
-        meeting_type = (RadioGroup) findViewById(R.id.meeting_type);
-        int meetingselectedId = meeting_type.getCheckedRadioButtonId();
-        meetingButton = (RadioButton) findViewById(meetingselectedId);
+//        meeting_type = (RadioGroup) findViewById(R.id.meeting_type);
+//        meetingselected = ((RadioButton) findViewById(meeting_type.getCheckedRadioButtonId())).getText().toString();
+
+        /** Date Time */
+        final ArrayList<String> hr = new ArrayList<String>();
+        hr.add("8");
+        hr.add("9");
+        hr.add("10");
+        hr.add("11");
+        hr.add("12");
+        hr.add("13");
+        hr.add("14");
+        hr.add("15");
+        hr.add("16");
+        hr.add("17");
+        hr.add("18");
+        hr.add("19");
+        hr.add("20");
+        hr.add("21");
+        hr.add("22");
+
+        final ArrayList<String> min = new ArrayList<String>();
+        min.add("00");
+        min.add("15");
+        min.add("30");
+        min.add("45");
+
+        ArrayAdapter<String> adapterhr = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, hr);
+        adapterhr.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        ArrayAdapter<String> adaptermin = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, min);
+        adaptermin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+        timeHr = (Spinner) findViewById(R.id.timeHr);
+        timeHr.setAdapter(adapterhr);
+        timeMin = (Spinner) findViewById(R.id.timeMin);
+        timeMin.setAdapter(adaptermin);
+
+        totimeHr = (Spinner) findViewById(R.id.totimeHr);
+        totimeHr.setAdapter(adapterhr);
+        totimeMin = (Spinner) findViewById(R.id.totimeMin);
+        totimeMin.setAdapter(adaptermin);
+
+
+        /** select room and projector*/
+
+        ArrayList<Integer> listroomEmpty = new ArrayList<Integer>();
+        listroomEmpty.add(1502);
+        listroomEmpty.add(1503);
+
+
+        room = (Spinner) findViewById(R.id.room);
+        ArrayAdapter<Integer> adapterroom = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, listroomEmpty);
+        adapterroom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        room.setAdapter(adapterroom);
+
+
+        ArrayList<Integer> listprojectorEmpty = new ArrayList<Integer>();
+        listprojectorEmpty.add(01);
+        listprojectorEmpty.add(02);
+
+        projector = (Spinner) findViewById(R.id.projector);
+        ArrayAdapter<Integer> adapterprojector = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, listprojectorEmpty);
+        adapterroom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        projector.setAdapter(adapterprojector);
 
 
         /** department_type */
         department_type = (Spinner) findViewById(R.id.department_type);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.department_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        department_type.setAdapter(adapter);
-//        department_type.getOnItemSelectedListener().toString();
+        ArrayAdapter<CharSequence> adapterdepartment = ArrayAdapter.createFromResource(this, R.array.department_array, android.R.layout.simple_spinner_item);
+        adapterdepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        department_type.setAdapter(adapterdepartment);
 
         /** AnimationUtils */
         anim = AnimationUtils.loadAnimation(Createbooking.this, R.anim.scale);
@@ -150,22 +197,6 @@ public class Createbooking extends Activity implements TimePickerDialog.OnTimeSe
             }
         });
 
-        btnsetDate = (Button) findViewById(R.id.btnsetDate);
-        btnsetDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatePickerDialog.newInstance(Createbooking.this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show(getFragmentManager(), "datePicker");
-            }
-        });
-
-        btnsetTime = (Button) findViewById(R.id.btnsetTime);
-        btnsetTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerDialog.newInstance(Createbooking.this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show(getFragmentManager(), "timePicker");
-
-            }
-        });
 
         btnsubmit = (Button) findViewById(R.id.btnsubmit);
         btnsubmit.setOnClickListener(new View.OnClickListener() {
@@ -174,13 +205,13 @@ public class Createbooking extends Activity implements TimePickerDialog.OnTimeSe
 //                String URL = "http://157.179.8.120:8080/BookingRoomService/bookingrest/restservice/dobooking";
                 /**  Params **/
                 bookBean.setSubject(ETsubject.getText().toString());
-                bookBean.setMeeting_type(meetingButton.getText().toString());
-                bookBean.setDate("");
-                bookBean.setTime("");
-                bookBean.setTotime("");
+                bookBean.setMeeting_type(meetingselected);
+                bookBean.setDate(setDate);
+                bookBean.setTime(setTime);
+                bookBean.setTotime(setToTime);
                 bookBean.setDetail(ETdetail.getText().toString());
-                bookBean.setProjid(1);
-                bookBean.setRoomid(1);
+                bookBean.setRoomid(Integer.parseInt(room.getSelectedItem().toString()));
+                bookBean.setProjid(Integer.parseInt(projector.getSelectedItem().toString()));
 
 
 //                new doCreateBooking().execute(URL);
@@ -193,28 +224,8 @@ public class Createbooking extends Activity implements TimePickerDialog.OnTimeSe
         });
 
 
-        update();
-
     }
 
-
-    private void update() {
-        txtdate.setText(dateFormat.format(calendar.getTime()));
-        txttime.setText(timeFormat.format(calendar.getTime()));
-    }
-
-    @Override
-    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-        calendar.set(year, monthOfYear, dayOfMonth);
-        update();
-    }
-
-    @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-        calendar.set(Calendar.MINUTE, minute);
-        update();
-    }
 
     /****************************************************************************/
     private class doCreateBooking extends AsyncTask<String, Void, String> {
