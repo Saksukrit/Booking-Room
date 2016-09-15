@@ -1,4 +1,4 @@
-package com.example.wolf_z.bookingroom;
+package com.example.wolf_z.bookingroom.Custom;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,12 +7,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class CustomAdapter_Pname extends BaseAdapter {
+import com.example.wolf_z.bookingroom.R;
+
+public class CustomAdapter_subject extends BaseAdapter {
 
     Context mContext;
     String[] strName;
 
-    public CustomAdapter_Pname(Context context, String[] strName) {
+    public CustomAdapter_subject(Context context, String[] strName) {
         this.mContext = context;
         this.strName = strName;
     }
@@ -37,9 +39,9 @@ public class CustomAdapter_Pname extends BaseAdapter {
         LayoutInflater mInflater =
                 (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        view = mInflater.inflate(R.layout.item_namelist, parent, false);
+        view = mInflater.inflate(R.layout.item_subjectlist, parent, false);
 
-        TextView textView = (TextView) view.findViewById(R.id.name_item);
+        TextView textView = (TextView) view.findViewById(R.id.subject_item);
         textView.setText(strName[position]);
 
         return view;

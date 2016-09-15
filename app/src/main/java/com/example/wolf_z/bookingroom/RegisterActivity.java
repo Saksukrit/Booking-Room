@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
@@ -38,15 +41,15 @@ public class RegisterActivity extends Activity {
     private EditText displaynameET;
     private EditText usernameET;
     private EditText pwdET;
-    private EditText departmentET;
+    private Spinner department;
     private AccountBean accountbean = new AccountBean();
     private Animation anim;
     private View view_name;
     private View view_email;
     private View view_password;
-    private View view_department;
     private Button btnregister;
     private Button btnlogin;
+    private CustomOnItemSelected_department cod = new CustomOnItemSelected_department();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +66,6 @@ public class RegisterActivity extends Activity {
         view_name = findViewById(R.id.view_name);
         view_email = findViewById(R.id.view_email);
         view_password = findViewById(R.id.view_password);
-        view_department = findViewById(R.id.view_deparment);
 
         displaynameET = (EditText) findViewById(R.id.registerName);
         displaynameET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -104,18 +106,11 @@ public class RegisterActivity extends Activity {
             }
         });
 
-        departmentET = (EditText) findViewById(R.id.registerDepartment);
-        departmentET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    view_department.setVisibility(View.VISIBLE);
-                    view_department.startAnimation(anim);
-                } else {
-                    view_department.setVisibility(View.GONE);
-                }
-            }
-        });
+        department = (Spinner) findViewById(R.id.department);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.department_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        department.setAdapter(adapter);
+
 
         btnregister = (Button) findViewById(R.id.btnRegister);
         btnregister.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +121,7 @@ public class RegisterActivity extends Activity {
                 accountbean.setDisplayname(displaynameET.getText().toString());
                 accountbean.setUsername(usernameET.getText().toString());
                 accountbean.setPassword(pwdET.getText().toString());
-                accountbean.setDepartment(departmentET.getText().toString());
+                accountbean.setDepartment(department.getSelectedItem().toString());
                 new doRegister().execute(URL);
             }
         });
@@ -206,6 +201,11 @@ public class RegisterActivity extends Activity {
                 e.printStackTrace();
             }
 
+            if (displaynameET.getText() == null || usernameET.getText() == null || pwdET.getText() == null || department.getSelectedItem().toString() == null) {
+                String OutputData = " Ops! : input data is null ";
+                Toast toast = Toast.makeText(getBaseContext(), OutputData, Toast.LENGTH_LONG);
+                toast.show();
+            }
             if (error_msg == "") {
                 String success = "Register Success!";
                 Toast toast = Toast.makeText(getBaseContext(), success, Toast.LENGTH_LONG);

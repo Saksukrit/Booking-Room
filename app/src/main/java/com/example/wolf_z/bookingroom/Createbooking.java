@@ -8,16 +8,19 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.datetimepicker.date.DatePickerDialog;
 import com.android.datetimepicker.time.RadialPickerLayout;
 import com.android.datetimepicker.time.TimePickerDialog;
+import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
@@ -62,8 +65,8 @@ public class Createbooking extends Activity implements TimePickerDialog.OnTimeSe
     private BookBean bookBean = new BookBean();
     private RadioGroup meeting_type;
     private RadioButton meetingButton;
-    private RadioGroup department_type;
-    private RadioButton departmentButton;
+    private Spinner department_type;
+
     private String setDate;
     private String setTime;
     private String setToTime;
@@ -93,10 +96,13 @@ public class Createbooking extends Activity implements TimePickerDialog.OnTimeSe
         int meetingselectedId = meeting_type.getCheckedRadioButtonId();
         meetingButton = (RadioButton) findViewById(meetingselectedId);
 
+
         /** department_type */
-        department_type = (RadioGroup) findViewById(R.id.department_type);
-        int departmentselectedId = department_type.getCheckedRadioButtonId();
-        meetingButton = (RadioButton) findViewById(departmentselectedId);
+        department_type = (Spinner) findViewById(R.id.department_type);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.department_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        department_type.setAdapter(adapter);
+//        department_type.getOnItemSelectedListener().toString();
 
         /** AnimationUtils */
         anim = AnimationUtils.loadAnimation(Createbooking.this, R.anim.scale);

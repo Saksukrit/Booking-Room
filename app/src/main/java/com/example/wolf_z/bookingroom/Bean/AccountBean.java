@@ -1,4 +1,4 @@
-package com.example.wolf_z.bookingroom;
+package com.example.wolf_z.bookingroom.Bean;
 
 /**
  * Created by Wolf-Z on 12/9/2559.
