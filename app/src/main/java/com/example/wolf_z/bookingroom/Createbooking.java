@@ -1,6 +1,8 @@
 package com.example.wolf_z.bookingroom;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,7 +12,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -33,7 +37,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,11 +64,18 @@ public class Createbooking extends Activity {
     private Spinner department_type;
     private Spinner room;
     private Spinner projector;
+    private TextView date;
+    private ListView namelist;
+    private ListView nameselectedlist;
 
-    private String setDate;
-    private String setTime;
-    private String setToTime;
-    private String meetingselected = null;
+    private String setdate;
+    private String settime;
+    private String settotime;
+    private String meetingselected = "";
+
+    private DatePickerDialog fromDatePickerDialog;
+    private SimpleDateFormat dateFormatter;
+    private SimpleDateFormat dateFormatSend;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,13 +84,37 @@ public class Createbooking extends Activity {
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        dateFormatSend = new SimpleDateFormat("yyyyMMdd");
 
 
         /** meeting_type */
 //        meeting_type = (RadioGroup) findViewById(R.id.meeting_type);
-//        meetingselected = ((RadioButton) findViewById(meeting_type.getCheckedRadioButtonId())).getText().toString();
+//        int selectedId = meeting_type.getCheckedRadioButtonId();
+//        meetingButton = (RadioButton) findViewById(selectedId);
 
-        /** Date Time */
+
+        /** Date picker*/
+        date = (TextView) findViewById(R.id.date);
+
+        Calendar caledar = Calendar.getInstance();
+        fromDatePickerDialog = new DatePickerDialog(this, new OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                date.setText(dateFormatter.format(newDate.getTime()));
+            }
+        }, caledar.get(Calendar.YEAR), caledar.get(Calendar.MONTH), caledar.get(Calendar.DAY_OF_MONTH));
+
+
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fromDatePickerDialog.show();
+            }
+        });
+
+        /** Time */
         final ArrayList<String> hr = new ArrayList<String>();
         hr.add("8");
         hr.add("9");
@@ -110,14 +144,17 @@ public class Createbooking extends Activity {
         ArrayAdapter<String> adaptermin = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, min);
         adaptermin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-
+        //Time
         timeHr = (Spinner) findViewById(R.id.timeHr);
         timeHr.setAdapter(adapterhr);
         timeMin = (Spinner) findViewById(R.id.timeMin);
         timeMin.setAdapter(adaptermin);
-
+        //ToTime
         totimeHr = (Spinner) findViewById(R.id.totimeHr);
         totimeHr.setAdapter(adapterhr);
+        int spinnerPosition = adapterhr.getPosition(hr.get(4));
+        totimeHr.setSelection(spinnerPosition);
+
         totimeMin = (Spinner) findViewById(R.id.totimeMin);
         totimeMin.setAdapter(adaptermin);
 
@@ -150,6 +187,12 @@ public class Createbooking extends Activity {
         ArrayAdapter<CharSequence> adapterdepartment = ArrayAdapter.createFromResource(this, R.array.department_array, android.R.layout.simple_spinner_item);
         adapterdepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         department_type.setAdapter(adapterdepartment);
+
+        /** namelist */
+        namelist = (ListView) findViewById(R.id.namelist);
+
+
+        nameselectedlist = (ListView) findViewById(R.id.nameselectedlist);
 
         /** AnimationUtils */
         anim = AnimationUtils.loadAnimation(Createbooking.this, R.anim.scale);
@@ -206,13 +249,12 @@ public class Createbooking extends Activity {
                 /**  Params **/
                 bookBean.setSubject(ETsubject.getText().toString());
                 bookBean.setMeeting_type(meetingselected);
-                bookBean.setDate(setDate);
-                bookBean.setTime(setTime);
-                bookBean.setTotime(setToTime);
+                bookBean.setDate(date.getText().toString());
+                bookBean.setStarttime(setTime());
+                bookBean.setEndtime(setToTime());
                 bookBean.setDetail(ETdetail.getText().toString());
                 bookBean.setRoomid(Integer.parseInt(room.getSelectedItem().toString()));
                 bookBean.setProjid(Integer.parseInt(projector.getSelectedItem().toString()));
-
 
 //                new doCreateBooking().execute(URL);
 
@@ -224,6 +266,18 @@ public class Createbooking extends Activity {
         });
 
 
+    }
+
+
+    // setTime **/
+    public String setTime() {
+        settime = timeHr.getSelectedItem() + ":" + timeMin.getSelectedItem() + ":00";
+        return settime;
+    }
+
+    public String setToTime() {
+        settotime = totimeHr.getSelectedItem() + ":" + totimeMin.getSelectedItem() + ":00";
+        return settotime;
     }
 
 

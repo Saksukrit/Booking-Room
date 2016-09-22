@@ -68,7 +68,7 @@
 
         <RadioGroup
             android:id="@+id/meeting_type"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <RadioButton
@@ -140,9 +140,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date : "
+                android:text="Date :     "
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="click to get date"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -157,9 +164,9 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="89dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="Time : "
+                android:text="From Time : "
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -192,7 +199,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="89dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="To Time : "
                 android:textSize="18sp"
@@ -314,20 +321,43 @@
             android:layout_width="fill_parent"
             android:layout_height="15dp" />
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Name list"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
-        <ListView
-            android:id="@+id/namelist"
-            android:layout_width="fill_parent"
-            android:layout_height="187dp"
-            android:layout_weight="0.98">
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Name list"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        </ListView>
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:text="Selected"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ListView
+                android:id="@+id/namelist"
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:layout_weight="0.5" />
+
+            <ListView
+                android:id="@+id/nameselectedlist"
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:layout_weight="0.5" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnsubmit"

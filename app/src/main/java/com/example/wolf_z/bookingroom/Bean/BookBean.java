@@ -5,18 +5,18 @@ public class BookBean {
     private String subject;
     private String meeting_type;
     private String date;
-    private String time;
-    private String totime;
+    private String starttime;
+    private String endtime;
     private String detail;
     private int roomid;
     private int projid;
 
-    public String getTotime() {
-        return totime;
+    public String getEndtime() {
+        return endtime;
     }
 
-    public void setTotime(String totime) {
-        this.totime = totime;
+    public void setEndtime(String endtime) {
+        this.endtime = endtime;
     }
 
     public int getBookingid() {
@@ -51,12 +51,12 @@ public class BookBean {
         this.date = date;
     }
 
-    public String getTime() {
-        return time;
+    public String getStarttime() {
+        return starttime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setStarttime(String starttime) {
+        this.starttime = starttime;
     }
 
     public String getDetail() {

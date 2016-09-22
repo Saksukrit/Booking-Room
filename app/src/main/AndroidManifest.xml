@@ -11,14 +11,27 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainBookingActivity"
-            android:label="Booking"/>
+        <activity
+            android:name=".MainBookingActivity"
+            android:label="Booking">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".BookingDetail"
-            android:label="BookingDetail" />
+            android:label="BookingDetail">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Createbooking"
-            android:label="Createbooking" />
+            android:label="Createbooking">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".LoginActivity"
             android:label="Booking Room">
@@ -29,7 +42,11 @@
         </activity>
         <activity
             android:name=".RegisterActivity"
-            android:label="Register" />
+            android:label="Register">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

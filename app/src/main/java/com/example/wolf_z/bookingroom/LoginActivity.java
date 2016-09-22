@@ -178,6 +178,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast toast = Toast.makeText(getBaseContext(), success, Toast.LENGTH_LONG);
                 toast.show();
                 Intent homeIntent = new Intent(getApplicationContext(), MainBookingActivity.class);
+                homeIntent.putExtra("username", accountBean.getUsername());
                 homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(homeIntent);
             } else {

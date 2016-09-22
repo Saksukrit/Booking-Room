@@ -11,17 +11,25 @@ import com.example.wolf_z.bookingroom.R;
 
 public class CustomAdapter_subject extends BaseAdapter {
 
-    Context mContext;
-    String[] strName;
+    private Context mContext;
+    private String[] Ssubject;
+    private String[] Sdate;
+    private int[] Sbookingid;
+    private int[] Sroomid;
+    private String[] Stime;
 
-    public CustomAdapter_subject(Context context, String[] strName) {
+    public CustomAdapter_subject(Context context, String[] Ssubject, String[] Sdate, String[] Stime, int[] Sbookingid, int[] Sroomid) {
         this.mContext = context;
-        this.strName = strName;
+        this.Ssubject = Ssubject;
+        this.Sdate = Sdate;
+        this.Stime = Stime;
+        this.Sbookingid = Sbookingid;
+        this.Sroomid = Sroomid;
     }
 
     @Override
     public int getCount() {
-        return strName.length;
+        return Ssubject.length;
     }
 
     @Override
@@ -41,8 +49,20 @@ public class CustomAdapter_subject extends BaseAdapter {
 
         view = mInflater.inflate(R.layout.item_subjectlist, parent, false);
 
-        TextView textView = (TextView) view.findViewById(R.id.subject_item);
-        textView.setText(strName[position]);
+        TextView subject_item = (TextView) view.findViewById(R.id.subject_name);
+        subject_item.setText(Ssubject[position]);
+
+        TextView subject_date = (TextView) view.findViewById(R.id.subject_date);
+        subject_date.setText(Sdate[position]);
+
+        TextView subject_room = (TextView) view.findViewById(R.id.subject_room);
+        subject_room.setText(String.valueOf(Sroomid[position]));
+
+        TextView subject_time = (TextView) view.findViewById(R.id.subject_time);
+        subject_time.setText(Stime[position]);
+
+        TextView subject_bookingid = (TextView) view.findViewById(R.id.subject_bookingid);
+        subject_bookingid.setText(String.valueOf(Sbookingid[position]));     //String.valueOf() for set int
 
         return view;
     }
