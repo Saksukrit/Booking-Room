@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.BookBean;
@@ -40,12 +41,10 @@ import java.util.Locale;
 
 public class MainBookingActivity extends AppCompatActivity {
     private ProgressDialog prgDialog;
-    Participant participant = new Participant();
+    private Participant participant = new Participant();
     private Button createbooking;
     private Bundle bundle;
     private String username;
-    private String date;
-    private String subject;
     private String bookingid;
     private ArrayList<BookBean> bookBeans = new ArrayList<BookBean>();
     private String[] Ssubject;
@@ -69,15 +68,7 @@ public class MainBookingActivity extends AppCompatActivity {
         prgDialog.setCancelable(false);
 
         listView = (ListView) findViewById(R.id.subjectlist);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), BookingDetail.class);
-                intent.putExtra("username", username);
-                intent.putExtra("bookingid", bookingid);
-                startActivity(intent);
-            }
-        });
+
 
         /** Query */
         String URL = "http://157.179.8.120:8080/BookingRoomService/mainrest/restservice/showlistsubject";
@@ -96,6 +87,16 @@ public class MainBookingActivity extends AppCompatActivity {
             }
         });
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                bookingid = String.valueOf(Sbookingid[position]);
+                Intent intent = new Intent(getApplicationContext(), BookingDetail.class);
+                intent.putExtra("username", username);
+                intent.putExtra("bookingid", bookingid);
+                startActivity(intent);
+            }
+        });
 
     }
 

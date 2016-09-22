@@ -12,16 +12,18 @@ import com.example.wolf_z.bookingroom.R;
 public class CustomAdapter_Pname extends BaseAdapter {
 
     Context mContext;
-    String[] strName;
+    String[] displayname;
+    String[] department;
 
-    public CustomAdapter_Pname(Context context, String[] strName) {
+    public CustomAdapter_Pname(Context context, String[] displayname, String[] department) {
         this.mContext = context;
-        this.strName = strName;
+        this.displayname = displayname;
+        this.department = department;
     }
 
     @Override
     public int getCount() {
-        return strName.length;
+        return displayname.length;
     }
 
     @Override
@@ -41,8 +43,11 @@ public class CustomAdapter_Pname extends BaseAdapter {
 
         view = mInflater.inflate(R.layout.item_namelist, parent, false);
 
-        TextView textView = (TextView) view.findViewById(R.id.name_item);
-        textView.setText(strName[position]);
+        TextView displayname_item = (TextView) view.findViewById(R.id.displayname_item);
+        displayname_item.setText(displayname[position]);
+
+        TextView department_item = (TextView) view.findViewById(R.id.department_item);
+        department_item.setText(department[position]);
 
         return view;
     }
