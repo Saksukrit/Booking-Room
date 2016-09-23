@@ -13,17 +13,22 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainBookingActivity"
-            android:label="Booking">
+            android:label="Booking"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
         <activity
             android:name=".BookingDetail"
-            android:label="BookingDetail">
+            android:label="BookingDetail"
+            android:parentActivityName=".MainBookingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainBookingActivity" />
         </activity>
         <activity
             android:name=".Createbooking"
@@ -37,6 +42,7 @@
             android:label="Booking Room">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -46,6 +52,17 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".SearchBookActivity"
+            android:label="Search Booking"
+            android:parentActivityName=".MainBookingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainBookingActivity" />
         </activity>
     </application>
 

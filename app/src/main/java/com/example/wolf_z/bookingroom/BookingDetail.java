@@ -3,8 +3,13 @@ package com.example.wolf_z.bookingroom;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -36,7 +41,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 public class BookingDetail extends AppCompatActivity {
-    private Button back;
+
     private Bundle bundle;
     private String username;
     private String bookingid;
@@ -44,6 +49,7 @@ public class BookingDetail extends AppCompatActivity {
     private ArrayList<AccountBean> accountBeans = new ArrayList<AccountBean>();
     private Participant participant = new Participant();
     private ProgressDialog prgDialog;
+    private ActionBar actionBar;
     private TextView txtsubject;
     private TextView txtdetail;
     private TextView txtmeetingtype;
@@ -77,6 +83,8 @@ public class BookingDetail extends AppCompatActivity {
         txtendtime = (TextView) findViewById(R.id.txtendtime);
         txtroomid = (TextView) findViewById(R.id.roomid);
 
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         /** Query */
         String[] URL = {"http://157.179.8.120:8080/BookingRoomService/mainrest/restservice/showdetail"
@@ -87,14 +95,6 @@ public class BookingDetail extends AppCompatActivity {
         new Detail().execute(URL);
 
         Toast.makeText(getApplicationContext(), username + "  " + bookingid, Toast.LENGTH_LONG).show();
-
-        back = (Button) findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
 
     }
@@ -215,5 +215,32 @@ public class BookingDetail extends AppCompatActivity {
         }
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuItem mnu1 = menu.add(0, 0, 0, "Edit");
+        {
+            mnu1.setIcon(R.drawable.edit128);
+            mnu1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        }
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0:
+                Toast.makeText(this, "Go Edit", Toast.LENGTH_LONG).show();
+                return true;
+            case android.R.id.home:
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+                } else {
+                    NavUtils.navigateUpTo(this, upIntent);
+                }
+                return true;
+        }
+        return false;
+    }
 
 }

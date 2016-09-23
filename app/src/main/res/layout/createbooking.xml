@@ -166,7 +166,7 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="From Time : "
+                android:text="Start Time : "
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -201,7 +201,7 @@
             <TextView
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="To Time : "
+                android:text="End Time : "
                 android:textSize="18sp"
                 android:textStyle="bold" />
 

@@ -1,16 +1,20 @@
 package com.example.wolf_z.bookingroom;
 
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.BookBean;
@@ -32,17 +36,14 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 
-public class MainBookingActivity extends AppCompatActivity {
+public class MainBookingActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private ProgressDialog prgDialog;
     private Participant participant = new Participant();
     private Button createbooking;
+    private Button searchbooking;
     private Bundle bundle;
     private String username;
     private String bookingid;
@@ -54,10 +55,12 @@ public class MainBookingActivity extends AppCompatActivity {
     private int[] Sroomid;
     private ListView listView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         bundle = getIntent().getExtras();
 //        username = bundle.getString("username");
@@ -66,8 +69,19 @@ public class MainBookingActivity extends AppCompatActivity {
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
-
         listView = (ListView) findViewById(R.id.subjectlist);
+
+
+        /** Toolbar ********************/
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
 
         /** Query */
@@ -87,6 +101,15 @@ public class MainBookingActivity extends AppCompatActivity {
             }
         });
 
+        searchbooking = (Button) findViewById(R.id.searchbooking);
+        searchbooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SearchBookActivity.class);
+                startActivity(intent);
+            }
+        });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -99,6 +122,40 @@ public class MainBookingActivity extends AppCompatActivity {
         });
 
     }
+
+    /**
+     * Navigation
+     **/
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.setting) {
+            Toast.makeText(getApplicationContext(), "setting", Toast.LENGTH_LONG).show();
+//            Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
+//            startActivity(intent);
+        } else if (id == R.id.logout) {
+            Toast.makeText(getApplicationContext(), "logout", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    /**************************************************************/
 
     private class MainApp extends AsyncTask<String, Void, String> {
 

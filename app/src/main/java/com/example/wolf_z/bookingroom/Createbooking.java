@@ -37,9 +37,11 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 
 public class Createbooking extends Activity {
@@ -84,8 +86,9 @@ public class Createbooking extends Activity {
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
-        dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
-        dateFormatSend = new SimpleDateFormat("yyyyMMdd");
+        Locale lc = new Locale("th", "TH");
+        dateFormatter = new SimpleDateFormat("dd/MM/yyyy", lc);
+        dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
 
         /** meeting_type */
@@ -102,7 +105,9 @@ public class Createbooking extends Activity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                date.setText(dateFormatter.format(newDate.getTime()));
+
+                date.setText(dateFormatter.format(newDate.getTime()));  /****format*/
+
             }
         }, caledar.get(Calendar.YEAR), caledar.get(Calendar.MONTH), caledar.get(Calendar.DAY_OF_MONTH));
 

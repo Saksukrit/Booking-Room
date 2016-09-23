@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="56dp" />
+
+    <Button
+        android:id="@+id/createbooking"
+        android:layout_width="fill_parent"
+        android:layout_height="52dp"
+        android:onClick="onClickcreatebooking"
+        android:text="Create Booking" />
+
+    <Button
+        android:id="@+id/searchbooking"
+        android:layout_width="fill_parent"
+        android:layout_height="52dp"
+        android:onClick="onClicksearchbooking"
+        android:text="Search Booking" />
+
+    <android.support.v4.widget.Space
+        android:layout_width="fill_parent"
+        android:layout_height="24dp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Your meeting"
+        android:textSize="23dp"
+        android:textStyle="bold" />
+
+    <ListView
+        android:id="@+id/subjectlist"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+</LinearLayout>
+
