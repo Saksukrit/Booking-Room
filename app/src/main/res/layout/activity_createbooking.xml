@@ -75,7 +75,8 @@
                 android:id="@+id/problem"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="การประชุมเพื่อแก้ปัญหา" />
+                android:text="การประชุมเพื่อแก้ปัญหา"
+                android:checked="true"/>
 
             <RadioButton
                 android:id="@+id/brainstorming"

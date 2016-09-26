@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
+        setContentView(R.layout.activity_login);
         errorMsg = (TextView) findViewById(R.id.login_error);
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
@@ -181,6 +181,7 @@ public class LoginActivity extends AppCompatActivity {
                 homeIntent.putExtra("username", accountBean.getUsername());
                 homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(homeIntent);
+                finish();
             } else {
                 String OutputData = " Ops! : Login " + status + " "
                         + " ," + error_msg;

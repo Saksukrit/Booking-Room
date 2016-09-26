@@ -10,9 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +18,6 @@ import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.Bean.Participant;
 import com.example.wolf_z.bookingroom.Custom.CustomAdapter_Pname;
-import com.example.wolf_z.bookingroom.Custom.CustomAdapter_subject;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
@@ -64,7 +60,7 @@ public class BookingDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.booking_detail);
+        setContentView(R.layout.activity_booking_detail);
 
         bundle = getIntent().getExtras();
         username = bundle.getString("username");

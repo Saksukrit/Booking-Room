@@ -1,6 +1,6 @@
 package com.example.wolf_z.bookingroom.Bean;
 
-public class Room {
+public class RoomBean {
 	private int roomid;
 	private String emptystatus;
 

@@ -73,28 +73,29 @@ public class Createbooking extends Activity {
     private String setdate;
     private String settime;
     private String settotime;
-    private String meetingselected = "";
 
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     private SimpleDateFormat dateFormatSend;
+    private SimpleDateFormat dateFormatter1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.createbooking);
+        setContentView(R.layout.activity_createbooking);
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
         Locale lc = new Locale("th", "TH");
         dateFormatter = new SimpleDateFormat("dd/MM/yyyy", lc);
+        dateFormatter1 = new SimpleDateFormat("dd/MM/yyyy");
         dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
 
         /** meeting_type */
-//        meeting_type = (RadioGroup) findViewById(R.id.meeting_type);
-//        int selectedId = meeting_type.getCheckedRadioButtonId();
-//        meetingButton = (RadioButton) findViewById(selectedId);
+        meeting_type = (RadioGroup) findViewById(R.id.meeting_type);
+        int selectedId = meeting_type.getCheckedRadioButtonId();
+        meetingButton = (RadioButton) findViewById(selectedId);
 
 
         /** Date picker*/
@@ -157,9 +158,7 @@ public class Createbooking extends Activity {
         //ToTime
         totimeHr = (Spinner) findViewById(R.id.totimeHr);
         totimeHr.setAdapter(adapterhr);
-        int spinnerPosition = adapterhr.getPosition(hr.get(4));
-        totimeHr.setSelection(spinnerPosition);
-
+        totimeHr.setSelection(adapterhr.getPosition(hr.get(4)));  //set default show
         totimeMin = (Spinner) findViewById(R.id.totimeMin);
         totimeMin.setAdapter(adaptermin);
 
@@ -250,16 +249,21 @@ public class Createbooking extends Activity {
         btnsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String URL = "http://157.179.8.120:8080/BookingRoomService/bookingrest/restservice/dobooking";
+                String URL = "http://157.179.8.120:8080/BookingRoomService/bookingrest/restservice/dobooking";
                 /**  Params **/
                 bookBean.setSubject(ETsubject.getText().toString());
-                bookBean.setMeeting_type(meetingselected);
-                bookBean.setDate(date.getText().toString());
+                bookBean.setMeeting_type(meetingButton.getText().toString());
+                try {
+                    bookBean.setDate(dateFormatSend.format(dateFormatter1.parse(date.getText().toString())));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 bookBean.setStarttime(setTime());
                 bookBean.setEndtime(setToTime());
                 bookBean.setDetail(ETdetail.getText().toString());
                 bookBean.setRoomid(Integer.parseInt(room.getSelectedItem().toString()));
                 bookBean.setProjid(Integer.parseInt(projector.getSelectedItem().toString()));
+
 
 //                new doCreateBooking().execute(URL);
 

@@ -1,10 +1,14 @@
 package com.example.wolf_z.bookingroom;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -35,7 +39,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by Wolf-Z on 12/9/2559.
  */
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends AppCompatActivity {
     private ProgressDialog prgDialog;
     private TextView errorMsg;
     private EditText displaynameET;
@@ -49,16 +53,19 @@ public class RegisterActivity extends Activity {
     private View view_password;
     private Button btnregister;
     private Button btnlogin;
+    private ActionBar actionBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.register);
+        setContentView(R.layout.activity_register);
         errorMsg = (TextView) findViewById(R.id.register_error);
 
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         anim = AnimationUtils.loadAnimation(RegisterActivity.this, R.anim.scale);
 
@@ -221,6 +228,20 @@ public class RegisterActivity extends Activity {
             }
         }
 
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+                } else {
+                    NavUtils.navigateUpTo(this, upIntent);
+                }
+                return true;
+        }
+        return false;
     }
 
 }
