@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.BookBean;
+import com.example.wolf_z.bookingroom.Bean.RoomBean;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
@@ -32,6 +33,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,6 +49,7 @@ import java.util.Locale;
 public class Createbooking extends Activity {
 
     private static final String TIME_PATTERN = "HH:mm";
+    private ArrayList<RoomBean> roomBeans = new ArrayList<>();
     private ProgressDialog prgDialog;
     private Spinner timeHr;
     private Spinner timeMin;
@@ -69,6 +72,7 @@ public class Createbooking extends Activity {
     private TextView date;
     private ListView namelist;
     private ListView nameselectedlist;
+    private ArrayList<Integer> Aroom = new ArrayList<>();
 
     private String setdate;
     private String settime;
@@ -164,14 +168,11 @@ public class Createbooking extends Activity {
 
 
         /** select room and projector*/
-
-        ArrayList<Integer> listroomEmpty = new ArrayList<Integer>();
-        listroomEmpty.add(1502);
-        listroomEmpty.add(1503);
-
-
+        String[] URL = {"http://157.179.8.120:8080/BookingRoomService/searchrest/restservice/getroom"};
+        new SetData().execute(URL);
         room = (Spinner) findViewById(R.id.room);
-        ArrayAdapter<Integer> adapterroom = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, listroomEmpty);
+        Aroom.add(0);
+        ArrayAdapter<Integer> adapterroom = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Aroom);
         adapterroom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         room.setAdapter(adapterroom);
 
@@ -265,12 +266,12 @@ public class Createbooking extends Activity {
                 bookBean.setProjid(Integer.parseInt(projector.getSelectedItem().toString()));
 
 
-//                new doCreateBooking().execute(URL);
+                new doCreateBooking().execute(URL);
 
-//                Intent intent = new Intent(getApplicationContext(), MainBookingActivity.class);
-//                startActivity(intent);
-//                Toast.makeText(getApplicationContext(), "Create booking complete", Toast.LENGTH_LONG).show();
-//                finish();
+                Intent intent = new Intent(getApplicationContext(), MainBookingActivity.class);
+                startActivity(intent);
+                Toast.makeText(getApplicationContext(), "Create booking complete", Toast.LENGTH_LONG).show();
+                finish();
             }
         });
 
@@ -280,17 +281,35 @@ public class Createbooking extends Activity {
 
     // setTime **/
     public String setTime() {
-        settime = timeHr.getSelectedItem() + ":" + timeMin.getSelectedItem() + ":00";
+        String timehr;
+        if (timeHr.getSelectedItem() == "8") {
+            timehr = "08";
+        } else if (timeHr.getSelectedItem() == "9") {
+            timehr = "09";
+        } else {
+            timehr = timeHr.getSelectedItem().toString();
+        }
+        settime = timehr + ":" + timeMin.getSelectedItem() + ":00";
         return settime;
     }
 
     public String setToTime() {
-        settotime = totimeHr.getSelectedItem() + ":" + totimeMin.getSelectedItem() + ":00";
+        String totimehr;
+        if (totimeHr.getSelectedItem() == "8") {
+            totimehr = "08";
+        } else if (totimeHr.getSelectedItem() == "9") {
+            totimehr = "09";
+        } else {
+            totimehr = totimeHr.getSelectedItem().toString();
+        }
+        settotime = totimehr + ":" + totimeMin.getSelectedItem() + ":00";
         return settotime;
     }
 
 
-    /****************************************************************************/
+    /**
+     * Create Booking
+     */
     private class doCreateBooking extends AsyncTask<String, Void, String> {
 
         String result = "";
@@ -372,5 +391,66 @@ public class Createbooking extends Activity {
 
     }
 
+
+    /**
+     * Set Data Page
+     */
+    private class SetData extends AsyncTask<String, Void, String> {
+
+        String result = "";
+
+        @Override
+        protected void onPreExecute() {
+            prgDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                /** POST **/
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(urls[0]);
+                Gson gson = new Gson();
+                StringEntity stringEntity = new StringEntity(gson.toJson(""));
+                httpPost.setEntity(stringEntity);
+                httpPost.setHeader("Content-type", "application/json");
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                if (httpEntity != null) {
+                    result = EntityUtils.toString(httpEntity);
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            prgDialog.dismiss();
+            JSONArray jsonArray;
+            try {
+                jsonArray = new JSONArray(result);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    RoomBean roomBean = new RoomBean();
+                    roomBean.setRoomid(jsonObject.getInt("roomid"));
+                    roomBeans.add(roomBean);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            for (int i = 0; i < roomBeans.size(); i++) {
+                Aroom.add(roomBeans.get(i).getRoomid());
+
+            }
+
+        }
+
+    }
 
 }

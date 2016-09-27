@@ -130,7 +130,9 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.setting) {
+        if (id == R.id.about) {
+            Toast.makeText(getApplicationContext(), "about", Toast.LENGTH_LONG).show();
+        } else if (id == R.id.setting) {
             Toast.makeText(getApplicationContext(), "setting", Toast.LENGTH_LONG).show();
 //            Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
 //            startActivity(intent);

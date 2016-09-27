@@ -38,14 +38,14 @@ import java.util.ArrayList;
 
 public class BookingDetail extends AppCompatActivity {
 
-    private Bundle bundle;
-    private String username;
-    private String bookingid;
-    private ArrayList<BookBean> bookBeans = new ArrayList<BookBean>();
-    private ArrayList<AccountBean> accountBeans = new ArrayList<AccountBean>();
+    protected Bundle bundle;
+    protected String username;
+    protected String bookingid;
+    private ArrayList<BookBean> bookBeans = new ArrayList<>();
+    private ArrayList<AccountBean> accountBeans = new ArrayList<>();
     private Participant participant = new Participant();
     private ProgressDialog prgDialog;
-    private ActionBar actionBar;
+    protected ActionBar actionBar;
     private TextView txtsubject;
     private TextView txtdetail;
     private TextView txtmeetingtype;
@@ -54,8 +54,8 @@ public class BookingDetail extends AppCompatActivity {
     private TextView txtendtime;
     private TextView txtroomid;
     private ListView listView;
-    private String[] Adisplayname;
-    private String[] Adepartment;
+    protected String[] Adisplayname;
+    protected String[] Adepartment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

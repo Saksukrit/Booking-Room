@@ -75,20 +75,20 @@
                 android:id="@+id/problem"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="การประชุมเพื่อแก้ปัญหา"
+                android:text="Problem-solving"
                 android:checked="true"/>
 
             <RadioButton
                 android:id="@+id/brainstorming"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="การประชุมเพื่อระดมความคิด" />
+                android:text="Brainstorming" />
 
             <RadioButton
                 android:id="@+id/training"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="การประชุมเพื่อการฝึกอบรม" />
+                android:text="Training" />
         </RadioGroup>
 
         <android.support.design.widget.TextInputLayout

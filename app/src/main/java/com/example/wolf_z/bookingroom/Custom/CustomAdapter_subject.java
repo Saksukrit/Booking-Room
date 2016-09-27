@@ -1,6 +1,7 @@
 package com.example.wolf_z.bookingroom.Custom;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,11 @@ public class CustomAdapter_subject extends BaseAdapter {
         TextView subject_bookingid = (TextView) view.findViewById(R.id.subject_bookingid);
         subject_bookingid.setText(String.valueOf(Sbookingid[position]));     //String.valueOf() for set int
 
+        if (position % 2 == 1) {
+            view.setBackgroundColor(Color.parseColor("#ffd27f"));
+        } else {
+            view.setBackgroundColor(Color.parseColor("#ffedcc"));
+        }
         return view;
     }
 }

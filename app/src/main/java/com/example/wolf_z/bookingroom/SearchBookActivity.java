@@ -1,6 +1,5 @@
 package com.example.wolf_z.bookingroom;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -49,34 +48,41 @@ import java.util.Locale;
 public class SearchBookActivity extends AppCompatActivity {
 
     private BookBean bookBean = new BookBean();
-    private ArrayList<BookBean> bookBeans = new ArrayList<BookBean>();
-    private RoomBean roomBean = new RoomBean();
-    private ArrayList<RoomBean> roomBeans = new ArrayList<RoomBean>();
+    private ArrayList<BookBean> bookBeans = new ArrayList<>();
+    private ArrayList<RoomBean> roomBeans = new ArrayList<>();
     private ProgressDialog prgDialog;
-    private ActionBar actionBar;
+    protected ActionBar actionBar;
     private TextView date;
     private Spinner timeHr;
     private Spinner timeMin;
     private Spinner totimeHr;
     private Spinner totimeMin;
-    private Spinner room;
-    private Button search;
-    private Button reset;
+    protected Spinner room;
+    protected Button search;
+    protected Button reset;
     private TextView txtstatus;
     private ListView searchlist;
-    private String settime;
-    private String settotime;
+    protected String settime;
+    protected String settotime;
+    private ArrayList<Integer> Aroom = new ArrayList<>();
+
 
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
     private SimpleDateFormat dateFormatSend;
-    private String[] Ssubject;
-    private String[] Sdate;
-    private String[] Sstarttime;
-    private String[] Sendtime;
-    private int[] Sroomid;
+    private SimpleDateFormat timeFormatter;
+    protected String[] Ssubject;
+    protected String[] Sdate;
+    protected String[] Sstarttime;
+    protected String[] Sendtime;
+    protected int[] Sroomid;
     private SimpleDateFormat dateFormatter1;
-    private CustomAdapter_search adapter;
+    protected CustomAdapter_search adapter;
+
+    private String intent_date;
+    private String intent_starttime;
+    private String intent_endtime;
+    private int intent_roomid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +96,7 @@ public class SearchBookActivity extends AppCompatActivity {
         dateFormatter = new SimpleDateFormat("dd/MM/yyyy", lc);
         dateFormatter1 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        timeFormatter = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -123,7 +130,7 @@ public class SearchBookActivity extends AppCompatActivity {
         });
 
         /** Time */
-        final ArrayList<String> hr = new ArrayList<String>();
+        final ArrayList<String> hr = new ArrayList<>();
         hr.add("8");
         hr.add("9");
         hr.add("10");
@@ -140,16 +147,16 @@ public class SearchBookActivity extends AppCompatActivity {
         hr.add("21");
         hr.add("22");
 
-        final ArrayList<String> min = new ArrayList<String>();
+        final ArrayList<String> min = new ArrayList<>();
         min.add("00");
         min.add("15");
         min.add("30");
         min.add("45");
 
-        ArrayAdapter<String> adapterhr = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, hr);
+        ArrayAdapter<String> adapterhr = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, hr);
         adapterhr.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        ArrayAdapter<String> adaptermin = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, min);
+        ArrayAdapter<String> adaptermin = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, min);
         adaptermin.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         //Time
@@ -164,15 +171,13 @@ public class SearchBookActivity extends AppCompatActivity {
         totimeMin = (Spinner) findViewById(R.id.totimeMin);
         totimeMin.setAdapter(adaptermin);
 
-        /** select room */
-
-        ArrayList<Integer> listroomEmpty = new ArrayList<Integer>();
-        listroomEmpty.add(0);
-        listroomEmpty.add(1502);
-        listroomEmpty.add(1503);
+        /** room spinner Query */
+        String[] URL = {"http://157.179.8.120:8080/BookingRoomService/searchrest/restservice/getroom"};
+        new SetData().execute(URL);
 
         room = (Spinner) findViewById(R.id.room);
-        ArrayAdapter<Integer> adapterroom = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, listroomEmpty);
+        Aroom.add(0);
+        ArrayAdapter<Integer> adapterroom = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Aroom);
         adapterroom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         room.setAdapter(adapterroom);
 
@@ -180,6 +185,7 @@ public class SearchBookActivity extends AppCompatActivity {
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                txtstatus.setBackgroundColor(0xffffff00);
                 txtstatus.setText("please search");
             }
         });
@@ -196,17 +202,10 @@ public class SearchBookActivity extends AppCompatActivity {
                 bookBean.setStarttime(setStartTime());
                 bookBean.setEndtime(setEndTime());
                 bookBean.setRoomid(Integer.parseInt(room.getSelectedItem().toString()));
-                //adapter.notifyDataSetInvalidated();
                 new Search().execute(URL);
             }
         });
 
-        /** room spinner Query */
-//        String[] URL = {"http://localhost:8080/BookingRoomService/searchrest/restservice/searchbooking"};
-//        //  Params book
-//        participant.setUsername(username);
-//        participant.setBookingid(Integer.parseInt(bookingid));
-//        new Search().execute(URL);
 
     }
 
@@ -236,9 +235,13 @@ public class SearchBookActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case 0:
                 Toast.makeText(this, "Go Create", Toast.LENGTH_LONG).show();
-                Intent i = new Intent(this, Createbooking.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(i);
+                Intent intent = new Intent(this, Createbooking.class);
+                intent.putExtra("intent_date", intent_date);
+                intent.putExtra("intent_starttime", intent_starttime);
+                intent.putExtra("intent_endtime", intent_endtime);
+                intent.putExtra("intent_roomid", intent_roomid);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 finish();
                 return true;
             case android.R.id.home:
@@ -293,10 +296,6 @@ public class SearchBookActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             prgDialog.dismiss();
-            String tag = "";
-            String status = "";
-            String error_msg = "";
-
             JSONArray jsonArray;
             try {
                 jsonArray = new JSONArray(result);
@@ -316,10 +315,23 @@ public class SearchBookActivity extends AppCompatActivity {
 
             if (bookBeans.size() == 0) {
                 Ssubject = new String[]{"empty"};
-                Sdate = new String[]{"00/00/0000"};
-                Sstarttime = new String[]{"00:00"};
-                Sendtime = new String[]{"00:00"};
-                Sroomid = new int[]{0};
+                Sdate = new String[]{bookBean.getDate()};
+                try {
+                    Sstarttime = new String[]{timeFormatter.format(timeFormatter.parse(bookBean.getStarttime()))};
+                    Sendtime = new String[]{timeFormatter.format(timeFormatter.parse(bookBean.getEndtime()))};
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Sroomid = new int[]{bookBean.getRoomid()};
+                txtstatus.setBackgroundColor(0xff00ff00);
+                txtstatus.setText("Room is empty this time.");
+                /**set value intent*/
+                intent_date = Sdate[0];
+                intent_starttime = Sstarttime[0];
+                intent_endtime = Sendtime[0];
+                intent_roomid = Sroomid[0];
+
+
             } else {
                 Ssubject = new String[bookBeans.size()];
                 Sdate = new String[bookBeans.size()];
@@ -334,11 +346,75 @@ public class SearchBookActivity extends AppCompatActivity {
                     Sendtime[i] = bookBeans.get(i).getEndtime();
                     Sroomid[i] = bookBeans.get(i).getRoomid();
                 }
+                txtstatus.setBackgroundColor(0xffff0000);
+                txtstatus.setText("Room is empty this time.");
             }
             //set adapter
             adapter = new CustomAdapter_search(getApplicationContext(), Ssubject, Sdate, Sstarttime, Sendtime, Sroomid);
             searchlist.setAdapter(adapter);
             bookBeans.clear();
+        }
+
+    }
+
+
+    /**
+     * Set Data Page
+     */
+    private class SetData extends AsyncTask<String, Void, String> {
+
+        String result = "";
+
+        @Override
+        protected void onPreExecute() {
+            prgDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                /** POST **/
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(urls[0]);
+                Gson gson = new Gson();
+                StringEntity stringEntity = new StringEntity(gson.toJson(""));
+                httpPost.setEntity(stringEntity);
+                httpPost.setHeader("Content-type", "application/json");
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                if (httpEntity != null) {
+                    result = EntityUtils.toString(httpEntity);
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            prgDialog.dismiss();
+            JSONArray jsonArray;
+            try {
+                jsonArray = new JSONArray(result);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    RoomBean roomBean = new RoomBean();
+                    roomBean.setRoomid(jsonObject.getInt("roomid"));
+                    roomBeans.add(roomBean);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            for (int i = 0; i < roomBeans.size(); i++) {
+                Aroom.add(roomBeans.get(i).getRoomid());
+
+            }
+
         }
 
     }
