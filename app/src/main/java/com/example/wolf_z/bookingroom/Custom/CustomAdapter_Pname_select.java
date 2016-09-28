@@ -10,16 +10,18 @@ import android.widget.TextView;
 
 import com.example.wolf_z.bookingroom.R;
 
-public class CustomAdapter_Pname extends BaseAdapter {
+public class CustomAdapter_Pname_select extends BaseAdapter {
 
     Context mContext;
     String[] displayname;
     String[] department;
+    String[] username;
 
-    public CustomAdapter_Pname(Context context, String[] displayname, String[] department) {
+    public CustomAdapter_Pname_select(Context context, String[] displayname, String[] department, String[] username) {
         this.mContext = context;
         this.displayname = displayname;
         this.department = department;
+        this.username = username;
     }
 
     @Override
@@ -42,13 +44,16 @@ public class CustomAdapter_Pname extends BaseAdapter {
         LayoutInflater mInflater =
                 (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        view = mInflater.inflate(R.layout.item_namelist, parent, false);
+        view = mInflater.inflate(R.layout.item_namelist_select, parent, false);
 
         TextView displayname_item = (TextView) view.findViewById(R.id.displayname_item);
         displayname_item.setText(displayname[position]);
 
         TextView department_item = (TextView) view.findViewById(R.id.department_item);
         department_item.setText(department[position]);
+
+        TextView username_item = (TextView) view.findViewById(R.id.username_item);
+        username_item.setText(username[position]);
 
         if (position % 2 == 1) {
             view.setBackgroundColor(Color.parseColor("#ffd27f"));

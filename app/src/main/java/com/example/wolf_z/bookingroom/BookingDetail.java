@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.Bean.Participant;
+import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.example.wolf_z.bookingroom.Custom.CustomAdapter_Pname;
 import com.google.gson.Gson;
 
@@ -38,6 +39,7 @@ import java.util.ArrayList;
 
 public class BookingDetail extends AppCompatActivity {
 
+    private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     protected Bundle bundle;
     protected String username;
     protected String bookingid;
@@ -83,8 +85,8 @@ public class BookingDetail extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         /** Query */
-        String[] URL = {"http://157.179.8.120:8080/BookingRoomService/mainrest/restservice/showdetail"
-                , "http://157.179.8.120:8080/BookingRoomService/mainrest/restservice/showpaticipant"};
+        String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/mainrest/restservice/showdetail"
+                , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/mainrest/restservice/showpaticipant"};
         //  Params
         participant.setUsername(username);
         participant.setBookingid(Integer.parseInt(bookingid));
@@ -110,21 +112,16 @@ public class BookingDetail extends AppCompatActivity {
             try {
                 /** POST **/
                 HttpClient httpClient = new DefaultHttpClient();
-
                 HttpPost httpPost = new HttpPost(url);
                 Gson gson = new Gson();
                 StringEntity stringEntity = new StringEntity(gson.toJson(participant));
                 httpPost.setEntity(stringEntity);
                 httpPost.setHeader("Content-type", "application/json");
-
                 HttpResponse httpResponse = httpClient.execute(httpPost);
-
                 HttpEntity httpEntity = httpResponse.getEntity();
                 if (httpEntity != null) {
                     result = EntityUtils.toString(httpEntity);
                 }
-
-
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (ClientProtocolException e) {
@@ -132,7 +129,6 @@ public class BookingDetail extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return result;
         }
 

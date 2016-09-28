@@ -8,7 +8,8 @@
         android:layout_height="fill_parent"
         android:orientation="vertical"
         android:padding="16dp"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:id="@+id/activity_create">
 
         <TextView
             android:layout_width="fill_parent"
@@ -75,8 +76,8 @@
                 android:id="@+id/problem"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Problem-solving"
-                android:checked="true"/>
+                android:checked="true"
+                android:text="Problem-solving" />
 
             <RadioButton
                 android:id="@+id/brainstorming"
@@ -334,12 +335,6 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="Selected"
-                android:textSize="18sp"
-                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -349,23 +344,10 @@
 
             <ListView
                 android:id="@+id/namelist"
-                android:layout_width="fill_parent"
-                android:layout_height="200dp"
-                android:layout_weight="0.5" />
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
 
-            <ListView
-                android:id="@+id/nameselectedlist"
-                android:layout_width="fill_parent"
-                android:layout_height="200dp"
-                android:layout_weight="0.5" />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btnsubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="submit" />
 
     </LinearLayout>
 </ScrollView>

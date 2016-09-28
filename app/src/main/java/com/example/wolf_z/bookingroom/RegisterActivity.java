@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
+import com.example.wolf_z.bookingroom.Bean.DepartmentBean;
+import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
@@ -30,16 +32,21 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 /**
  * Created by Wolf-Z on 12/9/2559.
  */
 public class RegisterActivity extends AppCompatActivity {
+    private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
+    private ArrayList<DepartmentBean> departmentBeens = new ArrayList<>();
+    private ArrayList<String> Adepartment = new ArrayList<>();
     private ProgressDialog prgDialog;
     private TextView errorMsg;
     private EditText displaynameET;
@@ -112,8 +119,14 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        /** room spinner Query */
+        String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/getdepartment"};
+        new SetDepartment().execute(URL);
+
+        /**department Spinner*/
         department = (Spinner) findViewById(R.id.department);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.department_array, android.R.layout.simple_spinner_item);
+        Adepartment.add("unselect");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Adepartment);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         department.setAdapter(adapter);
 
@@ -122,13 +135,18 @@ public class RegisterActivity extends AppCompatActivity {
         btnregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String URL = "http://157.179.8.120:8080/BookingRoomService/registerrest/restservice/doregister";
-                /**  Params **/
-                accountbean.setDisplayname(displaynameET.getText().toString());
-                accountbean.setUsername(usernameET.getText().toString());
-                accountbean.setPassword(pwdET.getText().toString());
-                accountbean.setDepartment(department.getSelectedItem().toString());
-                new doRegister().execute(URL);
+                //check input data
+                if (department.getSelectedItem() == "unselect") {
+                    Toast.makeText(getApplicationContext(), "department unselected", Toast.LENGTH_LONG);
+                } else {
+                    String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/registerrest/restservice/doregister";
+                    /**  Params **/
+                    accountbean.setDisplayname(displaynameET.getText().toString());
+                    accountbean.setUsername(usernameET.getText().toString());
+                    accountbean.setPassword(pwdET.getText().toString());
+                    accountbean.setDepartment(department.getSelectedItem().toString());
+                    new doRegister().execute(URL);
+                }
             }
         });
 
@@ -243,5 +261,67 @@ public class RegisterActivity extends AppCompatActivity {
         }
         return false;
     }
+
+
+    /**
+     * Set Data Page
+     */
+    private class SetDepartment extends AsyncTask<String, Void, String> {
+        String result = "";
+
+        @Override
+        protected void onPreExecute() {
+            prgDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                /** POST **/
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(urls[0]);
+                Gson gson = new Gson();
+                StringEntity stringEntity = new StringEntity(gson.toJson(""));
+                httpPost.setEntity(stringEntity);
+                httpPost.setHeader("Content-type", "application/json");
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                if (httpEntity != null) {
+                    result = EntityUtils.toString(httpEntity);
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            prgDialog.dismiss();
+            JSONArray jsonArray;
+            try {
+                jsonArray = new JSONArray(result);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    DepartmentBean departmentBean = new DepartmentBean();
+                    departmentBean.setDepartmentPK(jsonObject.getString("departmentPK"));
+                    departmentBeens.add(departmentBean);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            for (int i = 0; i < departmentBeens.size(); i++) {
+                Adepartment.add(String.valueOf(departmentBeens.get(i).getDepartmentPK()));
+
+            }
+
+        }
+
+    }
+
 
 }

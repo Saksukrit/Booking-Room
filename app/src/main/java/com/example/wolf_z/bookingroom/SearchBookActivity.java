@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.Bean.RoomBean;
+import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
+import com.example.wolf_z.bookingroom.Createbooking.Createbooking;
 import com.example.wolf_z.bookingroom.Custom.CustomAdapter_search;
 import com.google.gson.Gson;
 
@@ -47,6 +49,7 @@ import java.util.Locale;
 
 public class SearchBookActivity extends AppCompatActivity {
 
+    private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     private BookBean bookBean = new BookBean();
     private ArrayList<BookBean> bookBeans = new ArrayList<>();
     private ArrayList<RoomBean> roomBeans = new ArrayList<>();
@@ -172,7 +175,7 @@ public class SearchBookActivity extends AppCompatActivity {
         totimeMin.setAdapter(adaptermin);
 
         /** room spinner Query */
-        String[] URL = {"http://157.179.8.120:8080/BookingRoomService/searchrest/restservice/getroom"};
+        String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/getroom"};
         new SetData().execute(URL);
 
         room = (Spinner) findViewById(R.id.room);
@@ -192,7 +195,7 @@ public class SearchBookActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] URL = {"http://157.179.8.120:8080/BookingRoomService/searchrest/restservice/searchbooking"};
+                String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/searchbooking"};
                 /**  Params **/
                 try {
                     bookBean.setDate(dateFormatSend.format(dateFormatter1.parse(date.getText().toString())));

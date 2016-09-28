@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
+import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
@@ -34,6 +35,7 @@ import java.io.UnsupportedEncodingException;
  * Created by Wolf-Z on 12/9/2559.
  */
 public class LoginActivity extends AppCompatActivity {
+    private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     private ProgressDialog prgDialog;
     private TextView errorMsg;
     private EditText usernameET;
@@ -90,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String URL = "http://157.179.8.120:8080/BookingRoomService/loginrest/restservice/dologin";
+                String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/loginrest/restservice/dologin";
                 /**  Params **/
                 accountBean.setUsername(usernameET.getText().toString());
                 accountBean.setPassword(pwdET.getText().toString());

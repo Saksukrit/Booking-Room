@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.Bean.Participant;
+import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
+import com.example.wolf_z.bookingroom.Createbooking.Createbooking;
 import com.example.wolf_z.bookingroom.Custom.CustomAdapter_subject;
 import com.google.gson.Gson;
 
@@ -40,6 +42,8 @@ import java.util.ArrayList;
 
 
 public class MainBookingActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     private ProgressDialog prgDialog;
     private Participant participant = new Participant();
     private Button createbooking;
@@ -85,7 +89,7 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
 
 
         /** Query */
-        String URL = "http://157.179.8.120:8080/BookingRoomService/mainrest/restservice/showlistsubject";
+        String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/mainrest/restservice/showlistsubject";
         //  Params
         participant.setUsername(username);
         new MainApp().execute(URL);
