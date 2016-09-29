@@ -254,6 +254,7 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
             CustomAdapter_subject adapter = new CustomAdapter_subject(getApplicationContext(), Ssubject, Sdate, Stime, Sbookingid, Sroomid);
             listView.setAdapter(adapter);
 
+//            adapter.notifyDataSetChanged();
 
         }
     }

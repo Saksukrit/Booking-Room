@@ -72,5 +72,4 @@
                 android:value=".MainBookingActivity" />
         </activity>
     </application>
-
 </manifest>
