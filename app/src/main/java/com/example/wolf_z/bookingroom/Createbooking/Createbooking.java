@@ -1,8 +1,5 @@
 package com.example.wolf_z.bookingroom.Createbooking;
 
-
-import android.app.DatePickerDialog;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -14,21 +11,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.Animation;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Bean.BookBean;
-import com.example.wolf_z.bookingroom.Bean.DepartmentBean;
-import com.example.wolf_z.bookingroom.Bean.RoomBean;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.example.wolf_z.bookingroom.MainBookingActivity;
 import com.example.wolf_z.bookingroom.R;
@@ -47,11 +32,14 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 
 public class Createbooking extends AppCompatActivity {
 
+    private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     private ProgressDialog prgDialog;
     protected ActionBar actionBar;
     protected ActionBar.Tab tabsubject, tabparticipant;
@@ -59,15 +47,19 @@ public class Createbooking extends AppCompatActivity {
     private Fragment participantFragment = new ParticipantFragment();
     private BookBean bookBean = new BookBean();
 
-    private String testcom = "ggggggggggggggggggggggg";
+    private SimpleDateFormat dateFormatter;
+    protected SimpleDateFormat dateFormatSend;
+    protected SimpleDateFormat dateFormatter1;
 
-    public String getTestcom() {
-        return testcom;
-    }
-
-    public void setTestcom(String testcom) {
-        this.testcom = testcom;
-    }
+    //param send
+    private String subject;
+    private String meeting_type;
+    private String detail;
+    private String date;
+    private String starttime;
+    private String endtime;
+    private String roomid;
+    private String projid;
 
 
     @Override
@@ -77,6 +69,10 @@ public class Createbooking extends AppCompatActivity {
         prgDialog = new ProgressDialog(getApplicationContext());
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
+        Locale lc = new Locale("th", "TH");
+        dateFormatter = new SimpleDateFormat("dd/MM/yyyy", lc);
+        dateFormatter1 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -112,27 +108,27 @@ public class Createbooking extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 0:
-                Toast.makeText(getApplicationContext(), testcom, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), getRoomid(), Toast.LENGTH_LONG).show();
 //                //condition check input null data on UI
-//                if (room.getSelectedItem() == "unselect") {
+//                if (getRoomid() == "unselect") {
 //                    Toast.makeText(this, "Room Unselected", Toast.LENGTH_LONG).show();
 //                } else {
 //
 //                    Toast.makeText(this, "Create booking", Toast.LENGTH_LONG).show();
 //                    String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/dobooking";
 //                    /**  Params **/
-//                    bookBean.setSubject(ETsubject.getText().toString());
-//                    bookBean.setMeeting_type(meetingButton.getText().toString());
+//                    bookBean.setSubject(getSubject());
+//                    bookBean.setMeeting_type(getMeeting_type());
 //                    try {
-//                        bookBean.setDate(dateFormatSend.format(dateFormatter1.parse(date.getText().toString())));
+//                        bookBean.setDate(dateFormatSend.format(dateFormatter1.parse(getDate())));
 //                    } catch (ParseException e) {
 //                        e.printStackTrace();
 //                    }
-//                    bookBean.setStarttime(setTime());
-//                    bookBean.setEndtime(setToTime());
-//                    bookBean.setDetail(ETdetail.getText().toString());
-//                    bookBean.setRoomid(Integer.parseInt(room.getSelectedItem().toString()));
-//                    bookBean.setProjid(Integer.parseInt(projector.getSelectedItem().toString()));
+//                    bookBean.setStarttime(getStarttime());
+//                    bookBean.setEndtime(getEndtime());
+//                    bookBean.setDetail(getDetail());
+//                    bookBean.setRoomid(Integer.parseInt(getRoomid()));
+//                    bookBean.setProjid(Integer.parseInt(getProjid()));
 //                    new doCreateBooking().execute(URL);
 //                    Intent intent = new Intent(getApplicationContext(), MainBookingActivity.class);
 //                    startActivity(intent);
@@ -141,7 +137,7 @@ public class Createbooking extends AppCompatActivity {
 //                    return true;
 //                }
 //                return false;
-                return true;
+            return true;
             case android.R.id.home:
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
                 if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
@@ -152,6 +148,70 @@ public class Createbooking extends AppCompatActivity {
                 return true;
         }
         return false;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getMeeting_type() {
+        return meeting_type;
+    }
+
+    public void setMeeting_type(String meeting_type) {
+        this.meeting_type = meeting_type;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(String starttime) {
+        this.starttime = starttime;
+    }
+
+    public String getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(String endtime) {
+        this.endtime = endtime;
+    }
+
+    public String getRoomid() {
+        return roomid;
+    }
+
+    public void setRoomid(String roomid) {
+        this.roomid = roomid;
+    }
+
+    public String getProjid() {
+        return projid;
+    }
+
+    public void setProjid(String projid) {
+        this.projid = projid;
     }
 
 

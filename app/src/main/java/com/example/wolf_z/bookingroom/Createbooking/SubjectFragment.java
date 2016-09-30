@@ -75,7 +75,6 @@ public class SubjectFragment extends Fragment {
     protected Spinner projector;
     private TextView date;
     protected ArrayList<String> Aroom = new ArrayList<>();
-    protected ArrayList<String> Adepartment = new ArrayList<>();
 
     private String setdate;
     protected String settime;
@@ -84,6 +83,8 @@ public class SubjectFragment extends Fragment {
     private SimpleDateFormat dateFormatter;
     protected SimpleDateFormat dateFormatSend;
     protected SimpleDateFormat dateFormatter1;
+    private Button next;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,7 +116,7 @@ public class SubjectFragment extends Fragment {
                 newDate.set(year, monthOfYear, dayOfMonth);
 
                 date.setText(dateFormatter.format(newDate.getTime()));  /****format*/
-
+                setdate = dateFormatter.format(newDate.getTime());
             }
         }, caledar.get(Calendar.YEAR), caledar.get(Calendar.MONTH), caledar.get(Calendar.DAY_OF_MONTH));
 
@@ -171,8 +172,7 @@ public class SubjectFragment extends Fragment {
 
 
         /** select room */
-        String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/getroom"
-                , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/getdepartment"};
+        String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/getroom"};
         new SetData().execute(URL);
         room = (Spinner) view.findViewById(R.id.room);
         Aroom.add("unselect");
@@ -224,6 +224,25 @@ public class SubjectFragment extends Fragment {
         });
 
 
+        //set data send to acticity
+        next = (Button) view.findViewById(R.id.next);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Createbooking createbooking = (Createbooking) getActivity();
+                createbooking.setSubject(ETsubject.getText().toString());
+                createbooking.setMeeting_type(meetingButton.getText().toString());
+                createbooking.setDetail(ETdetail.getText().toString());
+                createbooking.setDate(setdate);
+                createbooking.setStarttime(setStartTime());
+                createbooking.setEndtime(setEndTime());
+                createbooking.setRoomid(room.getSelectedItem().toString());
+                createbooking.setProjid(projector.getSelectedItem().toString());
+
+            }
+        });
+
+
         return view;
     }
 
@@ -245,7 +264,7 @@ public class SubjectFragment extends Fragment {
     }
 
     // setTime
-    public String setTime() {
+    public String setStartTime() {
         String timehr;
         if (timeHr.getSelectedItem() == "8") {
             timehr = "08";
@@ -258,7 +277,7 @@ public class SubjectFragment extends Fragment {
         return settime;
     }
 
-    public String setToTime() {
+    public String setEndTime() {
         String totimehr;
         if (totimeHr.getSelectedItem() == "8") {
             totimehr = "08";
@@ -312,9 +331,7 @@ public class SubjectFragment extends Fragment {
         @Override
         protected String[] doInBackground(String... urls) {
             result = new String[urls.length];
-
             result[0] = doOn(urls[0]);
-            result[1] = doOn(urls[1]);
 
             return result;
         }
@@ -339,27 +356,6 @@ public class SubjectFragment extends Fragment {
                 Aroom.add(String.valueOf(roomBeans.get(i).getRoomid()));
 
             }
-
-
-            /**department*/
-            try {
-                jsonArray = new JSONArray(result[1]);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    DepartmentBean departmentBean = new DepartmentBean();
-                    departmentBean.setDepartmentPK(jsonObject.getString("departmentPK"));
-                    departmentBeens.add(departmentBean);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            for (int i = 0; i < departmentBeens.size(); i++) {
-                Adepartment.add(String.valueOf(departmentBeens.get(i).getDepartmentPK()));
-            }
-
-
-            Createbooking createbooking = (Createbooking) getActivity();
-            createbooking.setTestcom(departmentBeens.get(1).getDepartmentPK());
 
         }
 

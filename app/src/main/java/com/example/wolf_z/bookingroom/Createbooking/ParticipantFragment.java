@@ -51,6 +51,7 @@ public class ParticipantFragment extends Fragment {
     private View view_search;
     private Animation anim;
     private ArrayList<AccountBean> accountBeens = new ArrayList<>();
+    private ArrayList<DepartmentBean> departmentBeens = new ArrayList<>();
     protected String[] Ldisplayname;
     protected String[] Lusername;
     protected String[] Ldepartmment;
@@ -67,13 +68,12 @@ public class ParticipantFragment extends Fragment {
         prgDialog.setCancelable(false);
 
 
-        String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_all"};
+        String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/getdepartment"
+                , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_all"};
+        new SetData().execute(URL);
 
         namelist = (ListView) view.findViewById(R.id.namelist);
-//        String[] te = {"oo", "pp", "ii", "uu", "yy"};
-//        CustomAdapter_Pname adapter = new CustomAdapter_Pname(getActivity(), te, te);
-//        namelist.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-//        namelist.setAdapter(adapter);
+
 
         /** department_type */
         department_type = (Spinner) view.findViewById(R.id.department_type);
@@ -145,6 +145,7 @@ public class ParticipantFragment extends Fragment {
         protected String[] doInBackground(String... urls) {
             result = new String[urls.length];
             result[0] = doOn(urls[0]);
+            result[1] = doOn(urls[1]);
             return result;
         }
 
@@ -153,9 +154,26 @@ public class ParticipantFragment extends Fragment {
             prgDialog.dismiss();
             JSONArray jsonArray;
 
+
+            /**department*/
+            try {
+                jsonArray = new JSONArray(result[0]);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    DepartmentBean departmentBean = new DepartmentBean();
+                    departmentBean.setDepartmentPK(jsonObject.getString("departmentPK"));
+                    departmentBeens.add(departmentBean);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            for (int i = 0; i < departmentBeens.size(); i++) {
+                Adepartment.add(String.valueOf(departmentBeens.get(i).getDepartmentPK()));
+            }
+
             /**list name*/
             try {
-                jsonArray = new JSONArray(result[2]);
+                jsonArray = new JSONArray(result[1]);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     AccountBean accountBean = new AccountBean();
