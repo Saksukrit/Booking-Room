@@ -7,19 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.R;
 
 import java.util.ArrayList;
 
 public class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelectRecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<String> mArrayList;
     private Context mContext;
     private ViewHolder.ClickListener clickListener;
+    private ArrayList<AccountBean> accountBeens;
 
 
-    public MultiSelectRecyclerViewAdapter(Context context, ArrayList<String> arrayList, ViewHolder.ClickListener clickListener) {
-        this.mArrayList = arrayList;
+    public MultiSelectRecyclerViewAdapter(Context context, ArrayList<AccountBean> accountBeens, ViewHolder.ClickListener clickListener) {
+        this.accountBeens = accountBeens;
         this.mContext = context;
         this.clickListener = clickListener;
 
@@ -41,7 +42,9 @@ public class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelec
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
-        viewHolder.tvName.setText(mArrayList.get(position));
+        viewHolder.tvName.setText(accountBeens.get(position).getDisplayname());
+        //username
+        //department
 
         viewHolder.selectedOverlay.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
 
@@ -49,7 +52,7 @@ public class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelec
 
     @Override
     public int getItemCount() {
-        return mArrayList.size();
+        return accountBeens.size();
     }
 
 

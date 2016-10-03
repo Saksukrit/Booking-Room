@@ -2,6 +2,7 @@ package com.example.wolf_z.bookingroom.Createbooking;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -55,6 +57,7 @@ public class ParticipantFragment extends Fragment {
     protected String[] Ldisplayname;
     protected String[] Lusername;
     protected String[] Ldepartmment;
+    private Button search_participant;
 
     private ArrayList<String> Adepartment = new ArrayList<>();
 
@@ -68,35 +71,18 @@ public class ParticipantFragment extends Fragment {
         prgDialog.setCancelable(false);
 
 
-        String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/getdepartment"
-                , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_all"};
+        String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_all"};
         new SetData().execute(URL);
 
         namelist = (ListView) view.findViewById(R.id.namelist);
 
 
-        /** department_type */
-        department_type = (Spinner) view.findViewById(R.id.department_type);
-        Adepartment.add("unselect");
-        ArrayAdapter<String> adapterdepartment = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, Adepartment);
-        adapterdepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        department_type.setAdapter(adapterdepartment);
-
-
-        /** AnimationUtils */
-        anim = AnimationUtils.loadAnimation(getActivity(), R.anim.scale);
-
-        view_search = view.findViewById(R.id.view_search);
-        ETsearch = (EditText) view.findViewById(R.id.ETsearch);
-        ETsearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        search_participant = (Button) view.findViewById(R.id.search_participant);
+        search_participant.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    view_search.setVisibility(View.VISIBLE);
-                    view_search.startAnimation(anim);
-                } else {
-                    view_search.setVisibility(View.GONE);
-                }
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ParticipantSearch.class);
+                startActivity(intent);
             }
         });
 
@@ -145,7 +131,6 @@ public class ParticipantFragment extends Fragment {
         protected String[] doInBackground(String... urls) {
             result = new String[urls.length];
             result[0] = doOn(urls[0]);
-            result[1] = doOn(urls[1]);
             return result;
         }
 
@@ -155,25 +140,9 @@ public class ParticipantFragment extends Fragment {
             JSONArray jsonArray;
 
 
-            /**department*/
-            try {
-                jsonArray = new JSONArray(result[0]);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    DepartmentBean departmentBean = new DepartmentBean();
-                    departmentBean.setDepartmentPK(jsonObject.getString("departmentPK"));
-                    departmentBeens.add(departmentBean);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            for (int i = 0; i < departmentBeens.size(); i++) {
-                Adepartment.add(String.valueOf(departmentBeens.get(i).getDepartmentPK()));
-            }
-
             /**list name*/
             try {
-                jsonArray = new JSONArray(result[1]);
+                jsonArray = new JSONArray(result[0]);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     AccountBean accountBean = new AccountBean();

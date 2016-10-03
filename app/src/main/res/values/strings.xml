@@ -6,6 +6,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="please_search">please search</string>
     <string name="title_activity_search_page">Search Participant</string>
-    <string name="title_activity_search_participant">Search Participant</string>
+    <string name="title_activity_search_participant">Participant Search</string>
 
 </resources>

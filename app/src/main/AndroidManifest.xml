@@ -77,13 +77,12 @@
                 android:value=".MainBookingActivity" />
         </activity>
         <activity
-            android:name=".Createbooking.SearchParticipant"
+            android:name=".Createbooking.ParticipantSearch"
             android:label="@string/title_activity_search_participant"
-            android:parentActivityName=".Createbooking.Createbooking"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".Createbooking.Createbooking">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.wolf_z.bookingroom.Createbooking.Createbooking" />
+                android:value=".Createbooking.Createbooking" />
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
