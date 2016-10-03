@@ -26,6 +26,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainBookingActivity" />
@@ -37,6 +38,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainBookingActivity" />
@@ -46,6 +48,7 @@
             android:label="Booking Room">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -56,6 +59,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".LoginActivity" />
@@ -67,9 +71,23 @@
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainBookingActivity" />
         </activity>
+        <activity
+            android:name=".Createbooking.SearchParticipant"
+            android:label="@string/title_activity_search_participant"
+            android:parentActivityName=".Createbooking.Createbooking"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wolf_z.bookingroom.Createbooking.Createbooking" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
     </application>
+
 </manifest>

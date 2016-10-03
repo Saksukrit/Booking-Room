@@ -8,29 +8,24 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.R;
+
+import java.util.ArrayList;
 
 public class CustomAdapter_subject extends BaseAdapter {
 
     private Context mContext;
-    private String[] Ssubject;
-    private String[] Sdate;
-    private int[] Sbookingid;
-    private int[] Sroomid;
-    private String[] Stime;
+    private ArrayList<BookBean> bookBeens = new ArrayList<>();
 
-    public CustomAdapter_subject(Context context, String[] Ssubject, String[] Sdate, String[] Stime, int[] Sbookingid, int[] Sroomid) {
+    public CustomAdapter_subject(Context context, ArrayList<BookBean> bookBeens) {
         this.mContext = context;
-        this.Ssubject = Ssubject;
-        this.Sdate = Sdate;
-        this.Stime = Stime;
-        this.Sbookingid = Sbookingid;
-        this.Sroomid = Sroomid;
+        this.bookBeens = bookBeens;
     }
 
     @Override
     public int getCount() {
-        return Ssubject.length;
+        return bookBeens.size();
     }
 
     @Override
@@ -51,19 +46,19 @@ public class CustomAdapter_subject extends BaseAdapter {
         view = mInflater.inflate(R.layout.item_subjectlist, parent, false);
 
         TextView subject_item = (TextView) view.findViewById(R.id.subject_name);
-        subject_item.setText(Ssubject[position]);
+        subject_item.setText(bookBeens.get(position).getSubject());
 
         TextView subject_date = (TextView) view.findViewById(R.id.subject_date);
-        subject_date.setText(Sdate[position]);
+        subject_date.setText(bookBeens.get(position).getDate());
 
         TextView subject_room = (TextView) view.findViewById(R.id.subject_room);
-        subject_room.setText(String.valueOf(Sroomid[position]));
+        subject_room.setText(String.valueOf(bookBeens.get(position).getRoomid()));
 
         TextView subject_time = (TextView) view.findViewById(R.id.subject_time);
-        subject_time.setText(Stime[position]);
+        subject_time.setText(bookBeens.get(position).getStarttime());
 
         TextView subject_bookingid = (TextView) view.findViewById(R.id.subject_bookingid);
-        subject_bookingid.setText(String.valueOf(Sbookingid[position]));     //String.valueOf() for set int
+        subject_bookingid.setText(String.valueOf(bookBeens.get(position).getBookingid()));     //String.valueOf() for set int
 
         if (position % 2 == 1) {
             view.setBackgroundColor(Color.parseColor("#ffd27f"));

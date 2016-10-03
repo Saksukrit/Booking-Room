@@ -230,29 +230,14 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
                 e.printStackTrace();
             }
             if (bookBeans.size() == 0) {
-                Ssubject = new String[]{"empty"};
-                Sdate = new String[]{"00/00/0000"};
-                Stime = new String[]{"00:00"};
-                Sbookingid = new int[]{0};
-                Sroomid = new int[]{0};
-            } else {
-                Ssubject = new String[bookBeans.size()];
-                Sdate = new String[bookBeans.size()];
-                Stime = new String[bookBeans.size()];
-                Sbookingid = new int[bookBeans.size()];
-                Sroomid = new int[bookBeans.size()];
-
-                for (int i = 0; i < bookBeans.size(); i++) {
-                    Ssubject[i] = bookBeans.get(i).getSubject();
-                    Sdate[i] = bookBeans.get(i).getDate();
-                    Stime[i] = bookBeans.get(i).getStarttime();
-                    Sbookingid[i] = bookBeans.get(i).getBookingid();
-                    Sroomid[i] = bookBeans.get(i).getRoomid();
-                }
-
+                bookBeans.get(0).setSubject("empty");
+                bookBeans.get(0).setBookingid(0);
+                bookBeans.get(0).setDate("00/00/0000");
+                bookBeans.get(0).setStarttime("00:00");
+                bookBeans.get(0).setRoomid(0);
             }
 
-            CustomAdapter_subject adapter = new CustomAdapter_subject(getApplicationContext(), Ssubject, Sdate, Stime, Sbookingid, Sroomid);
+            CustomAdapter_subject adapter = new CustomAdapter_subject(getApplicationContext(), bookBeans);
             listView.setAdapter(adapter);
 
 //            adapter.notifyDataSetChanged();
