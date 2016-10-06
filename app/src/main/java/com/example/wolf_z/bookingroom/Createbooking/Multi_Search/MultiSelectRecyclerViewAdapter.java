@@ -1,13 +1,16 @@
 package com.example.wolf_z.bookingroom.Createbooking.Multi_Search;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
+import com.example.wolf_z.bookingroom.Createbooking.ParticipantSearch;
 import com.example.wolf_z.bookingroom.R;
 
 import java.util.ArrayList;
@@ -42,9 +45,9 @@ public class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelec
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
-        viewHolder.tvName.setText(accountBeens.get(position).getDisplayname());
-        //username
-        //department
+        viewHolder.tvDisplayname.setText(accountBeens.get(position).getDisplayname());
+        viewHolder.tvDepartment.setText(accountBeens.get(position).getDepartment());
+        viewHolder.tvUsername.setText(accountBeens.get(position).getUsername());
 
         viewHolder.selectedOverlay.setVisibility(isSelected(position) ? View.VISIBLE : View.INVISIBLE);
 
@@ -58,7 +61,9 @@ public class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelec
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
-        public TextView tvName;
+        private TextView tvDisplayname;
+        private TextView tvDepartment;
+        private TextView tvUsername;
         private ClickListener listener;
         private final View selectedOverlay;
 
@@ -68,7 +73,9 @@ public class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelec
 
             this.listener = listener;
 
-            tvName = (TextView) itemLayoutView.findViewById(R.id.tvName);
+            tvDisplayname = (TextView) itemLayoutView.findViewById(R.id.tvName);
+            tvDepartment = (TextView) itemLayoutView.findViewById(R.id.tvDepartment);
+            tvUsername = (TextView) itemLayoutView.findViewById(R.id.tvUsername);
             selectedOverlay = (View) itemView.findViewById(R.id.selected_overlay);
 
             itemLayoutView.setOnClickListener(this);
@@ -80,7 +87,7 @@ public class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelec
         public void onClick(View v) {
             if (listener != null) {
                 listener.onItemClicked(getAdapterPosition());
-//                Toast.makeText(v.getContext(), tvName.getText().toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(v.getContext(), tvDisplayname.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         }
 

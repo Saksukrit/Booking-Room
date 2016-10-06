@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,15 +19,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.Bean.DepartmentBean;
 import com.example.wolf_z.bookingroom.Bean.RoomBean;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
-import com.example.wolf_z.bookingroom.Custom.CustomAdapter_Pname_select;
-import com.example.wolf_z.bookingroom.MainBookingActivity;
 import com.example.wolf_z.bookingroom.R;
 import com.google.gson.Gson;
 
@@ -53,6 +49,8 @@ import java.util.Locale;
 
 
 public class SubjectFragment extends Fragment {
+
+
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     private static final String TIME_PATTERN = "HH:mm";
     private ArrayList<RoomBean> roomBeans = new ArrayList<>();
@@ -89,8 +87,7 @@ public class SubjectFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_createbooking_subject, container, false);
-
+        final View view = inflater.inflate(R.layout.activity_createbooking_subject, container, false);
         prgDialog = new ProgressDialog(getActivity());
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
@@ -102,8 +99,6 @@ public class SubjectFragment extends Fragment {
 
         /** meeting_type */
         meeting_type = (RadioGroup) view.findViewById(R.id.meeting_type);
-        int selectedId = meeting_type.getCheckedRadioButtonId();
-        meetingButton = (RadioButton) view.findViewById(selectedId);
 
 
         /** Date picker*/
@@ -171,23 +166,25 @@ public class SubjectFragment extends Fragment {
         totimeMin.setAdapter(adaptermin);
 
 
+        Aroom.clear();
+        Aroom.add("unselect");
         /** select room */
+        room = (Spinner) view.findViewById(R.id.room);
         String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/getroom"};
         new SetData().execute(URL);
-        room = (Spinner) view.findViewById(R.id.room);
-        Aroom.add("unselect");
+
         ArrayAdapter<String> adapterroom = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, Aroom);
         adapterroom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         room.setAdapter(adapterroom);
 
 
         /**projector*/
-        ArrayList<Integer> listprojectorEmpty = new ArrayList<Integer>();
-        listprojectorEmpty.add(01);
-        listprojectorEmpty.add(02);
+        ArrayList<Integer> listprojectorEmpty = new ArrayList<>();
+        listprojectorEmpty.add(1);
+        listprojectorEmpty.add(2);
 
         projector = (Spinner) view.findViewById(R.id.projector);
-        ArrayAdapter<Integer> adapterprojector = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_item, listprojectorEmpty);
+        ArrayAdapter<Integer> adapterprojector = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, listprojectorEmpty);
         adapterprojector.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         projector.setAdapter(adapterprojector);
 
@@ -229,6 +226,9 @@ public class SubjectFragment extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int selectedId = meeting_type.getCheckedRadioButtonId();
+                meetingButton = (RadioButton) view.findViewById(selectedId);
+
                 Createbooking createbooking = (Createbooking) getActivity();
                 createbooking.setSubject(ETsubject.getText().toString());
                 createbooking.setMeeting_type(meetingButton.getText().toString());
@@ -238,12 +238,18 @@ public class SubjectFragment extends Fragment {
                 createbooking.setEndtime(setEndTime());
                 createbooking.setRoomid(room.getSelectedItem().toString());
                 createbooking.setProjid(projector.getSelectedItem().toString());
+//                Intent intent = new Intent(view.getContext(), ParticipantFragment.class);
+//                view.getContext().startActivity(intent);
 
             }
         });
 
 
         return view;
+    }
+
+    public String getSetdate() {
+        return setdate;
     }
 
     @Override
@@ -258,9 +264,8 @@ public class SubjectFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-//        date.setText(savedInstanceState.getString("date"));
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     // setTime
@@ -300,10 +305,10 @@ public class SubjectFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            prgDialog.show();
+//            prgDialog.show();
         }
 
-        protected String doOn(String... urls) {
+        String doOn(String... urls) {
             String result = "";
             try {
                 /** POST **/
@@ -318,9 +323,7 @@ public class SubjectFragment extends Fragment {
                 if (httpEntity != null) {
                     result = EntityUtils.toString(httpEntity);
                 }
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
+            } catch (UnsupportedEncodingException | ClientProtocolException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -338,7 +341,7 @@ public class SubjectFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String[] result) {
-            prgDialog.dismiss();
+//            prgDialog.dismiss();
             JSONArray jsonArray;
             /**room*/
             try {
@@ -354,9 +357,8 @@ public class SubjectFragment extends Fragment {
             }
             for (int i = 0; i < roomBeans.size(); i++) {
                 Aroom.add(String.valueOf(roomBeans.get(i).getRoomid()));
-
             }
-
+            roomBeans.clear();
         }
 
     }

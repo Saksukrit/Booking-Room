@@ -8,25 +8,24 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.R;
+
+import java.util.ArrayList;
 
 public class CustomAdapter_Pname_select extends BaseAdapter {
 
+    ArrayList<AccountBean> accountBeens = new ArrayList<>();
     Context mContext;
-    String[] displayname;
-    String[] department;
-    String[] username;
 
-    public CustomAdapter_Pname_select(Context context, String[] displayname, String[] department, String[] username) {
+    public CustomAdapter_Pname_select(Context context, ArrayList<AccountBean> accountBeens) {
         this.mContext = context;
-        this.displayname = displayname;
-        this.department = department;
-        this.username = username;
+        this.accountBeens = accountBeens;
     }
 
     @Override
     public int getCount() {
-        return displayname.length;
+        return accountBeens.size();
     }
 
     @Override
@@ -47,13 +46,13 @@ public class CustomAdapter_Pname_select extends BaseAdapter {
         view = mInflater.inflate(R.layout.item_namelist_select, parent, false);
 
         TextView displayname_item = (TextView) view.findViewById(R.id.displayname_item);
-        displayname_item.setText(displayname[position]);
+        displayname_item.setText(accountBeens.get(position).getDisplayname());
 
         TextView department_item = (TextView) view.findViewById(R.id.department_item);
-        department_item.setText(department[position]);
+        department_item.setText(accountBeens.get(position).getDepartment());
 
         TextView username_item = (TextView) view.findViewById(R.id.username_item);
-        username_item.setText(username[position]);
+        username_item.setText(accountBeens.get(position).getUsername());
 
         if (position % 2 == 1) {
             view.setBackgroundColor(Color.parseColor("#ffd27f"));

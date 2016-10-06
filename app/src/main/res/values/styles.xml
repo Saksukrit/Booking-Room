@@ -6,6 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionBarTabStyle">@style/Widget</item>
+        <item name="android:actionBarTabStyle">@style/Widget</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -16,5 +19,10 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Widget">
+        <item name="android:background">@drawable/tab_bar_background</item>
+    </style>
+
 
 </resources>

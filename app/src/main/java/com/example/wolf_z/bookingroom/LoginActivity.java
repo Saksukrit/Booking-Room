@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
+import com.example.wolf_z.bookingroom.Config.KeyboardManager;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.google.gson.Gson;
 
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        KeyboardManager.on(this);
         errorMsg = (TextView) findViewById(R.id.login_error);
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");

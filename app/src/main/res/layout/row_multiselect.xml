@@ -11,26 +11,48 @@
         android:layout_marginTop="2dp"
         android:background="#ffd477">
 
-        <TextView
-            android:id="@+id/tvName"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:gravity="center"
-            android:text="name"
-            android:textColor="#000000"
-            android:textSize="16sp" />
+            android:layout_height="50dp">
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="name"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvDepartment"
+                android:layout_width="140dp"
+                android:layout_height="50dp"
+                android:gravity="right"
+                android:text="department"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvUsername"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:gravity="right"
+                android:text="username"
+                android:visibility="invisible" />
+        </LinearLayout>
 
         <View
             android:id="@+id/selected_overlay"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
             android:background="#80ff851b"
-            android:visibility="invisible">
+            android:visibility="invisible"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
 
         </View>
+
 
     </RelativeLayout>
 

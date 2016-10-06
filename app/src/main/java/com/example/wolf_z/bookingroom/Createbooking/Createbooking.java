@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
@@ -14,6 +15,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.BookBean;
+import com.example.wolf_z.bookingroom.Bean.ParticipantArray;
+import com.example.wolf_z.bookingroom.Config.KeyboardManager;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.example.wolf_z.bookingroom.MainBookingActivity;
 import com.example.wolf_z.bookingroom.R;
@@ -35,6 +38,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.Objects;
 
 
 public class Createbooking extends AppCompatActivity {
@@ -46,26 +50,30 @@ public class Createbooking extends AppCompatActivity {
     private Fragment subjectFragment = new SubjectFragment();
     private Fragment participantFragment = new ParticipantFragment();
     private BookBean bookBean = new BookBean();
+    private ParticipantArray participant = new ParticipantArray();
 
-    private SimpleDateFormat dateFormatter;
+    protected SimpleDateFormat dateFormatter;
     protected SimpleDateFormat dateFormatSend;
     protected SimpleDateFormat dateFormatter1;
 
-    //param send
+    //param send booking
     private String subject;
     private String meeting_type;
     private String detail;
-    private String date;
+    private String date = null;
     private String starttime;
     private String endtime;
     private String roomid;
     private String projid;
+    private String[] username;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_createbooking);
+        KeyboardManager.on(this);
         prgDialog = new ProgressDialog(getApplicationContext());
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
@@ -85,6 +93,11 @@ public class Createbooking extends AppCompatActivity {
         actionBar.addTab(tabsubject);
         actionBar.addTab(tabparticipant);
 
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     /**
@@ -109,35 +122,31 @@ public class Createbooking extends AppCompatActivity {
         switch (item.getItemId()) {
             case 0:
                 Toast.makeText(getApplicationContext(), getRoomid(), Toast.LENGTH_LONG).show();
-//                //condition check input null data on UI
-//                if (getRoomid() == "unselect") {
-//                    Toast.makeText(this, "Room Unselected", Toast.LENGTH_LONG).show();
-//                } else {
-//
-//                    Toast.makeText(this, "Create booking", Toast.LENGTH_LONG).show();
-//                    String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/dobooking";
-//                    /**  Params **/
-//                    bookBean.setSubject(getSubject());
-//                    bookBean.setMeeting_type(getMeeting_type());
-//                    try {
-//                        bookBean.setDate(dateFormatSend.format(dateFormatter1.parse(getDate())));
-//                    } catch (ParseException e) {
-//                        e.printStackTrace();
-//                    }
-//                    bookBean.setStarttime(getStarttime());
-//                    bookBean.setEndtime(getEndtime());
-//                    bookBean.setDetail(getDetail());
-//                    bookBean.setRoomid(Integer.parseInt(getRoomid()));
-//                    bookBean.setProjid(Integer.parseInt(getProjid()));
-//                    new doCreateBooking().execute(URL);
-//                    Intent intent = new Intent(getApplicationContext(), MainBookingActivity.class);
-//                    startActivity(intent);
-//                    Toast.makeText(getApplicationContext(), "Create booking complete", Toast.LENGTH_LONG).show();
-//                    finish();
-//                    return true;
-//                }
-//                return false;
-            return true;
+                //condition check input null data on UI
+                if (Objects.equals(getRoomid(), "unselect")) {
+                    Toast.makeText(this, "Room Unselected", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(this, "Create booking", Toast.LENGTH_LONG).show();
+                    String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/dobooking";
+                    /**  Params booking**/
+                    bookBean.setSubject(getSubject());
+                    bookBean.setMeeting_type(getMeeting_type());
+                    try {
+                        bookBean.setDate(dateFormatSend.format(dateFormatter1.parse(getDate())));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+//                    SubjectFragment sub = new SubjectFragment();
+//                   String x = sub.getSetdate();
+                    bookBean.setStarttime(getStarttime());
+                    bookBean.setEndtime(getEndtime());
+                    bookBean.setDetail(getDetail());
+                    bookBean.setRoomid(Integer.parseInt(getRoomid()));
+                    bookBean.setProjid(Integer.parseInt(getProjid()));
+                    bookBean.getDate();
+                    new doCreateBooking().execute(URL);
+                }
+                return true;
             case android.R.id.home:
                 Intent upIntent = NavUtils.getParentActivityIntent(this);
                 if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
@@ -214,6 +223,14 @@ public class Createbooking extends AppCompatActivity {
         this.projid = projid;
     }
 
+    public String[] getUsername() {
+        return username;
+    }
+
+    public void setUsername(String[] username) {
+        this.username = username;
+    }
+
 
     /**
      * Create Booking
@@ -225,7 +242,7 @@ public class Createbooking extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             //Start Progress Dialog (Message)
-            prgDialog.show();
+//            prgDialog.show();
         }
 
         @Override
@@ -263,6 +280,91 @@ public class Createbooking extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+//            prgDialog.dismiss();
+
+            String tag = "";
+            String status = "";
+            String error_msg = "";
+            String bookingid = "";
+            try {
+
+                JSONObject jsonObject = new JSONObject(result);
+
+                tag = jsonObject.getString("tag");
+                status = jsonObject.getString("status");
+                error_msg = jsonObject.getString("error_msg");
+                bookingid = jsonObject.getString("bookingid");   //***********
+
+//
+//                /**Params participant*/
+//                participant.setBookingid(Integer.parseInt(bookingid));
+//                participant.setUsername(getUsername());
+//                String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/doparticipant";
+//                new doCreateParticipant().execute(URL);
+
+
+            } catch (JSONException e) {
+
+                e.printStackTrace();
+            }
+
+            if (Objects.equals(error_msg, "")) {
+                String success = "Create Book Success! ";
+                Toast toast = Toast.makeText(getApplicationContext(), success, Toast.LENGTH_LONG);
+                toast.show();
+                Intent homeIntent = new Intent(getApplicationContext(), MainBookingActivity.class);
+                homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
+            } else {
+                String OutputData = " Ops! : Booking " + status + " "
+                        + " ," + error_msg;
+                Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
+
+    }
+
+    /**
+     * Create Participant
+     */
+    private class doCreateParticipant extends AsyncTask<String, Void, String> {
+
+        String result = "";
+
+        @Override
+        protected void onPreExecute() {
+            //Start Progress Dialog (Message)
+            prgDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                /** POST **/
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(urls[0]);
+                Gson gson = new Gson();
+                StringEntity stringEntity = new StringEntity(gson.toJson(participant));
+                httpPost.setEntity(stringEntity);
+                httpPost.setHeader("Content-type", "application/json");
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                if (httpEntity != null) {
+                    result = EntityUtils.toString(httpEntity);
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
             prgDialog.dismiss();
 
             String tag = "";
@@ -283,14 +385,14 @@ public class Createbooking extends AppCompatActivity {
             }
 
             if (error_msg == "") {
-                String success = "Create Book Success!";
+                String success = "Add Participant Success!";
                 Toast toast = Toast.makeText(getApplicationContext(), success, Toast.LENGTH_LONG);
                 toast.show();
                 Intent homeIntent = new Intent(getApplicationContext(), MainBookingActivity.class);
                 homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(homeIntent);
             } else {
-                String OutputData = " Ops! : Booking " + status + " "
+                String OutputData = " Ops! : Participant " + status + " "
                         + " ," + error_msg;
                 Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_LONG);
                 toast.show();

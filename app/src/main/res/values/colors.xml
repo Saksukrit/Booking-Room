@@ -3,4 +3,7 @@
     <color name="colorPrimary">#ff8c00</color>
     <color name="colorPrimaryDark">#df7300</color>
     <color name="colorAccent">#ee941d</color>
+
+    <color name="background_tabbar_off">#ffe364</color>
+    <color name="background_tabbar_on">#ff7644</color>
 </resources>
