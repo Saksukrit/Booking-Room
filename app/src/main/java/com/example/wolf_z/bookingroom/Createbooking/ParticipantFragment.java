@@ -12,25 +12,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 
-import com.example.wolf_z.bookingroom.Bean.AccountBean;
-import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.Createbooking.Multi_Search.MultiSelectRecyclerViewAdapter;
 import com.example.wolf_z.bookingroom.R;
-
-import java.util.ArrayList;
 
 
 public class ParticipantFragment extends Fragment implements MultiSelectRecyclerViewAdapter.ViewHolder.ClickListener {
 
-    private ProgressDialog prgDialog;
-    private Button search_participant;
+    private final int REQ_CODE_participant_search = 12345;
+    protected ProgressDialog prgDialog;
+    protected Button search_participant_button;
+    protected RecyclerView selected_recyclerview;
+    private MultiSelectRecyclerViewAdapter item_selected_Adapter;
+    protected Createbooking createbooking;
 
-    private ArrayList<AccountBean> accountBeens = new ArrayList<>();
-    protected RecyclerView selected_list;
-    private MultiSelectRecyclerViewAdapter mAdapter;
+    public ParticipantFragment(Createbooking createbooking) {
+        this.createbooking = createbooking;
+    }
 
+    public MultiSelectRecyclerViewAdapter getItem_selected_Adapter() {
+        return item_selected_Adapter;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,26 +43,17 @@ public class ParticipantFragment extends Fragment implements MultiSelectRecycler
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
 
+        selected_recyclerview = (RecyclerView) view.findViewById(R.id.selected_list);
+        selected_recyclerview.setHasFixedSize(true);
+        selected_recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+        setAdapter();
 
-        AccountBean accountBean = new AccountBean();
-        accountBean.setDisplayname("oooooo");
-        accountBean.setDepartment("mobile");
-        accountBean.setUsername("fdfdf");
-        accountBeens.add(accountBean);
-
-        selected_list = (RecyclerView) view.findViewById(R.id.selected_list);
-        selected_list.setHasFixedSize(true);
-        selected_list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new MultiSelectRecyclerViewAdapter(getActivity(), accountBeens, ParticipantFragment.this);
-        selected_list.setAdapter(mAdapter);
-
-
-        search_participant = (Button) view.findViewById(R.id.search_participant);
-        search_participant.setOnClickListener(new View.OnClickListener() {
+        search_participant_button = (Button) view.findViewById(R.id.search_participant);
+        search_participant_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ParticipantSearch.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQ_CODE_participant_search);
             }
         });
 
@@ -79,6 +72,12 @@ public class ParticipantFragment extends Fragment implements MultiSelectRecycler
     }
 
     private void toggleSelection(int position) {
-        mAdapter.toggleSelection(position);
+        item_selected_Adapter.toggleSelection(position);
     }
+
+    public void setAdapter() {
+        item_selected_Adapter = new MultiSelectRecyclerViewAdapter(getActivity(), createbooking.getAccountBeen_selected(), ParticipantFragment.this);
+        selected_recyclerview.setAdapter(item_selected_Adapter);
+    }
+
 }

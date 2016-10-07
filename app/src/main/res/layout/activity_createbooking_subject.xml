@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
     android:id="@+id/subject_fragment"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:padding="16dp"
@@ -44,12 +44,6 @@
             android:layout_height="2dp"
             android:background="#aaaaaa" />
 
-        <View
-            android:id="@+id/second_view_subject"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#E74C3C"
-            android:visibility="invisible" />
     </FrameLayout>
 
     <android.support.v4.widget.Space
@@ -117,12 +111,6 @@
             android:layout_height="2dp"
             android:background="#aaaaaa" />
 
-        <View
-            android:id="@+id/second_view_detail"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#E74C3C"
-            android:visibility="invisible" />
     </FrameLayout>
 
     <android.support.v4.widget.Space
@@ -264,11 +252,11 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+
     <Button
         android:id="@+id/next"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:text="next" />
+        android:text="save" />
 
 </LinearLayout>

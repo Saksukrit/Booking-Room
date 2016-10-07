@@ -1,6 +1,7 @@
 package com.example.wolf_z.bookingroom.Createbooking;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -21,7 +22,6 @@ import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Bean.DepartmentBean;
-import com.example.wolf_z.bookingroom.Config.KeyboardManager;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.example.wolf_z.bookingroom.Createbooking.Multi_Search.MultiSelectRecyclerViewAdapter;
 import com.example.wolf_z.bookingroom.R;
@@ -49,139 +49,72 @@ public class ParticipantSearch extends AppCompatActivity implements MultiSelectR
     protected ActionBar actionBar;
     private Toolbar toolbar;
     protected ProgressDialog prgDialog;
-    protected ArrayList<String> list_participant = new ArrayList<>();
     protected ArrayList<String> display_auto = new ArrayList<>();
 
-    private ArrayList<DepartmentBean> departmentBeens = new ArrayList<>();
-    protected Spinner department_type;
-    private ArrayList<String> Adepartment = new ArrayList<>();
-    private ArrayList<AccountBean> accountBeens = new ArrayList<>();
-    private AccountBean param_send = new AccountBean();
-    protected RecyclerView select_list;
-    private MultiSelectRecyclerViewAdapter mAdapter;
-    protected Button search;
-    protected Button undo;
+    private ArrayList<DepartmentBean> departmentBeens_arraylist = new ArrayList<>();
+    protected Spinner department_type_spinner;
+    private ArrayList<String> department_arraylist = new ArrayList<>();
+
+    private AccountBean param_send_service = new AccountBean();
+    protected RecyclerView select_recyclerview;
+    private MultiSelectRecyclerViewAdapter item_Adapter;
+    protected Button search_button;
+    protected Button undo_button;
     private AutoCompleteTextView auto_search;
-    private View view;
+    private View snack_view;
     private Snackbar snackbar_selected;
+    private ArrayList<AccountBean> accountBeens_arraylist = new ArrayList<>();
+    private ArrayList<AccountBean> accountBeen_selected_arraylist = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_participant);
-        KeyboardManager.on(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         actionBar = getSupportActionBar();
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle("MultiSelectRecylcerView");
-
         }
-        view = findViewById(R.id.snack_view);
-
-
         prgDialog = new ProgressDialog(getApplicationContext());
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
+        snack_view = findViewById(R.id.snack_view);
+
 
         String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/getdepartment"
                 , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_all_autocomplete"};
         new SetDepartment().execute(URL);
 
-        /** auto_search click item to search list*/
+        /** auto_search click item to search_button list*/
         final ArrayAdapter<String> auto_adapter = new ArrayAdapter<>(this
                 , android.R.layout.simple_dropdown_item_1line, display_auto);
 
         auto_search = (AutoCompleteTextView) findViewById(R.id.auto_search);
         auto_search.setThreshold(3);//set minimum char
         auto_search.setAdapter(auto_adapter);
-        auto_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                accountBeens.clear();
-                if (department_type.getSelectedItem().toString() == "all") {
-                    param_send.setDisplayname(auto_search.getText().toString());
-                    String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name";
-                    new Searchlist().execute(URL);
-                } else {
-                    param_send.setDisplayname(auto_search.getText().toString());
-                    param_send.setDepartment(department_type.getSelectedItem().toString());
-                    String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name_department";
-                    new Searchlist().execute(URL);
-                }
+        Auto_setOnClickListener();
 
-            }
-        });
+        /** select_recyclerview **RecyclerView*/
+        select_recyclerview = (RecyclerView) findViewById(R.id.list_participant);
+        select_recyclerview.setHasFixedSize(true);
+        select_recyclerview.setLayoutManager(new LinearLayoutManager(this));
 
-        select_list = (RecyclerView) findViewById(R.id.list_participant);
-        select_list.setHasFixedSize(true);
-        select_list.setLayoutManager(new LinearLayoutManager(this));
-
-        /** department_type */
-        department_type = (Spinner) findViewById(R.id.department_type);
-        Adepartment.add("all");
-        ArrayAdapter<String> adapterdepartment = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Adepartment);
+        /** department_type_spinner */
+        department_type_spinner = (Spinner) findViewById(R.id.department_type);
+        department_arraylist.add("all");
+        ArrayAdapter<String> adapterdepartment = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, department_arraylist);
         adapterdepartment.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        department_type.setAdapter(adapterdepartment);
+        department_type_spinner.setAdapter(adapterdepartment);
 
         /**Button Search*/
-        search = (Button) findViewById(R.id.search);
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                accountBeens.clear();
-                String URL = null;
-                if (Objects.equals(auto_search.getText().toString(), "") && department_type.getSelectedItem() == "all") {
-                    URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_all";
-                    new Searchlist().execute(URL);
+        search_button = (Button) findViewById(R.id.search);
+        Search_setOnClickListener();
 
-                } else if (!Objects.equals(auto_search.getText().toString(), "") && department_type.getSelectedItem() == "all") {
-                    param_send.setDisplayname(auto_search.getText().toString());
-                    URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name";
-                    new Searchlist().execute(URL);
+        undo_button = (Button) findViewById(R.id.undo);
+        Undo_setOnClickListener();
 
-                } else if (!Objects.equals(auto_search.getText().toString(), "") && department_type.getSelectedItem() != "all") {
-                    param_send.setDisplayname(auto_search.getText().toString());
-                    param_send.setDepartment(department_type.getSelectedItem().toString());
-                    URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name_department";
-                    new Searchlist().execute(URL);
-
-                } else if (Objects.equals(auto_search.getText().toString(), "") && department_type.getSelectedItem() != "all") {
-                    param_send.setDepartment(department_type.getSelectedItem().toString());
-                    URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_department";
-                    new Searchlist().execute(URL);
-
-                } else {
-                    Toast.makeText(getApplication(), "can't search", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        undo = (Button) findViewById(R.id.undo);
-        undo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    if (mAdapter.getItemCount() != 0) {
-                        mAdapter.clearSelection();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-
-    }
-
-    public void checklistonclick() {
-//        snackbar_selected.show();
-        Snackbar.make(view, "Item Selected", Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        }).show();
     }
 
 
@@ -197,34 +130,56 @@ public class ParticipantSearch extends AppCompatActivity implements MultiSelectR
     }
 
     private void toggleSelection(int position) {
-        mAdapter.toggleSelection(position);
+        item_Adapter.toggleSelection(position);
     }
 
     /**
-     * Action Bar
+     * Action Bar menu
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
             case 0:
-                String s = "";
-                /**loop get data by position mapping index*/
-                for (int i = 0; i < mAdapter.getItemCount(); i++) {
-                    for (int j = 0; j < mAdapter.getSelectedItemCount(); j++) {
-                        if (i == mAdapter.getSelectedItems().get(j)) {
-                            s += accountBeens.get(i).getDisplayname() + "  ";
+                if (item_Adapter.getSelectedItemCount() != 0) {
+                    /**loop get data by position mapping index*/
+                    for (int i = 0; i < item_Adapter.getItemCount(); i++) {
+                        for (int j = 0; j < item_Adapter.getSelectedItemCount(); j++) {
+                            if (i == item_Adapter.getSelectedItems().get(j)) {
+                                accountBeen_selected_arraylist.add(accountBeens_arraylist.get(i));
+                            }
                         }
                     }
+
+                    Createbooking.accountBeen_selected_arraylist.addAll(accountBeen_selected_arraylist);
+
+
+//                    Bundle bundle = new Bundle();
+//                    bundle.putParcelableArrayList("detailBeanList", (ArrayList<? extends Parcelable>) accountBeen_selected);
+//                    intent.putExtra("bundle", bundle);
+
+                    int resultCode = RESULT_OK;
+                    Intent intent = new Intent();
+                    setResult(resultCode, intent);
+
+                    accountBeen_selected_arraylist.clear();
+                    finish();
+                } else {
+                    Snackbar.make(snack_view, "Not participant selected", Snackbar.LENGTH_SHORT).show();
                 }
-                Snackbar.make(view, s, Snackbar.LENGTH_SHORT).show();
+
+
                 return true;
             case 1:
-                accountBeens.clear();
-                mAdapter = new MultiSelectRecyclerViewAdapter(ParticipantSearch.this, accountBeens, ParticipantSearch.this);
-                select_list.setAdapter(mAdapter);
+                accountBeens_arraylist.clear();
+                item_Adapter = new MultiSelectRecyclerViewAdapter(ParticipantSearch.this, accountBeens_arraylist, ParticipantSearch.this);
+                select_recyclerview.setAdapter(item_Adapter);
                 auto_search.setText("");
-                department_type.setSelection(0);
+                department_type_spinner.setSelection(0);
                 Toast.makeText(getApplicationContext(), "clear", Toast.LENGTH_SHORT).show();
+                return true;
         }
         return false;
     }
@@ -241,9 +196,10 @@ public class ParticipantSearch extends AppCompatActivity implements MultiSelectR
 
         MenuItem mnu2 = menu.add(1, 1, 1, "clear");
         {
-            mnu2.setIcon(R.drawable.clearicon);
+            mnu2.setIcon(R.drawable.clearicon23);
             mnu2.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         }
+
         return true;
     }
 
@@ -299,13 +255,13 @@ public class ParticipantSearch extends AppCompatActivity implements MultiSelectR
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     DepartmentBean departmentBean = new DepartmentBean();
                     departmentBean.setDepartmentPK(jsonObject.getString("departmentPK"));
-                    departmentBeens.add(departmentBean);
+                    departmentBeens_arraylist.add(departmentBean);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            for (int i = 0; i < departmentBeens.size(); i++) {
-                Adepartment.add(String.valueOf(departmentBeens.get(i).getDepartmentPK()));
+            for (int i = 0; i < departmentBeens_arraylist.size(); i++) {
+                department_arraylist.add(String.valueOf(departmentBeens_arraylist.get(i).getDepartmentPK()));
             }
 
 
@@ -326,7 +282,7 @@ public class ParticipantSearch extends AppCompatActivity implements MultiSelectR
                 Toast.makeText(getApplication(), "No Data", Toast.LENGTH_LONG).show();
             }
 
-            departmentBeens.clear();
+            departmentBeens_arraylist.clear();
         }
 
     }
@@ -351,7 +307,7 @@ public class ParticipantSearch extends AppCompatActivity implements MultiSelectR
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(urls[0]);
                 Gson gson = new Gson();
-                StringEntity stringEntity = new StringEntity(gson.toJson(param_send));  //
+                StringEntity stringEntity = new StringEntity(gson.toJson(param_send_service));  //
                 httpPost.setEntity(stringEntity);
                 httpPost.setHeader("Content-type", "application/json");
                 HttpResponse httpResponse = httpClient.execute(httpPost);
@@ -383,19 +339,91 @@ public class ParticipantSearch extends AppCompatActivity implements MultiSelectR
                     accountBean.setDisplayname(jsonObject.getString("displayname"));
                     accountBean.setUsername(jsonObject.getString("username"));
                     accountBean.setDepartment(jsonObject.getString("department"));
-                    accountBeens.add(accountBean);
+                    accountBeens_arraylist.add(accountBean);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (accountBeens.size() == 0) {
+            if (accountBeens_arraylist.size() == 0) {
                 Toast.makeText(getApplication(), "No Data", Toast.LENGTH_SHORT).show();
             }
 
-            mAdapter = new MultiSelectRecyclerViewAdapter(ParticipantSearch.this, accountBeens, ParticipantSearch.this);
-            select_list.setAdapter(mAdapter);
+            item_Adapter = new MultiSelectRecyclerViewAdapter(ParticipantSearch.this, accountBeens_arraylist, ParticipantSearch.this);
+            select_recyclerview.setAdapter(item_Adapter);
 
         }
 
+    }
+
+
+    /**
+     * get Event each view
+     */
+    public void Search_setOnClickListener() {
+        search_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                accountBeens_arraylist.clear();
+                String URL = null;
+                if (Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() == "all") {
+                    URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_all";
+                    new Searchlist().execute(URL);
+
+                } else if (!Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() == "all") {
+                    param_send_service.setDisplayname(auto_search.getText().toString());
+                    URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name";
+                    new Searchlist().execute(URL);
+
+                } else if (!Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() != "all") {
+                    param_send_service.setDisplayname(auto_search.getText().toString());
+                    param_send_service.setDepartment(department_type_spinner.getSelectedItem().toString());
+                    URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name_department";
+                    new Searchlist().execute(URL);
+
+                } else if (Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() != "all") {
+                    param_send_service.setDepartment(department_type_spinner.getSelectedItem().toString());
+                    URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_department";
+                    new Searchlist().execute(URL);
+
+                } else {
+                    Toast.makeText(getApplication(), "can't search_button", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void Auto_setOnClickListener() {
+        auto_search.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                accountBeens_arraylist.clear();
+                if (department_type_spinner.getSelectedItem().toString() == "all") {
+                    param_send_service.setDisplayname(auto_search.getText().toString());
+                    String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name";
+                    new Searchlist().execute(URL);
+                } else {
+                    param_send_service.setDisplayname(auto_search.getText().toString());
+                    param_send_service.setDepartment(department_type_spinner.getSelectedItem().toString());
+                    String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name_department";
+                    new Searchlist().execute(URL);
+                }
+
+            }
+        });
+    }
+
+    public void Undo_setOnClickListener() {
+        undo_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if (item_Adapter.getItemCount() != 0) {
+                        item_Adapter.clearSelection();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

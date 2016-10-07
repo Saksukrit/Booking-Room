@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Bean.DepartmentBean;
-import com.example.wolf_z.bookingroom.Config.KeyboardManager;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.google.gson.Gson;
 
@@ -67,7 +66,6 @@ public class RegisterActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        KeyboardManager.on(this);
         errorMsg = (TextView) findViewById(R.id.register_error);
 
         prgDialog = new ProgressDialog(this);
@@ -121,7 +119,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        /** room spinner Query */
+        /** room_spinner spinner Query */
         String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/getdepartment"};
         new SetDepartment().execute(URL);
 

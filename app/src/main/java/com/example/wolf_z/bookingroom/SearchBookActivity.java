@@ -108,7 +108,7 @@ public class SearchBookActivity extends AppCompatActivity {
         search = (Button) findViewById(R.id.btnsearch);
         reset = (Button) findViewById(R.id.btnreset);
         txtstatus = (TextView) findViewById(R.id.txtstatus);
-        txtstatus.setText("please search");
+        txtstatus.setText("please search_button");
 
         /** Date picker*/
         date = (TextView) findViewById(R.id.date);
@@ -174,7 +174,7 @@ public class SearchBookActivity extends AppCompatActivity {
         totimeMin = (Spinner) findViewById(R.id.totimeMin);
         totimeMin.setAdapter(adaptermin);
 
-        /** room spinner Query */
+        /** room_spinner spinner Query */
         String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/getroom"};
         new SetData().execute(URL);
 
@@ -189,7 +189,7 @@ public class SearchBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 txtstatus.setBackgroundColor(0xffffff00);
-                txtstatus.setText("please search");
+                txtstatus.setText("please search_button");
             }
         });
         search.setOnClickListener(new View.OnClickListener() {
