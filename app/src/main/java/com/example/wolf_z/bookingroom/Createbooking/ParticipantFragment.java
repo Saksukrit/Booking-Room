@@ -52,7 +52,7 @@ public class ParticipantFragment extends Fragment implements MultiSelectRecycler
         search_participant_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ParticipantSearch.class);
+                Intent intent = new Intent(getActivity(), ParticipantSearchActivity.class);
                 startActivityForResult(intent, REQ_CODE_participant_search);
             }
         });

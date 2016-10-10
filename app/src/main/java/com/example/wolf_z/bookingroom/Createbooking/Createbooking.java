@@ -82,6 +82,15 @@ public class Createbooking extends AppCompatActivity {
         dateFormatter1 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
+        bookBeen_save.setSubject("");
+        bookBeen_save.setDetail("");
+        bookBeen_save.setRoomid(0);
+        bookBeen_save.setMeeting_type("");
+        bookBeen_save.setDate("click to get date");
+        bookBeen_save.setStarttime("");
+        bookBeen_save.setEndtime("");
+//        bookBeen_save.setProjid("");
+
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -152,41 +161,30 @@ public class Createbooking extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 0:
-                //condition check input null data on UI
-                if (Objects.equals(String.valueOf(bookBeen_save.getRoomid()), "unselect")) {
-                    Toast.makeText(this, "Room Unselected", Toast.LENGTH_LONG).show();
-                } else if (Objects.equals(bookBeen_save.getSubject(), "")) {
-                    Toast.makeText(this, "Not Subject", Toast.LENGTH_LONG).show();
-                } else if (Objects.equals(bookBeen_save.getDate(), "click to get date")) {
-                    Toast.makeText(this, "Date Unselected", Toast.LENGTH_LONG).show();
-                }
-                //other
-                else {
-                    Toast.makeText(this, "Create booking", Toast.LENGTH_LONG).show();
+                if (Objects.equals(subjectFragment.getETsubject().getText().toString(), "")) {
+                    Toast.makeText(this, "Not Subject", Toast.LENGTH_SHORT).show();
+                } else if (Objects.equals(subjectFragment.getETdetail().getText().toString(), "")) {
+                    Toast.makeText(this, "Not Detail", Toast.LENGTH_SHORT).show();
+                } else if (Objects.equals(subjectFragment.getSetdate(), "click to get date")) {
+                    Toast.makeText(this, "Date Unselected", Toast.LENGTH_SHORT).show();
+                } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
+                    Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
+                } else {
+                    bookBean.setSubject(subjectFragment.getETsubject().getText().toString());
+                    bookBean.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
+                    bookBean.setDetail(subjectFragment.getETdetail().getText().toString());
+                    bookBean.setDate(subjectFragment.getSetdate());
+                    bookBean.setStarttime(subjectFragment.setStartTime());
+                    bookBean.setEndtime(subjectFragment.setEndTime());
+                    bookBean.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
+                    bookBean.setProjid(Integer.parseInt(subjectFragment.getProjector_spinner().getSelectedItem().toString())); // check
+
                     String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/dobooking";
-                    /**  Params booking**/
-                    bookBean.setSubject(bookBeen_save.getSubject());
-                    bookBean.setMeeting_type(bookBeen_save.getMeeting_type());
-                    try {
-                        bookBean.setDate(dateFormatSend.format(dateFormatter1.parse(bookBeen_save.getDate())));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    bookBean.setStarttime(bookBeen_save.getStarttime());
-                    bookBean.setEndtime(bookBeen_save.getEndtime());
-                    bookBean.setDetail(bookBeen_save.getDetail());
-                    bookBean.setRoomid(bookBeen_save.getRoomid());
-                    bookBean.setProjid(bookBeen_save.getProjid());
                     new doCreateBooking().execute(URL);
                 }
                 return true;
             case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                } else {
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
+                finish();
                 return true;
         }
         return false;
@@ -196,7 +194,6 @@ public class Createbooking extends AppCompatActivity {
     /**
      * get set
      */
-
 
     public ArrayList<AccountBean> getAccountBeen_selected() {
         return accountBeen_selected_arraylist;
@@ -300,7 +297,7 @@ public class Createbooking extends AppCompatActivity {
 
             if (Objects.equals(error_msg, "")) {
                 String success = "Create Book Success! ";
-                Toast toast = Toast.makeText(getApplicationContext(), success, Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getApplicationContext(), success, Toast.LENGTH_SHORT);
                 toast.show();
                 Intent homeIntent = new Intent(getApplicationContext(), MainBookingActivity.class);
                 homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -308,7 +305,7 @@ public class Createbooking extends AppCompatActivity {
             } else {
                 String OutputData = " Ops! : Booking " + status + " "
                         + " ," + error_msg;
-                Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_SHORT);
                 toast.show();
             }
         }

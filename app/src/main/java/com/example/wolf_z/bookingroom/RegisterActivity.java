@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
@@ -39,6 +40,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * Created by Wolf-Z on 12/9/2559.
@@ -54,10 +56,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText pwdET;
     private Spinner department;
     private AccountBean accountbean = new AccountBean();
-    private Animation anim;
-    private View view_name;
-    private View view_email;
-    private View view_password;
     private Button btnregister;
     private Button btnlogin;
     private ActionBar actionBar;
@@ -66,7 +64,6 @@ public class RegisterActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        errorMsg = (TextView) findViewById(R.id.register_error);
 
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
@@ -74,57 +71,17 @@ public class RegisterActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        anim = AnimationUtils.loadAnimation(RegisterActivity.this, R.anim.scale);
-
-        view_name = findViewById(R.id.view_name);
-        view_email = findViewById(R.id.view_email);
-        view_password = findViewById(R.id.view_password);
-
-        displaynameET = (EditText) findViewById(R.id.registerName);
-        displaynameET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    view_name.setVisibility(View.VISIBLE);
-                    view_name.startAnimation(anim);
-                } else {
-                    view_name.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        usernameET = (EditText) findViewById(R.id.registerEmail);
-        usernameET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    view_email.setVisibility(View.VISIBLE);
-                    view_email.startAnimation(anim);
-                } else {
-                    view_email.setVisibility(View.GONE);
-                }
-            }
-        });
-
-        pwdET = (EditText) findViewById(R.id.registerPassword);
-        pwdET.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    view_password.setVisibility(View.VISIBLE);
-                    view_password.startAnimation(anim);
-                } else {
-                    view_password.setVisibility(View.GONE);
-                }
-            }
-        });
+        displaynameET = (EditText) findViewById(R.id.ETdisplayname);
+        usernameET = (EditText) findViewById(R.id.ETusername);
+        pwdET = (EditText) findViewById(R.id.ETpassword);
+        errorMsg = (TextView) findViewById(R.id.TVerror);
 
         /** room_spinner spinner Query */
         String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/getdepartment"};
         new SetDepartment().execute(URL);
 
         /**department Spinner*/
-        department = (Spinner) findViewById(R.id.department);
+        department = (Spinner) findViewById(R.id.Spinnerdepartment);
         Adepartment.add("unselect");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Adepartment);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -137,7 +94,13 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //check input data
                 if (department.getSelectedItem() == "unselect") {
-                    Toast.makeText(getApplicationContext(), "department unselected", Toast.LENGTH_LONG);
+                    Toast.makeText(getApplicationContext(), "department unselected", Toast.LENGTH_SHORT);
+                } else if (Objects.equals(displaynameET.getText().toString(), "")) {
+                    Snackbar.make(v, "Not Displayname", Snackbar.LENGTH_SHORT).show();
+                } else if (Objects.equals(usernameET.getText().toString(), "")) {
+                    Snackbar.make(v, "Not Username", Snackbar.LENGTH_SHORT).show();
+                } else if (Objects.equals(pwdET.getText().toString(), "")) {
+                    Snackbar.make(v, "Not Password", Snackbar.LENGTH_SHORT).show();
                 } else {
                     String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/registerrest/restservice/doregister";
                     /**  Params **/
@@ -149,17 +112,6 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
-
-        btnlogin = (Button) findViewById(R.id.btnLogin);
-        btnlogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(loginIntent);
-            }
-        });
-
 
     }
 
@@ -225,11 +177,6 @@ public class RegisterActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            if (displaynameET.getText() == null || usernameET.getText() == null || pwdET.getText() == null || department.getSelectedItem().toString() == null) {
-                String OutputData = " Ops! : input data is null ";
-                Toast toast = Toast.makeText(getBaseContext(), OutputData, Toast.LENGTH_LONG);
-                toast.show();
-            }
             if (error_msg == "") {
                 String success = "Register Success!";
                 Toast toast = Toast.makeText(getBaseContext(), success, Toast.LENGTH_LONG);
@@ -251,12 +198,7 @@ public class RegisterActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                } else {
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
+                finish();
                 return true;
         }
         return false;

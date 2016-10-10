@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.R;
@@ -23,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 
 public class SubjectFragment extends Fragment {
@@ -33,12 +35,12 @@ public class SubjectFragment extends Fragment {
     private Spinner starttimeMin;
     private Spinner endtimeHr;
     private Spinner endtimeMin;
-    protected EditText ETsubject;
-    protected EditText ETdetail;
-    protected RadioGroup meeting_type_rediogroup;
+    private EditText ETsubject;
+    private EditText ETdetail;
+    private RadioGroup meeting_type_rediogroup;
     protected RadioButton meeting_redioButton;
-    protected Spinner room_spinner;
-    protected Spinner projector_spinner;
+    private Spinner room_spinner;
+    private Spinner projector_spinner;
     private TextView date;
     protected ArrayList<String> Aroom = new ArrayList<>();
 
@@ -49,8 +51,8 @@ public class SubjectFragment extends Fragment {
     private SimpleDateFormat dateFormatter;
     protected SimpleDateFormat dateFormatSend;
     protected SimpleDateFormat dateFormatter1;
-    private Button next;
     protected Createbooking createbooking;
+    private View view;
 
     public SubjectFragment(Createbooking createbooking) {
         this.createbooking = createbooking;
@@ -60,7 +62,8 @@ public class SubjectFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.activity_createbooking_subject, container, false);
+        view = inflater.inflate(R.layout.activity_createbooking_subject, container, false);
+
         prgDialog = new ProgressDialog(getActivity());
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
@@ -74,6 +77,7 @@ public class SubjectFragment extends Fragment {
 
         /** meeting_type */
         meeting_type_rediogroup = (RadioGroup) view.findViewById(R.id.meeting_type);
+
 
         /** Date picker*/
         date = (TextView) view.findViewById(R.id.date);
@@ -99,30 +103,6 @@ public class SubjectFragment extends Fragment {
         /**projector_spinner*/
         projector_spinner = (Spinner) view.findViewById(R.id.projector);
         getSpinnerProjector();
-
-
-        /** Save data Subject*/
-        next = (Button) view.findViewById(R.id.next);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int selectedId = meeting_type_rediogroup.getCheckedRadioButtonId();
-                meeting_redioButton = (RadioButton) view.findViewById(selectedId);
-                BookBean bookBean = new BookBean();
-                bookBean.setSubject(ETsubject.getText().toString());
-                bookBean.setMeeting_type(meeting_redioButton.getText().toString());
-                bookBean.setDetail(ETdetail.getText().toString());
-                bookBean.setDate(setdate);
-                bookBean.setStarttime(setStartTime());
-                bookBean.setEndtime(setEndTime());
-                bookBean.setRoomid(Integer.parseInt(room_spinner.getSelectedItem().toString()));
-                bookBean.setProjid(Integer.parseInt(projector_spinner.getSelectedItem().toString()));
-
-                Createbooking createbooking = (Createbooking) getActivity();
-                createbooking.setBookBeen_save(bookBean);
-            }
-        });
-
 
         return view;
     }
@@ -152,7 +132,7 @@ public class SubjectFragment extends Fragment {
                 newDate.set(year, monthOfYear, dayOfMonth);
 
                 date.setText(dateFormatter.format(newDate.getTime()));  /****format*/
-                setdate = dateFormatter.format(newDate.getTime());
+                setdate = dateFormatSend.format(newDate.getTime());
             }
         }, caledar.get(Calendar.YEAR), caledar.get(Calendar.MONTH), caledar.get(Calendar.DAY_OF_MONTH));
     }
@@ -202,7 +182,6 @@ public class SubjectFragment extends Fragment {
         room_spinner.setAdapter(adapterroom);
     }
 
-
     private void getSpinnerProjector() {
         Aroom.clear();
         Aroom.add("unselect");
@@ -217,7 +196,7 @@ public class SubjectFragment extends Fragment {
     }
 
     // setTime
-    private String setStartTime() {
+    public String setStartTime() {
         String timehr;
         if (starttimeHr.getSelectedItem() == "8") {
             timehr = "08";
@@ -230,7 +209,7 @@ public class SubjectFragment extends Fragment {
         return settime;
     }
 
-    private String setEndTime() {
+    public String setEndTime() {
         String totimehr;
         if (endtimeHr.getSelectedItem() == "8") {
             totimehr = "08";
@@ -241,5 +220,39 @@ public class SubjectFragment extends Fragment {
         }
         settotime = totimehr + ":" + endtimeMin.getSelectedItem() + ":00";
         return settotime;
+    }
+
+
+    /**
+     * get data from view
+     */
+    public EditText getETsubject() {
+        return ETsubject;
+    }
+
+    public EditText getETdetail() {
+        return ETdetail;
+    }
+
+    public RadioButton getMeeting_redioButton() {
+        int selectedId = meeting_type_rediogroup.getCheckedRadioButtonId();
+        meeting_redioButton = (RadioButton) view.findViewById(selectedId);
+        return meeting_redioButton;
+    }
+
+    public Spinner getRoom_spinner() {
+        return room_spinner;
+    }
+
+    public Spinner getProjector_spinner() {
+        return projector_spinner;
+    }
+
+    public TextView getDate() {
+        return date;
+    }
+
+    public String getSetdate() {
+        return setdate;
     }
 }

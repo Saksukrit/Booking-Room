@@ -44,7 +44,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ParticipantSearch extends AppCompatActivity implements MultiSelectRecyclerViewAdapter.ViewHolder.ClickListener {
+public class ParticipantSearchActivity extends AppCompatActivity implements MultiSelectRecyclerViewAdapter.ViewHolder.ClickListener {
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     protected ActionBar actionBar;
     private Toolbar toolbar;
@@ -64,7 +64,7 @@ public class ParticipantSearch extends AppCompatActivity implements MultiSelectR
     private View snack_view;
     private Snackbar snackbar_selected;
     private ArrayList<AccountBean> accountBeens_arraylist = new ArrayList<>();
-    private ArrayList<AccountBean> accountBeen_selected_arraylist = new ArrayList<>();
+    private ArrayList<AccountBean> account_item_selected_arraylist = new ArrayList<>();
 
 
     @Override
@@ -148,13 +148,22 @@ public class ParticipantSearch extends AppCompatActivity implements MultiSelectR
                     for (int i = 0; i < item_Adapter.getItemCount(); i++) {
                         for (int j = 0; j < item_Adapter.getSelectedItemCount(); j++) {
                             if (i == item_Adapter.getSelectedItems().get(j)) {
-                                accountBeen_selected_arraylist.add(accountBeens_arraylist.get(i));
+                                account_item_selected_arraylist.add(accountBeens_arraylist.get(i));
                             }
                         }
                     }
 
-                    Createbooking.accountBeen_selected_arraylist.addAll(accountBeen_selected_arraylist);
-
+                    if (Createbooking.accountBeen_selected_arraylist.size() != 0) {
+                        for (int i = 0; i < Createbooking.accountBeen_selected_arraylist.size(); i++) {
+                            for (int j = 0; j < account_item_selected_arraylist.size(); j++) {
+                                if (!Objects.equals(account_item_selected_arraylist.get(j).getUsername(), Createbooking.accountBeen_selected_arraylist.get(i).getUsername())) {
+                                    Createbooking.accountBeen_selected_arraylist.add(account_item_selected_arraylist.get(j));
+                                }
+                            }
+                        }
+                    } else {
+                        Createbooking.accountBeen_selected_arraylist.addAll(account_item_selected_arraylist);
+                    }
 
 //                    Bundle bundle = new Bundle();
 //                    bundle.putParcelableArrayList("detailBeanList", (ArrayList<? extends Parcelable>) accountBeen_selected);
@@ -164,7 +173,7 @@ public class ParticipantSearch extends AppCompatActivity implements MultiSelectR
                     Intent intent = new Intent();
                     setResult(resultCode, intent);
 
-                    accountBeen_selected_arraylist.clear();
+                    account_item_selected_arraylist.clear();
                     finish();
                 } else {
                     Snackbar.make(snack_view, "Not participant selected", Snackbar.LENGTH_SHORT).show();
@@ -174,7 +183,7 @@ public class ParticipantSearch extends AppCompatActivity implements MultiSelectR
                 return true;
             case 1:
                 accountBeens_arraylist.clear();
-                item_Adapter = new MultiSelectRecyclerViewAdapter(ParticipantSearch.this, accountBeens_arraylist, ParticipantSearch.this);
+                item_Adapter = new MultiSelectRecyclerViewAdapter(ParticipantSearchActivity.this, accountBeens_arraylist, ParticipantSearchActivity.this);
                 select_recyclerview.setAdapter(item_Adapter);
                 auto_search.setText("");
                 department_type_spinner.setSelection(0);
@@ -348,7 +357,7 @@ public class ParticipantSearch extends AppCompatActivity implements MultiSelectR
                 Toast.makeText(getApplication(), "No Data", Toast.LENGTH_SHORT).show();
             }
 
-            item_Adapter = new MultiSelectRecyclerViewAdapter(ParticipantSearch.this, accountBeens_arraylist, ParticipantSearch.this);
+            item_Adapter = new MultiSelectRecyclerViewAdapter(ParticipantSearchActivity.this, accountBeens_arraylist, ParticipantSearchActivity.this);
             select_recyclerview.setAdapter(item_Adapter);
 
         }

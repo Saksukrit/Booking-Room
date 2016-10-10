@@ -46,17 +46,12 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     private ProgressDialog prgDialog;
     private Participant participant = new Participant();
-    private Button createbooking;
-    private Button searchbooking;
-    private Bundle bundle;
+    protected Button createbooking;
+    protected Button searchbooking;
+    protected Bundle bundle;
     private String username;
     private String bookingid;
-    private ArrayList<BookBean> bookBeans = new ArrayList<BookBean>();
-    private String[] Ssubject;
-    private String[] Sdate;
-    private String[] Stime;
-    private int[] Sbookingid;
-    private int[] Sroomid;
+    private ArrayList<BookBean> bookBeans = new ArrayList<>();
     private ListView listView;
 
 
@@ -67,8 +62,8 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
 
 
         bundle = getIntent().getExtras();
-//        username = bundle.getString("username");
-        username = "rrr";
+        username = bundle.getString("username");
+//        username = "rrr";
 
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
@@ -117,7 +112,7 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                bookingid = String.valueOf(Sbookingid[position]);
+                bookingid = String.valueOf(bookBeans.get(position).getBookingid());
                 Intent intent = new Intent(getApplicationContext(), BookingDetail.class);
                 intent.putExtra("username", username);
                 intent.putExtra("bookingid", bookingid);
@@ -224,23 +219,12 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
                     bookBean.setRoomid(jsonObject.getInt("roomid"));
                     bookBeans.add(bookBean);
                 }
-
-
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
-            if (bookBeans.size() == 0) {
-                bookBeans.get(0).setSubject("empty");
-                bookBeans.get(0).setBookingid(0);
-                bookBeans.get(0).setDate("00/00/0000");
-                bookBeans.get(0).setStarttime("00:00");
-                bookBeans.get(0).setRoomid(0);
             }
 
             CustomAdapter_subject adapter = new CustomAdapter_subject(getApplicationContext(), bookBeans);
             listView.setAdapter(adapter);
-
-//            adapter.notifyDataSetChanged();
 
         }
     }

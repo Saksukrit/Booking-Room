@@ -1,16 +1,13 @@
 package com.example.wolf_z.bookingroom.Createbooking.Multi_Search;
 
 import android.content.Context;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
-import com.example.wolf_z.bookingroom.Createbooking.ParticipantSearch;
 import com.example.wolf_z.bookingroom.R;
 
 import java.util.ArrayList;

@@ -224,12 +224,7 @@ public class BookingDetail extends AppCompatActivity {
                 Toast.makeText(this, "Go Edit", Toast.LENGTH_LONG).show();
                 return true;
             case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                } else {
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
+                finish();
                 return true;
         }
         return false;

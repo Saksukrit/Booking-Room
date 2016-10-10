@@ -9,6 +9,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -77,16 +78,22 @@
                 android:value=".MainBookingActivity" />
         </activity>
         <activity
-            android:name=".Createbooking.ParticipantSearch"
+            android:name=".Createbooking.ParticipantSearchActivity"
             android:label="@string/title_activity_search_participant"
             android:parentActivityName=".Createbooking.Createbooking">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Createbooking.Createbooking" />
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Menu.SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Menu.AboutActivity"></activity>
     </application>
 
 </manifest>

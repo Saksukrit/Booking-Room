@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
@@ -46,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public class SearchBookActivity extends AppCompatActivity {
 
@@ -67,7 +69,7 @@ public class SearchBookActivity extends AppCompatActivity {
     private ListView searchlist;
     protected String settime;
     protected String settotime;
-    private ArrayList<Integer> Aroom = new ArrayList<>();
+    private ArrayList<String> Aroom = new ArrayList<>();
 
 
     private DatePickerDialog fromDatePickerDialog;
@@ -179,8 +181,8 @@ public class SearchBookActivity extends AppCompatActivity {
         new SetData().execute(URL);
 
         room = (Spinner) findViewById(R.id.room);
-        Aroom.add(0);
-        ArrayAdapter<Integer> adapterroom = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Aroom);
+        Aroom.add("unselect");
+        ArrayAdapter<String> adapterroom = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, Aroom);
         adapterroom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         room.setAdapter(adapterroom);
 
@@ -192,20 +194,27 @@ public class SearchBookActivity extends AppCompatActivity {
                 txtstatus.setText("please search_button");
             }
         });
+
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/searchbooking"};
-                /**  Params **/
-                try {
-                    bookBean.setDate(dateFormatSend.format(dateFormatter1.parse(date.getText().toString())));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (Objects.equals(date.getText().toString(), "click to get date")) {
+                    Snackbar.make(v, "Unselected Date", Snackbar.LENGTH_SHORT).show();
+                } else if (Objects.equals(room.getSelectedItem().toString(), "unselect")) {
+                    Snackbar.make(v, "Unselected Room", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/searchbooking"};
+                    /**  Params **/
+                    try {
+                        bookBean.setDate(dateFormatSend.format(dateFormatter1.parse(date.getText().toString())));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    bookBean.setStarttime(setStartTime());
+                    bookBean.setEndtime(setEndTime());
+                    bookBean.setRoomid(Integer.parseInt(room.getSelectedItem().toString()));
+                    new Search().execute(URL);
                 }
-                bookBean.setStarttime(setStartTime());
-                bookBean.setEndtime(setEndTime());
-                bookBean.setRoomid(Integer.parseInt(room.getSelectedItem().toString()));
-                new Search().execute(URL);
             }
         });
 
@@ -248,12 +257,13 @@ public class SearchBookActivity extends AppCompatActivity {
                 finish();
                 return true;
             case android.R.id.home:
-                Intent upIntent = NavUtils.getParentActivityIntent(this);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-                } else {
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
+                finish();
+//                Intent upIntent = NavUtils.getParentActivityIntent(this);
+//                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+//                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+//                } else {
+//                    NavUtils.navigateUpTo(this, upIntent);
+//                }
                 return true;
         }
         return false;
@@ -414,7 +424,7 @@ public class SearchBookActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             for (int i = 0; i < roomBeans.size(); i++) {
-                Aroom.add(roomBeans.get(i).getRoomid());
+                Aroom.add(String.valueOf(roomBeans.get(i).getRoomid()));
 
             }
 

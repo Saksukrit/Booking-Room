@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
@@ -24,10 +25,11 @@
             android:id="@+id/name_layout"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:gravity="bottom">
+            android:gravity="bottom"
+            app:hintTextAppearance="@style/TextPopup">
 
             <EditText
-                android:id="@+id/registerName"
+                android:id="@+id/ETdisplayname"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
@@ -47,12 +49,6 @@
                 android:layout_height="2dp"
                 android:background="#aaaaaa" />
 
-            <View
-                android:id="@+id/second_view_name"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#E74C3C"
-                android:visibility="invisible" />
         </FrameLayout>
 
         <!-- Email Label -->
@@ -61,10 +57,11 @@
             android:id="@+id/email_layout"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:gravity="bottom">
+            android:gravity="bottom"
+            app:hintTextAppearance="@style/TextPopup">
 
             <EditText
-                android:id="@+id/registerEmail"
+                android:id="@+id/ETusername"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
@@ -85,23 +82,18 @@
                 android:layout_height="2dp"
                 android:background="#aaaaaa" />
 
-            <View
-                android:id="@+id/second_view_email"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#E74C3C"
-                android:visibility="invisible" />
         </FrameLayout>
-        <!-- Password Label -->
 
+        <!-- Password Label -->
         <android.support.design.widget.TextInputLayout
             android:id="@+id/password_layout"
             android:layout_width="match_parent"
             android:layout_height="45dp"
-            android:gravity="bottom">
+            android:gravity="bottom"
+            app:hintTextAppearance="@style/TextPopup">
 
             <EditText
-                android:id="@+id/registerPassword"
+                android:id="@+id/ETpassword"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
@@ -122,12 +114,6 @@
                 android:layout_height="2dp"
                 android:background="#aaaaaa" />
 
-            <View
-                android:id="@+id/second_view_password"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#E74C3C"
-                android:visibility="invisible" />
         </FrameLayout>
 
         <android.support.v4.widget.Space
@@ -135,13 +121,13 @@
             android:layout_height="20dp" />
 
         <Spinner
-            android:id="@+id/department"
+            android:id="@+id/Spinnerdepartment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <!-- Error message -->
         <TextView
-            android:id="@+id/register_error"
+            android:id="@+id/TVerror"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -160,15 +146,6 @@
 
         <!-- Link to Login Screen -->
 
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:background="@null"
-            android:text="Login"
-            android:textColor="#228b22"
-            android:textStyle="bold" />
     </LinearLayout>
 
 </ScrollView>
