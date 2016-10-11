@@ -56,8 +56,6 @@ public class BookingDetail extends AppCompatActivity {
     private TextView txtendtime;
     private TextView txtroomid;
     private ListView listView;
-    protected String[] Adisplayname;
-    protected String[] Adepartment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,7 +177,6 @@ public class BookingDetail extends AppCompatActivity {
             /**********************************************************/
 
             /** participant */
-
             try {
                 jsonArray = new JSONArray(result[1]);
                 for (int i = 0; i < jsonArray.length(); i++) {
@@ -188,22 +185,12 @@ public class BookingDetail extends AppCompatActivity {
                     accountBean.setDisplayname(jsonObject.getString("displayname"));
                     accountBean.setDepartment(jsonObject.getString("department"));
                     accountBeans.add(accountBean);
-
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Adisplayname = new String[accountBeans.size()];
-            Adepartment = new String[accountBeans.size()];
-            for (int i = 0; i < accountBeans.size(); i++) {
-                Adisplayname[i] = accountBeans.get(i).getDisplayname();
-                Adepartment[i] = accountBeans.get(i).getDepartment();
-            }
-
-            CustomAdapter_Pname adapter = new CustomAdapter_Pname(getApplicationContext(), Adisplayname, Adepartment);
+            CustomAdapter_Pname adapter = new CustomAdapter_Pname(getApplicationContext(), accountBeans);
             listView.setAdapter(adapter);
-
-
         }
     }
 

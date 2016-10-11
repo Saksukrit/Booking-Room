@@ -30,6 +30,10 @@ public class ParticipantFragment extends Fragment implements MultiSelectRecycler
         this.createbooking = createbooking;
     }
 
+    public ParticipantFragment() {
+
+    }
+
     public MultiSelectRecyclerViewAdapter getItem_selected_Adapter() {
         return item_selected_Adapter;
     }

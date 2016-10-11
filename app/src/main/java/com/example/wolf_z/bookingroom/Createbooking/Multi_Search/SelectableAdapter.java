@@ -1,12 +1,13 @@
 package com.example.wolf_z.bookingroom.Createbooking.Multi_Search;
 
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.SparseBooleanArray;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
+public abstract class SelectableAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH>{
     @SuppressWarnings("unused")
     private static final String TAG = SelectableAdapter.class.getSimpleName();
 

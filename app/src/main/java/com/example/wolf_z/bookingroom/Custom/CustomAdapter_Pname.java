@@ -8,23 +8,24 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.R;
+
+import java.util.ArrayList;
 
 public class CustomAdapter_Pname extends BaseAdapter {
 
     Context mContext;
-    String[] displayname;
-    String[] department;
+    ArrayList<AccountBean> accountBean = new ArrayList<>();
 
-    public CustomAdapter_Pname(Context context, String[] displayname, String[] department) {
+    public CustomAdapter_Pname(Context context, ArrayList<AccountBean> accountBean) {
         this.mContext = context;
-        this.displayname = displayname;
-        this.department = department;
+        this.accountBean = accountBean;
     }
 
     @Override
     public int getCount() {
-        return displayname.length;
+        return accountBean.size();
     }
 
     @Override
@@ -45,10 +46,10 @@ public class CustomAdapter_Pname extends BaseAdapter {
         view = mInflater.inflate(R.layout.item_namelist, parent, false);
 
         TextView displayname_item = (TextView) view.findViewById(R.id.displayname_item);
-        displayname_item.setText(displayname[position]);
+        displayname_item.setText(accountBean.get(position).getDisplayname());
 
         TextView department_item = (TextView) view.findViewById(R.id.department_item);
-        department_item.setText(department[position]);
+        department_item.setText(accountBean.get(position).getDepartment());
 
         if (position % 2 == 1) {
             view.setBackgroundColor(Color.parseColor("#ffd27f"));

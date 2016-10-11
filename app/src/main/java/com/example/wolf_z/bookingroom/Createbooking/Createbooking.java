@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -37,7 +37,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -52,7 +51,6 @@ public class Createbooking extends AppCompatActivity {
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     private ProgressDialog prgDialog;
     protected ActionBar actionBar;
-    protected ActionBar.Tab tabsubject_fragment, tabparticipant_fragment;
     private SubjectFragment subjectFragment = new SubjectFragment(this);
     private ParticipantFragment participantFragment = new ParticipantFragment(this);
     private BookBean bookBean = new BookBean();
@@ -61,8 +59,6 @@ public class Createbooking extends AppCompatActivity {
     protected SimpleDateFormat dateFormatter;
     protected SimpleDateFormat dateFormatSend;
     protected SimpleDateFormat dateFormatter1;
-
-    private BookBean bookBeen_save = new BookBean();
 
 
     public static ArrayList<AccountBean> accountBeen_selected_arraylist = new ArrayList<>();
@@ -82,24 +78,37 @@ public class Createbooking extends AppCompatActivity {
         dateFormatter1 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
-        bookBeen_save.setSubject("");
-        bookBeen_save.setDetail("");
-        bookBeen_save.setRoomid(0);
-        bookBeen_save.setMeeting_type("");
-        bookBeen_save.setDate("click to get date");
-        bookBeen_save.setStarttime("");
-        bookBeen_save.setEndtime("");
-//        bookBeen_save.setProjid("");
-
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        tabsubject_fragment = actionBar.newTab().setText("Subject").setTabListener(new TabListener(subjectFragment));
-        tabparticipant_fragment = actionBar.newTab().setText("Participant").setTabListener(new TabListener(participantFragment));
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("Subject"));
+        tabLayout.addTab(tabLayout.newTab().setText("Participant"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        actionBar.addTab(tabsubject_fragment);
-        actionBar.addTab(tabparticipant_fragment);
+        /** ViewPager */
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter
+                (getSupportFragmentManager(), tabLayout.getTabCount(), this);
+
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
 
         roomshow_spinner_arraylist.add("unselect");
         String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/getroom"};
@@ -204,12 +213,16 @@ public class Createbooking extends AppCompatActivity {
     }
 
 
-    public void setBookBeen_save(BookBean bookBeen_save) {
-        this.bookBeen_save = bookBeen_save;
-    }
-
     public ArrayList<String> getRoomshow_spinner_arraylist() {
         return roomshow_spinner_arraylist;
+    }
+
+    public SubjectFragment getSubjectFragment() {
+        return subjectFragment;
+    }
+
+    public ParticipantFragment getParticipantFragment() {
+        return participantFragment;
     }
 
 

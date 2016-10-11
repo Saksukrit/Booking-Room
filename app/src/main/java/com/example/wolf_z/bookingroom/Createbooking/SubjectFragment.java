@@ -8,23 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Objects;
 
 
 public class SubjectFragment extends Fragment {
@@ -56,6 +53,10 @@ public class SubjectFragment extends Fragment {
 
     public SubjectFragment(Createbooking createbooking) {
         this.createbooking = createbooking;
+    }
+
+    public SubjectFragment() {
+
     }
 
 
