@@ -7,29 +7,24 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.R;
+
+import java.util.ArrayList;
 
 public class CustomAdapter_search extends BaseAdapter {
 
     private Context mContext;
-    private String[] Ssubject;
-    private String[] Sdate;
-    private String[] Sendtime;
-    private int[] Sroomid;
-    private String[] Sstarttime;
+    private ArrayList<BookBean> bookBean_search = new ArrayList<>();
 
-    public CustomAdapter_search(Context context, String[] Ssubject, String[] Sdate, String[] Sstarttime, String[] Sendtime, int[] Sroomid) {
+    public CustomAdapter_search(Context context, ArrayList<BookBean> bookBean) {
         this.mContext = context;
-        this.Ssubject = Ssubject;
-        this.Sdate = Sdate;
-        this.Sstarttime = Sstarttime;
-        this.Sendtime = Sendtime;
-        this.Sroomid = Sroomid;
+        this.bookBean_search = bookBean;
     }
 
     @Override
     public int getCount() {
-        return Ssubject.length;
+        return bookBean_search.size();
     }
 
     @Override
@@ -50,19 +45,19 @@ public class CustomAdapter_search extends BaseAdapter {
         view = mInflater.inflate(R.layout.item_search, parent, false);
 
         TextView subject_item = (TextView) view.findViewById(R.id.subject_name);
-        subject_item.setText(Ssubject[position]);
+        subject_item.setText(bookBean_search.get(position).getSubject());
 
         TextView subject_date = (TextView) view.findViewById(R.id.subject_date);
-        subject_date.setText(Sdate[position]);
+        subject_date.setText(bookBean_search.get(position).getDate());
 
         TextView subject_starttime = (TextView) view.findViewById(R.id.subject_starttime);
-        subject_starttime.setText(Sstarttime[position]);
+        subject_starttime.setText(bookBean_search.get(position).getStarttime());
 
         TextView subject_endtime = (TextView) view.findViewById(R.id.subject_endtime);
-        subject_endtime.setText(Sendtime[position]);
+        subject_endtime.setText(bookBean_search.get(position).getEndtime());
 
         TextView subject_roomid = (TextView) view.findViewById(R.id.subject_room);
-        subject_roomid.setText(String.valueOf(Sroomid[position]));     //String.valueOf() for set int
+        subject_roomid.setText(bookBean_search.get(position).getRoomid());     //String.valueOf() for set int
 
         return view;
     }

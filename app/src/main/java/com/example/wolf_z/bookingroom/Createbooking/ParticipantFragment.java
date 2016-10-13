@@ -60,7 +60,6 @@ public class ParticipantFragment extends Fragment implements MultiSelectRecycler
                 startActivityForResult(intent, REQ_CODE_participant_search);
             }
         });
-
         return view;
     }
 

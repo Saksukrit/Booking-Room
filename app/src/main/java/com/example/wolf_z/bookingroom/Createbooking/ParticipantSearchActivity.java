@@ -75,7 +75,7 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
         actionBar = getSupportActionBar();
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("MultiSelectRecylcerView");
+//            getSupportActionBar().setTitle("MultiSelectRecylcerView");
         }
         prgDialog = new ProgressDialog(getApplicationContext());
         prgDialog.setMessage("Please wait...");
@@ -152,18 +152,20 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
                             }
                         }
                     }
+                    Createbooking.accountBeen_selected_arraylist.addAll(account_item_selected_arraylist);
 
-                    if (Createbooking.accountBeen_selected_arraylist.size() != 0) {
-                        for (int i = 0; i < Createbooking.accountBeen_selected_arraylist.size(); i++) {
-                            for (int j = 0; j < account_item_selected_arraylist.size(); j++) {
-                                if (!Objects.equals(account_item_selected_arraylist.get(j).getUsername(), Createbooking.accountBeen_selected_arraylist.get(i).getUsername())) {
-                                    Createbooking.accountBeen_selected_arraylist.add(account_item_selected_arraylist.get(j));
-                                }
-                            }
-                        }
-                    } else {
-                        Createbooking.accountBeen_selected_arraylist.addAll(account_item_selected_arraylist);
-                    }
+
+//                    if (Createbooking.accountBeen_selected_arraylist.size() != 0) {
+//                        for (int i = 0; i < Createbooking.accountBeen_selected_arraylist.size(); i++) {
+//                            for (int j = 0; j < account_item_selected_arraylist.size(); j++) {
+//                                if (!Objects.equals(account_item_selected_arraylist.get(j).getUsername(), Createbooking.accountBeen_selected_arraylist.get(i).getUsername())) {
+//                                    Createbooking.accountBeen_selected_arraylist.add(account_item_selected_arraylist.get(j));
+//                                }
+//                            }
+//                        }
+//                    } else {
+//
+//                    }
 
 //                    Bundle bundle = new Bundle();
 //                    bundle.putParcelableArrayList("detailBeanList", (ArrayList<? extends Parcelable>) accountBeen_selected);

@@ -5,7 +5,7 @@ package com.example.wolf_z.bookingroom.Config;
  */
 
 public class ServiceURLconfig {
-    private final String localhosturl = "http://157.179.8.112:8080";
+    private final String localhosturl = "http://157.179.8.114:8080";
 
     public String getLocalhosturl() {
         return localhosturl;

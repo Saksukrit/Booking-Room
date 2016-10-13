@@ -5,8 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,8 +50,8 @@ import java.util.Objects;
 public class SearchBookActivity extends AppCompatActivity {
 
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
-    private BookBean bookBean = new BookBean();
-    private ArrayList<BookBean> bookBeans = new ArrayList<>();
+    private BookBean bookBean_select = new BookBean();
+    private ArrayList<BookBean> bookBeans_to_list = new ArrayList<>();
     private ArrayList<RoomBean> roomBeans = new ArrayList<>();
     private ProgressDialog prgDialog;
     protected ActionBar actionBar;
@@ -76,12 +74,7 @@ public class SearchBookActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormatter;
     private SimpleDateFormat dateFormatSend;
     private SimpleDateFormat timeFormatter;
-    protected String[] Ssubject;
-    protected String[] Sdate;
-    protected String[] Sstarttime;
-    protected String[] Sendtime;
-    protected int[] Sroomid;
-    private SimpleDateFormat dateFormatter1;
+    private SimpleDateFormat dateFormatShow;
     protected CustomAdapter_search adapter;
 
     private String intent_date;
@@ -99,7 +92,7 @@ public class SearchBookActivity extends AppCompatActivity {
         prgDialog.setCancelable(false);
         Locale lc = new Locale("th", "TH");
         dateFormatter = new SimpleDateFormat("dd/MM/yyyy", lc);
-        dateFormatter1 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        dateFormatShow = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         timeFormatter = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 
@@ -206,13 +199,13 @@ public class SearchBookActivity extends AppCompatActivity {
                     String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/searchbooking"};
                     /**  Params **/
                     try {
-                        bookBean.setDate(dateFormatSend.format(dateFormatter1.parse(date.getText().toString())));
+                        bookBean_select.setDate(dateFormatSend.format(dateFormatShow.parse(date.getText().toString())));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    bookBean.setStarttime(setStartTime());
-                    bookBean.setEndtime(setEndTime());
-                    bookBean.setRoomid(Integer.parseInt(room.getSelectedItem().toString()));
+                    bookBean_select.setStarttime(setStartTime());
+                    bookBean_select.setEndtime(setEndTime());
+                    bookBean_select.setRoomid(Integer.parseInt(room.getSelectedItem().toString()));
                     new Search().execute(URL);
                 }
             }
@@ -246,15 +239,20 @@ public class SearchBookActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 0:
-                Toast.makeText(this, "Go Create", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(this, Createbooking.class);
-                intent.putExtra("intent_date", intent_date);
-                intent.putExtra("intent_starttime", intent_starttime);
-                intent.putExtra("intent_endtime", intent_endtime);
-                intent.putExtra("intent_roomid", intent_roomid);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
+                if (bookBeans_to_list.size() == 0) {
+                    Toast.makeText(this, "Go Create", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(this, Createbooking.class);
+                    intent.putExtra("search_intent_date", intent_date);
+                    intent.putExtra("search_intent_starttime", intent_starttime);
+                    intent.putExtra("search_intent_endtime", intent_endtime);
+                    intent.putExtra("search_intent_roomid", intent_roomid);
+                    intent.putExtra("from", "search_booking");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Snackbar.make(new View(this), "Unable create on this time", Snackbar.LENGTH_LONG);
+                }
                 return true;
             case android.R.id.home:
                 finish();
@@ -288,7 +286,7 @@ public class SearchBookActivity extends AppCompatActivity {
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(urls[0]);
                 Gson gson = new Gson();
-                StringEntity stringEntity = new StringEntity(gson.toJson(bookBean));
+                StringEntity stringEntity = new StringEntity(gson.toJson(bookBean_select));
                 httpPost.setEntity(stringEntity);
                 httpPost.setHeader("Content-type", "application/json");
                 HttpResponse httpResponse = httpClient.execute(httpPost);
@@ -320,52 +318,32 @@ public class SearchBookActivity extends AppCompatActivity {
                     bookBean.setStarttime(jsonObject.getString("starttime"));
                     bookBean.setEndtime(jsonObject.getString("endtime"));
                     bookBean.setRoomid(jsonObject.getInt("roomid"));
-                    bookBeans.add(bookBean);
+                    bookBeans_to_list.add(bookBean);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            if (bookBeans.size() == 0) {
-                Ssubject = new String[]{"empty"};
-                Sdate = new String[]{bookBean.getDate()};
-                try {
-                    Sstarttime = new String[]{timeFormatter.format(timeFormatter.parse(bookBean.getStarttime()))};
-                    Sendtime = new String[]{timeFormatter.format(timeFormatter.parse(bookBean.getEndtime()))};
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Sroomid = new int[]{bookBean.getRoomid()};
+            if (bookBeans_to_list.size() == 0) {
                 txtstatus.setBackgroundColor(0xff00ff00);
                 txtstatus.setText("Room is empty this time.");
                 /**set value intent*/
-                intent_date = Sdate[0];
-                intent_starttime = Sstarttime[0];
-                intent_endtime = Sendtime[0];
-                intent_roomid = Sroomid[0];
-
-
-            } else {
-                Ssubject = new String[bookBeans.size()];
-                Sdate = new String[bookBeans.size()];
-                Sstarttime = new String[bookBeans.size()];
-                Sendtime = new String[bookBeans.size()];
-                Sroomid = new int[bookBeans.size()];
-
-                for (int i = 0; i < bookBeans.size(); i++) {
-                    Ssubject[i] = bookBeans.get(i).getSubject();
-                    Sdate[i] = bookBeans.get(i).getDate();
-                    Sstarttime[i] = bookBeans.get(i).getStarttime();
-                    Sendtime[i] = bookBeans.get(i).getEndtime();
-                    Sroomid[i] = bookBeans.get(i).getRoomid();
+                try {
+                    intent_date = dateFormatShow.format(dateFormatSend.parse(bookBean_select.getDate()));
+                    intent_starttime = timeFormatter.format(timeFormatter.parse(bookBean_select.getStarttime()));
+                    intent_endtime = timeFormatter.format(timeFormatter.parse(bookBean_select.getEndtime()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
+                intent_roomid = bookBean_select.getRoomid();
+            } else {
                 txtstatus.setBackgroundColor(0xffff0000);
-                txtstatus.setText("Room is empty this time.");
+                txtstatus.setText("Room is not empty this time.");
             }
             //set adapter
-            adapter = new CustomAdapter_search(getApplicationContext(), Ssubject, Sdate, Sstarttime, Sendtime, Sroomid);
+            adapter = new CustomAdapter_search(getApplicationContext(), bookBeans_to_list);
             searchlist.setAdapter(adapter);
-            bookBeans.clear();
+            bookBeans_to_list.clear();
         }
 
     }

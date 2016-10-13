@@ -62,8 +62,8 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
 
 
         bundle = getIntent().getExtras();
-        username = bundle.getString("username");
-//        username = "rrr";
+//        username = bundle.getString("username");
+        username = "krit025";
 
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
@@ -96,7 +96,8 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Createbooking.class);
                 intent.putExtra("username", username);
-                startActivity(intent);
+                intent.putExtra("from", "main");
+                startActivityForResult(intent, 111);
             }
         });
 
@@ -116,10 +117,17 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
                 Intent intent = new Intent(getApplicationContext(), BookingDetail.class);
                 intent.putExtra("username", username);
                 intent.putExtra("bookingid", bookingid);
+                intent.putExtra("checkfrommain", "main");
                 startActivity(intent);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
     }
 
     /**

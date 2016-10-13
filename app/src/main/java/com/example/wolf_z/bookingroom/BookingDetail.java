@@ -18,7 +18,9 @@ import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.Bean.Participant;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
+import com.example.wolf_z.bookingroom.Createbooking.Createbooking;
 import com.example.wolf_z.bookingroom.Custom.CustomAdapter_Pname;
+import com.example.wolf_z.bookingroom.Task.Detail_Task;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
@@ -36,6 +38,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class BookingDetail extends AppCompatActivity {
 
@@ -43,6 +46,7 @@ public class BookingDetail extends AppCompatActivity {
     protected Bundle bundle;
     protected String username;
     protected String bookingid;
+    protected String checkfrommain;
     private ArrayList<BookBean> bookBeans = new ArrayList<>();
     private ArrayList<AccountBean> accountBeans = new ArrayList<>();
     private Participant participant = new Participant();
@@ -63,9 +67,9 @@ public class BookingDetail extends AppCompatActivity {
         setContentView(R.layout.activity_booking_detail);
 
         bundle = getIntent().getExtras();
-        username = bundle.getString("username");
+//        username = bundle.getString("username");
         bookingid = bundle.getString("bookingid");
-
+        checkfrommain = bundle.getString("checkfrommain");
 
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
@@ -80,19 +84,14 @@ public class BookingDetail extends AppCompatActivity {
         txtroomid = (TextView) findViewById(R.id.roomid);
 
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         /** Query */
         String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/mainrest/restservice/showdetail"
                 , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/mainrest/restservice/showpaticipant"};
         //  Params
-        participant.setUsername(username);
+//        participant.setUsername(username);
         participant.setBookingid(Integer.parseInt(bookingid));
         new Detail().execute(URL);
-
-        Toast.makeText(getApplicationContext(), username + "  " + bookingid, Toast.LENGTH_LONG).show();
-
-
     }
 
 
@@ -194,21 +193,50 @@ public class BookingDetail extends AppCompatActivity {
         }
     }
 
+
+    /**
+     * Actionbar
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        MenuItem mnu1 = menu.add(0, 0, 0, "Edit");
+        MenuItem menu_edit = menu.add(0, 0, 0, "Edit");
         {
-            mnu1.setIcon(R.drawable.edit128);
-            mnu1.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+            menu_edit.setIcon(R.drawable.edit128);
+            menu_edit.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         }
+        MenuItem menu_create = menu.add(1, 1, 1, "Create");
+        {
+            menu_create.setIcon(R.drawable.create512);
+            menu_create.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        }
+        //check create or edit
+        if (Objects.equals(checkfrommain, "main")) {
+            menu_create.setVisible(false);
+        }
+
+
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 0:
-                Toast.makeText(this, "Go Edit", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Go Edit", Toast.LENGTH_SHORT).show();
+                Intent intentEdit = new Intent(this, Createbooking.class);
+                intentEdit.putExtra("bookingid", bookingid);
+                intentEdit.putExtra("status", "Edit Booking");
+                intentEdit.putExtra("from", "detail_to_edit");
+                startActivity(intentEdit);
+                finish();
+
+                return true;
+
+            case 1:
+                Intent intentCreate = new Intent(this, Createbooking.class);
+                startActivity(intentCreate);
+                finish();
+
                 return true;
             case android.R.id.home:
                 finish();
