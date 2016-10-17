@@ -339,11 +339,12 @@ public class SearchBookActivity extends AppCompatActivity {
             } else {
                 txtstatus.setBackgroundColor(0xffff0000);
                 txtstatus.setText("Room is not empty this time.");
+                //set adapter
+                adapter = new CustomAdapter_search(getApplicationContext(), bookBeans_to_list);
+                searchlist.setAdapter(adapter);
+//                bookBeans_to_list.clear();
             }
-            //set adapter
-            adapter = new CustomAdapter_search(getApplicationContext(), bookBeans_to_list);
-            searchlist.setAdapter(adapter);
-            bookBeans_to_list.clear();
+
         }
 
     }

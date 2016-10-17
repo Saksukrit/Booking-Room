@@ -1,248 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/subject_fragment"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:weightSum="1">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/subject_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/subject_fragment"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:weightSum="1">
 
-        <EditText
-            android:id="@+id/ETsubject"
-            android:layout_width="fill_parent"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/subject_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#00000000"
-            android:hint="Subject"
-            android:singleLine="true"
-            android:textSize="20sp" />
-    </android.support.design.widget.TextInputLayout>
+            android:gravity="bottom">
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        android:layout_marginTop="5dp">
+            <EditText
+                android:id="@+id/ETsubject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:hint="Subject"
+                android:singleLine="true"
+                android:textSize="20sp" />
+        </android.support.design.widget.TextInputLayout>
 
-        <View
-            android:id="@+id/view_subject"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:background="#aaaaaa" />
-
-    </FrameLayout>
-
-    <android.support.v4.widget.Space
-        android:layout_width="fill_parent"
-        android:layout_height="22dp" />
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Meeting Type"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <RadioGroup
-        android:id="@+id/meeting_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <RadioButton
-            android:id="@+id/problem"
-            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Problem-solving" />
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp">
 
-        <RadioButton
-            android:id="@+id/brainstorming"
+            <View
+                android:id="@+id/view_subject"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="#aaaaaa" />
+
+        </FrameLayout>
+
+        <android.support.v4.widget.Space
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Brainstorming" />
-
-        <RadioButton
-            android:id="@+id/training"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Training" />
-    </RadioGroup>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/detail_layout"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:gravity="bottom">
-
-        <EditText
-            android:id="@+id/ETdetail"
-            android:layout_width="fill_parent"
-            android:layout_height="120dp"
-            android:layout_weight="0.02"
-            android:background="#00000000"
-            android:hint="Detail"
-            android:textSize="16sp" />
-    </android.support.design.widget.TextInputLayout>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="3dp"
-        android:layout_marginRight="3dp"
-        android:layout_marginTop="5dp">
-
-        <View
-            android:id="@+id/view_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="2dp"
-            android:background="#aaaaaa" />
-
-    </FrameLayout>
-
-    <android.support.v4.widget.Space
-        android:layout_width="fill_parent"
-        android:layout_height="21dp" />
-
-    <!--date-->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:layout_height="22dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date :     "
+            android:text="Meeting Type"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/date"
+        <RadioGroup
+            android:id="@+id/meeting_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/problem"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Problem-solving" />
+
+            <RadioButton
+                android:id="@+id/brainstorming"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Brainstorming" />
+
+            <RadioButton
+                android:id="@+id/training"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Training" />
+        </RadioGroup>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/detail_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom">
+
+            <EditText
+                android:id="@+id/ETdetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.02"
+                android:background="#00000000"
+                android:hint="Detail"
+                android:textSize="16sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:freezesText="true"
-            android:text="click to get date"
-            android:textSize="18sp" />
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp">
 
-    </LinearLayout>
+            <View
+                android:id="@+id/view_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="#aaaaaa" />
 
-    <android.support.v4.widget.Space
-        android:layout_width="fill_parent"
-        android:layout_height="15dp" />
+        </FrameLayout>
 
-    <!--time-->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <android.support.v4.widget.Space
+            android:layout_width="fill_parent"
+            android:layout_height="21dp" />
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="Start Time : "
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/timeHr"
-            android:layout_width="70dp"
-            android:layout_height="fill_parent" />
-
-        <TextView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:text=" : "
-            android:textSize="18sp" />
-
-        <Spinner
-            android:id="@+id/timeMin"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <android.support.v4.widget.Space
-        android:layout_width="fill_parent"
-        android:layout_height="10dp" />
-
-    <!--totime-->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="End Time : "
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/totimeHr"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:text=" : "
-            android:textSize="18sp" />
-
-        <Spinner
-            android:id="@+id/totimeMin"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <android.support.v4.widget.Space
-        android:layout_width="fill_parent"
-        android:layout_height="20dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
+        <!--date-->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Room :  "
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/room"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date :     "
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-    <android.support.v4.widget.Space
-        android:layout_width="match_parent"
-        android:layout_height="10dp" />
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:freezesText="true"
+                android:text="click to get date"
+                android:textSize="18sp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        </LinearLayout>
 
-        <TextView
+        <android.support.v4.widget.Space
+            android:layout_width="fill_parent"
+            android:layout_height="15dp" />
+
+        <!--time-->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Projector :  "
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/projector"
-            android:layout_width="73dp"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start Time : "
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/timeHr"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent" />
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:text=" : "
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/timeMin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <android.support.v4.widget.Space
+            android:layout_width="fill_parent"
+            android:layout_height="10dp" />
+
+        <!--totime-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End Time : "
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/totimeHr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:text=" : "
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/totimeMin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <android.support.v4.widget.Space
+            android:layout_width="fill_parent"
+            android:layout_height="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Room :  "
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <android.support.v4.widget.Space
+            android:layout_width="match_parent"
+            android:layout_height="10sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Projector :  "
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/projector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/txtprojector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:freezesText="true"
+                android:text="click select projector"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+
     </LinearLayout>
-
-
-</LinearLayout>
+</ScrollView>

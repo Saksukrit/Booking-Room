@@ -1,14 +1,18 @@
 package com.example.wolf_z.bookingroom.Createbooking;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -23,12 +27,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.StringTokenizer;
 
 
 public class SubjectFragment extends Fragment {
 
     private static final String TIME_PATTERN = "HH:mm";
-    private ProgressDialog prgDialog;
+    protected ProgressDialog prgDialog;
     private Spinner starttimeHr;
     private Spinner starttimeMin;
     private Spinner endtimeHr;
@@ -40,14 +45,18 @@ public class SubjectFragment extends Fragment {
     private Spinner room_spinner;
     private Spinner projector_spinner;
     private TextView date_show;
+    private TextView projector_txt;
+    private Spinner projector2_spinner;
+    private Button select;
+    private Button cancel;
 
     private String date_send;
     protected String settime;
     protected String settotime;
-    private final ArrayList<String> hr = new ArrayList<String>();
-    private final ArrayList<String> min = new ArrayList<String>();
+    private final ArrayList<String> hr = new ArrayList<>();
+    private final ArrayList<String> min = new ArrayList<>();
     private DatePickerDialog fromDatePickerDialog;
-    private SimpleDateFormat dateFormatter;
+    protected SimpleDateFormat dateFormatter;
     protected SimpleDateFormat dateFormatSend;
     protected SimpleDateFormat dateFormatter1;
     protected Createbooking createbooking;
@@ -110,6 +119,9 @@ public class SubjectFragment extends Fragment {
         projector_spinner = (Spinner) view.findViewById(R.id.projector);
         getSpinnerProjector();
 
+        /**projector_txt_spinner*/
+        projector_txt = (TextView) view.findViewById(R.id.txtprojector);
+        getDialogSpinnerProjector();
 
         return view;
     }
@@ -231,6 +243,50 @@ public class SubjectFragment extends Fragment {
         return settotime;
     }
 
+    //projector dialog
+    private void getDialogSpinnerProjector() {
+
+        final ArrayList<String> roomid = new ArrayList<>();
+
+        projector_txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog room_dialog = new Dialog(getActivity());
+                room_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                room_dialog.setContentView(R.layout.customdialog);
+                room_dialog.setCancelable(true);
+                roomid.add("unselected");
+                roomid.add("101");
+
+                //task by condition
+
+                projector2_spinner = (Spinner) room_dialog.findViewById(R.id.projector_spinner);
+                ArrayAdapter<String> adapterroomid = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, roomid);
+                adapterroomid.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                projector2_spinner.setAdapter(adapterroomid);
+
+                select = (Button) room_dialog.findViewById(R.id.select);
+                select.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        projector_txt.setText(projector2_spinner.getSelectedItem().toString());
+                        roomid.clear();
+                        room_dialog.cancel();
+                    }
+                });
+                cancel = (Button) room_dialog.findViewById(R.id.cancel);
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        room_dialog.cancel();
+                    }
+                });
+
+                room_dialog.show();
+
+            }
+        });
+    }
 
     /**
      * get data from view

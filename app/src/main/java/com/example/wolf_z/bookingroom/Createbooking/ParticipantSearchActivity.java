@@ -152,7 +152,7 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
                             }
                         }
                     }
-                    Createbooking.accountBeen_selected_arraylist.addAll(account_item_selected_arraylist);
+                    Createbooking.accountBeen_selected_arraylist.addAll(new ArrayList<AccountBean>(account_item_selected_arraylist));
 
 
 //                    if (Createbooking.accountBeen_selected_arraylist.size() != 0) {

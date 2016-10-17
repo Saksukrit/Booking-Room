@@ -222,6 +222,7 @@ public class Createbooking extends AppCompatActivity {
                 setOptionSave();
                 return true;
             case 1://create
+                accountBeen_selected_arraylist.size();
                 setOptionCreate();
                 return true;
             case android.R.id.home:
@@ -259,7 +260,6 @@ public class Createbooking extends AppCompatActivity {
      * Create Booking
      */
     private class doCreateBooking extends AsyncTask<String, Void, String> {
-
         String result = "";
 
         @Override
@@ -268,22 +268,15 @@ public class Createbooking extends AppCompatActivity {
                 /** POST **/
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(urls[0]);
-
-
                 Gson gson = new Gson();
                 StringEntity stringEntity = new StringEntity(gson.toJson(bookBean_to_create));
-
                 httpPost.setEntity(stringEntity);
                 httpPost.setHeader("Content-type", "application/json");
-
                 HttpResponse httpResponse = httpClient.execute(httpPost);
-
                 HttpEntity httpEntity = httpResponse.getEntity();
                 if (httpEntity != null) {
                     result = EntityUtils.toString(httpEntity);
                 }
-
-
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (ClientProtocolException e) {
@@ -297,33 +290,24 @@ public class Createbooking extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-
             String tag = "";
             String status = "";
             String error_msg = "";
-
             try {
-
                 JSONObject jsonObject = new JSONObject(result);
 
                 status = jsonObject.getString("status");
                 error_msg = jsonObject.getString("error_msg");
                 bookingid = jsonObject.getString("bookingid");   //***********
 
+
                 if (Objects.equals(error_msg, "")) {
                     String success = "Create Book Success! " + bookingid;
                     Toast toast = Toast.makeText(getApplicationContext(), success, Toast.LENGTH_SHORT);
                     toast.show();
-
                     /**Params participant_to_create*/
-
-                    String[] username = new String[accountBeen_selected_arraylist.size()];
-                    for (int i = 0; i < accountBeen_selected_arraylist.size(); i++) {
-                        username[i] = accountBeen_selected_arraylist.get(i).getUsername();
-                    }
-
                     participant_to_create.setBookingid(Integer.parseInt(bookingid));
-                    participant_to_create.setUsername(username);
+
                     String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/doparticipant";
                     new doCreateParticipant().execute(URL);
 
@@ -356,7 +340,6 @@ public class Createbooking extends AppCompatActivity {
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(urls[0]);
                 Gson gson = new Gson();
-
                 String x = gson.toJson(participant_to_create);
                 StringEntity stringEntity = new StringEntity(gson.toJson(participant_to_create));
                 httpPost.setEntity(stringEntity);
@@ -689,6 +672,12 @@ public class Createbooking extends AppCompatActivity {
             bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
             bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_spinner().getSelectedItem().toString())); // check
 
+            /**Params participant_to_create*/
+            String[] username = new String[accountBeen_selected_arraylist.size()];
+            for (int i = 0; i < accountBeen_selected_arraylist.size(); i++) {
+                username[i] = accountBeen_selected_arraylist.get(i).getUsername();
+            }
+            participant_to_create.setUsername(username);
             String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/dobooking";
             new doCreateBooking().execute(URL);
 
@@ -728,12 +717,18 @@ public class Createbooking extends AppCompatActivity {
             bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
             bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
             bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
-            bookBean_to_create.setDate(dateFormatSend.format(subjectFragment.getDate_show().getText().toString()));
+            bookBean_to_create.setDate(subjectFragment.getDate_send());
             bookBean_to_create.setStarttime(subjectFragment.setStartTime());
             bookBean_to_create.setEndtime(subjectFragment.setEndTime());
             bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
             bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_spinner().getSelectedItem().toString())); // check
 
+            /**Params participant_to_create*/
+            String[] username = new String[accountBeen_selected_arraylist.size()];
+            for (int i = 0; i < accountBeen_selected_arraylist.size(); i++) {
+                username[i] = accountBeen_selected_arraylist.get(i).getUsername();
+            }
+            participant_to_create.setUsername(username);
             String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/dobooking";
             new doCreateBooking().execute(URL);
 

@@ -57,7 +57,7 @@ public class CustomAdapter_search extends BaseAdapter {
         subject_endtime.setText(bookBean_search.get(position).getEndtime());
 
         TextView subject_roomid = (TextView) view.findViewById(R.id.subject_room);
-        subject_roomid.setText(bookBean_search.get(position).getRoomid());     //String.valueOf() for set int
+        subject_roomid.setText(String.valueOf(bookBean_search.get(position).getRoomid()));     //String.valueOf() for set int
 
         return view;
     }
