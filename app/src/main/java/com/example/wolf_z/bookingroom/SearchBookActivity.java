@@ -55,7 +55,8 @@ public class SearchBookActivity extends AppCompatActivity {
     private ArrayList<RoomBean> roomBeans = new ArrayList<>();
     private ProgressDialog prgDialog;
     protected ActionBar actionBar;
-    private TextView date;
+    private TextView date_show;
+    private String date_send;
     private Spinner timeHr;
     private Spinner timeMin;
     private Spinner totimeHr;
@@ -69,12 +70,11 @@ public class SearchBookActivity extends AppCompatActivity {
     protected String settotime;
     private ArrayList<String> Aroom = new ArrayList<>();
 
-
     private DatePickerDialog fromDatePickerDialog;
-    private SimpleDateFormat dateFormatter;
-    private SimpleDateFormat dateFormatSend;
-    private SimpleDateFormat timeFormatter;
-    private SimpleDateFormat dateFormatShow;
+    private SimpleDateFormat dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    private SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+    private SimpleDateFormat timeFormatter2 = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
+    private SimpleDateFormat dateFormatShow = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
     protected CustomAdapter_search adapter;
 
     private String intent_date;
@@ -90,11 +90,6 @@ public class SearchBookActivity extends AppCompatActivity {
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
-        Locale lc = new Locale("th", "TH");
-        dateFormatter = new SimpleDateFormat("dd/MM/yyyy", lc);
-        dateFormatShow = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        timeFormatter = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -106,21 +101,22 @@ public class SearchBookActivity extends AppCompatActivity {
         txtstatus.setText("please search_button");
 
         /** Date picker*/
-        date = (TextView) findViewById(R.id.date);
+        date_show = (TextView) findViewById(R.id.date);
 
         Calendar caledar = Calendar.getInstance();
         fromDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-
-                date.setText(dateFormatter.format(newDate.getTime()));  /****format*/
+                /****format*/
+                date_show.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + (year + 543));
+                date_send = dateFormatSend.format(newDate.getTime());
 
             }
         }, caledar.get(Calendar.YEAR), caledar.get(Calendar.MONTH), caledar.get(Calendar.DAY_OF_MONTH));
 
 
-        date.setOnClickListener(new View.OnClickListener() {
+        date_show.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 fromDatePickerDialog.show();
@@ -191,7 +187,7 @@ public class SearchBookActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Objects.equals(date.getText().toString(), "click to get date")) {
+                if (Objects.equals(date_show.getText().toString(), "click to get date")) {
                     Snackbar.make(v, "Unselected Date", Snackbar.LENGTH_SHORT).show();
                 } else if (Objects.equals(room.getSelectedItem().toString(), "unselect")) {
                     Snackbar.make(v, "Unselected Room", Snackbar.LENGTH_SHORT).show();
@@ -199,7 +195,7 @@ public class SearchBookActivity extends AppCompatActivity {
                     String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/searchbooking"};
                     /**  Params **/
                     try {
-                        bookBean_select.setDate(dateFormatSend.format(dateFormatShow.parse(date.getText().toString())));
+                        bookBean_select.setDate(date_send);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -210,8 +206,6 @@ public class SearchBookActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     // setTime **/
@@ -329,9 +323,9 @@ public class SearchBookActivity extends AppCompatActivity {
                 txtstatus.setText("Room is empty this time.");
                 /**set value intent*/
                 try {
-                    intent_date = dateFormatShow.format(dateFormatSend.parse(bookBean_select.getDate()));
-                    intent_starttime = timeFormatter.format(timeFormatter.parse(bookBean_select.getStarttime()));
-                    intent_endtime = timeFormatter.format(timeFormatter.parse(bookBean_select.getEndtime()));
+                    intent_date = date_show.getText().toString();
+                    intent_starttime = timeFormatter.format(timeFormatter2.parse(setStartTime()));
+                    intent_endtime = timeFormatter.format(timeFormatter2.parse(setEndTime()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

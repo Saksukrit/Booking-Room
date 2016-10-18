@@ -18,6 +18,7 @@ import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.Bean.Participant;
 import com.example.wolf_z.bookingroom.Bean.ParticipantArray;
+import com.example.wolf_z.bookingroom.Bean.ProjectorBean;
 import com.example.wolf_z.bookingroom.Bean.RoomBean;
 import com.example.wolf_z.bookingroom.BookingDetail;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
@@ -58,12 +59,17 @@ public class Createbooking extends AppCompatActivity {
     private BookBean bookBean_to_create = new BookBean();
     private ParticipantArray participant_to_create = new ParticipantArray();
 
-    protected SimpleDateFormat dateFormatter;
-    protected SimpleDateFormat dateFormatSend;
-    protected SimpleDateFormat dateFormatter1;
+    protected SimpleDateFormat dateFormatShow = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+    protected SimpleDateFormat dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    SimpleDateFormat dateFormatYear = new SimpleDateFormat("yyyy", Locale.ENGLISH);
+    SimpleDateFormat dateFormatMonth = new SimpleDateFormat("MM", Locale.ENGLISH);
+    SimpleDateFormat dateFormatDay = new SimpleDateFormat("dd", Locale.ENGLISH);
+
 
     public static ArrayList<AccountBean> accountBeen_selected_arraylist = new ArrayList<>();
     private ArrayList<String> roomshow_spinner_arraylist = new ArrayList<>();
+    private ArrayList<String> projector_spinner_arraylist = new ArrayList<>();
+    private BookBean bookBean_for_search_projector = new BookBean();
 
     //params edit
     protected Bundle bundle;
@@ -85,10 +91,6 @@ public class Createbooking extends AppCompatActivity {
         prgDialog = new ProgressDialog(getApplicationContext());
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
-        Locale lc = new Locale("th", "TH");
-        dateFormatter = new SimpleDateFormat("dd/MM/yyyy", lc);
-        dateFormatter1 = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-        dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         actionBar = getSupportActionBar();
 
         /** Tab */
@@ -255,6 +257,9 @@ public class Createbooking extends AppCompatActivity {
         return participantFragment;
     }
 
+    public ArrayList<String> getProjector_spinner_arraylist() {
+        return projector_spinner_arraylist;
+    }
 
     /**
      * Create Booking
@@ -656,21 +661,23 @@ public class Createbooking extends AppCompatActivity {
             Toast.makeText(this, "Date Unselected", Toast.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
             Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
-        } else if (!checkTimeInputCommon(subjectFragment.setStartTime(), subjectFragment.setEndTime())) {
+        } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
             Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
         } else if (accountBeen_selected_arraylist.size() == 0) {
             Toast.makeText(this, "Participant Unselected", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselect") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
+            Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
         } else {
-            dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-
             bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
             bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
             bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
             bookBean_to_create.setDate(subjectFragment.getDate_send());
-            bookBean_to_create.setStarttime(subjectFragment.setStartTime());
-            bookBean_to_create.setEndtime(subjectFragment.setEndTime());
+            bookBean_to_create.setStarttime(subjectFragment.getStartTime());
+            bookBean_to_create.setEndtime(subjectFragment.getEndTime());
             bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
-            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_spinner().getSelectedItem().toString())); // check
+            String c = subjectFragment.getProjector_txt().getText().toString();
+            int x = Integer.parseInt(subjectFragment.getProjector_txt().getText().toString());
+            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
 
             /**Params participant_to_create*/
             String[] username = new String[accountBeen_selected_arraylist.size()];
@@ -705,23 +712,24 @@ public class Createbooking extends AppCompatActivity {
             Toast.makeText(this, "Not Detail", Toast.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getDate_send(), "click to get date")) {
             Toast.makeText(this, "Date Unselected", Toast.LENGTH_SHORT).show();
-        } else if (!checkTimeInputCommon(subjectFragment.setStartTime(), subjectFragment.setEndTime())) {
+        } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
             Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
             Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
         } else if (accountBeen_selected_arraylist.size() == 0) {
             Toast.makeText(this, "Participant Unselected", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getProjector_txt().toString(), "unselect")) {
+            Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
         } else {
-            dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
             bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
             bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
             bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
             bookBean_to_create.setDate(subjectFragment.getDate_send());
-            bookBean_to_create.setStarttime(subjectFragment.setStartTime());
-            bookBean_to_create.setEndtime(subjectFragment.setEndTime());
+            bookBean_to_create.setStarttime(subjectFragment.getStartTime());
+            bookBean_to_create.setEndtime(subjectFragment.getEndTime());
             bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
-            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_spinner().getSelectedItem().toString())); // check
+            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().toString())); // check
 
             /**Params participant_to_create*/
             String[] username = new String[accountBeen_selected_arraylist.size()];
@@ -748,18 +756,20 @@ public class Createbooking extends AppCompatActivity {
             Toast.makeText(this, "Not Detail", Toast.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getDate_send(), "click to get date")) {
             Toast.makeText(this, "Date Unselected", Toast.LENGTH_SHORT).show();
-        } else if (!checkTimeInputCommon(subjectFragment.setStartTime(), subjectFragment.setEndTime())) {
+        } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
             Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
             Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getProjector_txt().toString(), "unselect")) {
+            Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
         } else {
-            Locale lc = new Locale("th", "TH");
-            dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-            dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-            String getdate = null;
+            String date_send = null;
             try {
-                getdate = dateFormatSend.format(dateFormatter.parse(subjectFragment.getDate_show().getText().toString()));
-//                getdate = subjectFragment.getDate_show().getText().toString();
+                String datefromtxt_year = dateFormatYear.format(dateFormatShow.parse(subjectFragment.getDate_show().getText().toString()));
+                String datefromtxt_month = dateFormatMonth.format(dateFormatShow.parse(subjectFragment.getDate_show().getText().toString()));
+                String datefromtxt_day = dateFormatDay.format(dateFormatShow.parse(subjectFragment.getDate_show().getText().toString()));
+
+                date_send = dateFormatSend.format(dateFormatShow.parse(datefromtxt_day + "/" + datefromtxt_month + "/" + (Integer.valueOf(datefromtxt_year) - 543)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -767,11 +777,11 @@ public class Createbooking extends AppCompatActivity {
             bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
             bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
             bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
-            bookBean_to_create.setDate(getdate);
-            bookBean_to_create.setStarttime(subjectFragment.setStartTime());
-            bookBean_to_create.setEndtime(subjectFragment.setEndTime());
+            bookBean_to_create.setDate(date_send);
+            bookBean_to_create.setStarttime(subjectFragment.getStartTime());
+            bookBean_to_create.setEndtime(subjectFragment.getEndTime());
             bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
-            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_spinner().getSelectedItem().toString())); // check
+            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().toString())); // check
             bookBean_to_create.setBookingid(Integer.parseInt(bookingid));
 
             String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/updatebooking/restservice/updatebooking"
@@ -912,6 +922,63 @@ public class Createbooking extends AppCompatActivity {
             setRoomSpinner(roomid);
         }
 
+    }
+
+    /**
+     * SetProjector_Spinner
+     */
+    private class SetProjector_Spinner extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... url) {
+            String result = "";
+            try {
+                /** POST **/
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(url[0]);
+                Gson gson = new Gson();
+                String x = gson.toJson(bookBean_for_search_projector);
+                StringEntity stringEntity = new StringEntity(gson.toJson(bookBean_for_search_projector));
+                httpPost.setEntity(stringEntity);
+                httpPost.setHeader("Content-type", "application/json");
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                if (httpEntity != null) {
+                    result = EntityUtils.toString(httpEntity);
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            JSONArray jsonArray;
+            /**room_spinner*/
+            try {
+                jsonArray = new JSONArray(result);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    ProjectorBean projectorBean = new ProjectorBean();
+                    projectorBean.setProjid(jsonObject.getInt("projid"));
+                    projector_spinner_arraylist.add(String.valueOf(projectorBean.getProjid()));
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void getSetProjector_Spinner() {
+        bookBean_for_search_projector.setDate(subjectFragment.getDate_send());
+        bookBean_for_search_projector.setStarttime(subjectFragment.getStartTime());
+        bookBean_for_search_projector.setEndtime(subjectFragment.getEndTime());
+        String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/search_projector"};
+        new SetProjector_Spinner().execute(URL);
     }
 }
 
