@@ -156,8 +156,6 @@ public class Createbooking extends AppCompatActivity {
             int search_intent_roomid = bundle.getInt("search_intent_roomid");
 
             new SetfromSearch(search_intent_date, search_intent_starttime, search_intent_endtime, search_intent_roomid).execute("");
-
-
         }
     }
 

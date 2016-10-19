@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Bean.DepartmentBean;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
-import com.example.wolf_z.bookingroom.Createbooking.Multi_Search.MultiSelectRecyclerViewAdapter;
+import com.example.wolf_z.bookingroom.Createbooking.Multi_select_iin_Search.MultiSelectRecyclerViewAdapter;
 import com.example.wolf_z.bookingroom.R;
 import com.google.gson.Gson;
 

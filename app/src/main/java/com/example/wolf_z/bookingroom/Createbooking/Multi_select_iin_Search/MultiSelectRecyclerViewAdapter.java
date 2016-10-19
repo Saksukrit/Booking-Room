@@ -1,8 +1,7 @@
-package com.example.wolf_z.bookingroom.Createbooking.Multi_Search;
+package com.example.wolf_z.bookingroom.Createbooking.Multi_select_iin_Search;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

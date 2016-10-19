@@ -8,22 +8,27 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.wolf_z.bookingroom.Createbooking.Multi_Search.MultiSelectRecyclerViewAdapter;
+import com.example.wolf_z.bookingroom.Createbooking.Delete_list_helper.DeleteRecyclerViewAdapter;
+import com.example.wolf_z.bookingroom.Createbooking.Delete_list_helper.OnStartDragListener;
+import com.example.wolf_z.bookingroom.Createbooking.Delete_list_helper.SimpleItemTouchHelperCallback;
+import com.example.wolf_z.bookingroom.Createbooking.Multi_select_iin_Search.MultiSelectRecyclerViewAdapter;
 import com.example.wolf_z.bookingroom.R;
 
 
-public class ParticipantFragment extends Fragment implements MultiSelectRecyclerViewAdapter.ViewHolder.ClickListener {
+public class ParticipantFragment extends Fragment implements OnStartDragListener {
 
     private final int REQ_CODE_participant_search = 12345;
     protected ProgressDialog prgDialog;
     protected Button search_participant_button;
     protected RecyclerView selected_recyclerview;
-    private MultiSelectRecyclerViewAdapter item_selected_Adapter;
+    private DeleteRecyclerViewAdapter item_selected_Adapter;
+    private ItemTouchHelper mItemTouchHelper;
     protected Createbooking createbooking;
 
     public ParticipantFragment(Createbooking createbooking) {
@@ -34,7 +39,7 @@ public class ParticipantFragment extends Fragment implements MultiSelectRecycler
 
     }
 
-    public MultiSelectRecyclerViewAdapter getItem_selected_Adapter() {
+    public DeleteRecyclerViewAdapter getItem_selected_Adapter() {
         return item_selected_Adapter;
     }
 
@@ -48,8 +53,6 @@ public class ParticipantFragment extends Fragment implements MultiSelectRecycler
         prgDialog.setCancelable(false);
 
         selected_recyclerview = (RecyclerView) view.findViewById(R.id.selected_list);
-        selected_recyclerview.setHasFixedSize(true);
-        selected_recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
         setAdapter();
 
         search_participant_button = (Button) view.findViewById(R.id.search_participant);
@@ -63,24 +66,19 @@ public class ParticipantFragment extends Fragment implements MultiSelectRecycler
         return view;
     }
 
-    @Override
-    public void onItemClicked(int position) {
-        toggleSelection(position);
-    }
-
-    @Override
-    public boolean onItemLongClicked(int position) {
-        toggleSelection(position);
-        return true;
-    }
-
-    private void toggleSelection(int position) {
-        item_selected_Adapter.toggleSelection(position);
-    }
-
     public void setAdapter() {
-        item_selected_Adapter = new MultiSelectRecyclerViewAdapter(getActivity(), createbooking.getAccountBeen_selected(), ParticipantFragment.this);
+        item_selected_Adapter = new DeleteRecyclerViewAdapter(getActivity(), this, createbooking.getAccountBeen_selected());
         selected_recyclerview.setAdapter(item_selected_Adapter);
+        selected_recyclerview.setHasFixedSize(true);
+        selected_recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(item_selected_Adapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(selected_recyclerview);
     }
 
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
+    }
 }
