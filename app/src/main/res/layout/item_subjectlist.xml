@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/subject_date"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="subject_date"
             android:textAlignment="center"
@@ -55,7 +55,7 @@
 
         <TextView
             android:id="@+id/subject_time"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="subject_time"
             android:textAlignment="center"

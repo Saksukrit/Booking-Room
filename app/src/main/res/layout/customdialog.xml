@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="230dp"
     android:layout_height="wrap_content"
-    android:background="#ffe668"
+    android:layout_marginBottom="10dp"
     android:orientation="vertical"
-
     android:padding="10sp">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_gravity="center"
+        android:text="Projector"
+        android:textColor="@color/colorTextView"
+        android:textSize="18sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Empty Projector : "
-            android:textSize="18sp" />
-
-        <Spinner
-            android:id="@+id/projector_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-
-    </LinearLayout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <Spinner
+        android:id="@+id/projector_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <Button

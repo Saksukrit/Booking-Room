@@ -115,7 +115,7 @@
 
         <!--date-->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -128,10 +128,13 @@
 
             <TextView
                 android:id="@+id/date"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#e4e4e4"
                 android:freezesText="true"
+                android:padding="5dp"
                 android:text="click to get date"
+
                 android:textSize="18sp" />
 
         </LinearLayout>
@@ -244,9 +247,11 @@
 
             <TextView
                 android:id="@+id/txtprojector"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#e4e4e4"
                 android:freezesText="true"
+                android:padding="5dp"
                 android:text="click select projector"
                 android:textSize="18sp" />
         </LinearLayout>

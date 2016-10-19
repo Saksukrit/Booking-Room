@@ -517,7 +517,7 @@ public class Createbooking extends AppCompatActivity {
             subjectFragment.getDate_show().setText(bookBeans_edit.get(0).getDate());
             setTimeSpinner(bookBeans_edit.get(0).getStarttime(), bookBeans_edit.get(0).getEndtime());
             setRoomSpinner(bookBeans_edit.get(0).getRoomid());
-            setProjectorSpinner();//null
+            subjectFragment.getProjector_txt().setText(String.valueOf(bookBeans_edit.get(0).getProjid()));
 
             /** participant_to_update*/
             try {
@@ -665,7 +665,7 @@ public class Createbooking extends AppCompatActivity {
             Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
         } else if (accountBeen_selected_arraylist.size() == 0) {
             Toast.makeText(this, "Participant Unselected", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselect") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
+        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
             Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
         } else {
             bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
@@ -675,8 +675,6 @@ public class Createbooking extends AppCompatActivity {
             bookBean_to_create.setStarttime(subjectFragment.getStartTime());
             bookBean_to_create.setEndtime(subjectFragment.getEndTime());
             bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
-            String c = subjectFragment.getProjector_txt().getText().toString();
-            int x = Integer.parseInt(subjectFragment.getProjector_txt().getText().toString());
             bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
 
             /**Params participant_to_create*/
@@ -699,13 +697,13 @@ public class Createbooking extends AppCompatActivity {
 
     private void setOptionSave() {
         if (Objects.equals(from, "detail_to_edit")) {
-            setOptionSave_Update();
+            setOptionSave_from_Update();
         } else {
-            setOptionSave_Create();
+            setOptionSave_from_Create();
         }
     }
 
-    private void setOptionSave_Create() {
+    private void setOptionSave_from_Create() {
         if (Objects.equals(subjectFragment.getETsubject().getText().toString(), "")) {
             Toast.makeText(this, "Not Subject", Toast.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getETdetail().getText().toString(), "")) {
@@ -718,7 +716,7 @@ public class Createbooking extends AppCompatActivity {
             Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
         } else if (accountBeen_selected_arraylist.size() == 0) {
             Toast.makeText(this, "Participant Unselected", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getProjector_txt().toString(), "unselect")) {
+        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
             Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
         } else {
 
@@ -729,7 +727,7 @@ public class Createbooking extends AppCompatActivity {
             bookBean_to_create.setStarttime(subjectFragment.getStartTime());
             bookBean_to_create.setEndtime(subjectFragment.getEndTime());
             bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
-            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().toString())); // check
+            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
 
             /**Params participant_to_create*/
             String[] username = new String[accountBeen_selected_arraylist.size()];
@@ -748,7 +746,7 @@ public class Createbooking extends AppCompatActivity {
         }
     }
 
-    private void setOptionSave_Update() {
+    private void setOptionSave_from_Update() {
         Toast.makeText(this, "update", Toast.LENGTH_SHORT).show();
         if (Objects.equals(subjectFragment.getETsubject().getText().toString(), "")) {
             Toast.makeText(this, "Not Subject", Toast.LENGTH_SHORT).show();
@@ -760,7 +758,7 @@ public class Createbooking extends AppCompatActivity {
             Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
             Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getProjector_txt().toString(), "unselect")) {
+        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
             Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
         } else {
             String date_send = null;
@@ -781,7 +779,7 @@ public class Createbooking extends AppCompatActivity {
             bookBean_to_create.setStarttime(subjectFragment.getStartTime());
             bookBean_to_create.setEndtime(subjectFragment.getEndTime());
             bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
-            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().toString())); // check
+            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
             bookBean_to_create.setBookingid(Integer.parseInt(bookingid));
 
             String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/updatebooking/restservice/updatebooking"
@@ -885,10 +883,6 @@ public class Createbooking extends AppCompatActivity {
             }
         }
     }
-
-    private void setProjectorSpinner() {
-    }
-
 
     private void clearArraylist() {
         accountBeen_selected_arraylist.clear();

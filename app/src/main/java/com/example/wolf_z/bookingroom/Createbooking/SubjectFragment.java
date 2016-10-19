@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -227,16 +228,24 @@ public class SubjectFragment extends Fragment {
                     room_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     room_dialog.setContentView(R.layout.customdialog);
                     room_dialog.setCancelable(true);
-
-                    //task
                     createbooking.getProjector_spinner_arraylist().add("unselected");
-                    createbooking.getSetProjector_Spinner();
-
+                    createbooking.getSetProjector_Spinner();//task
                     projector2_spinner = (Spinner) room_dialog.findViewById(R.id.projector_spinner);
-                    ArrayAdapter<String> adapterroomid = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, createbooking.getProjector_spinner_arraylist());
-                    adapterroomid.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    projector2_spinner.setAdapter(adapterroomid);
+                    ArrayAdapter<String> adapterprojector = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, createbooking.getProjector_spinner_arraylist());
+                    adapterprojector.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    projector2_spinner.setAdapter(adapterprojector);
 
+                    Log.d("projector num ", String.valueOf(createbooking.getProjector_spinner_arraylist().size()));
+//                    projector2_spinner.setSelection(1);
+
+
+//                    if (!Objects.equals(projector_txt.getText().toString(), "unselected") || !Objects.equals(projector_txt.getText().toString(), "click select projector")) {
+                    for (int i = 1; i < createbooking.getProjector_spinner_arraylist().size(); i++) {
+                        if (Objects.equals(projector_txt.getText().toString(), createbooking.getProjector_spinner_arraylist().get(i))) {
+                            projector2_spinner.setSelection(i);
+                        }
+                    }
+//                    }
                     select = (Button) room_dialog.findViewById(R.id.select);
                     select.setOnClickListener(new View.OnClickListener() {
                         @Override
