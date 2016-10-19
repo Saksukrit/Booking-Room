@@ -633,18 +633,13 @@ public class Createbooking extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            if (Objects.equals(error_msgupdate_booking, "") && Objects.equals(error_msgupdate_participant, "")) {
+            if (Objects.equals(error_msgupdate_booking, "") & Objects.equals(error_msgupdate_participant, "")) {
                 String success = "Update Success!";
                 Toast toast = Toast.makeText(getApplicationContext(), success, Toast.LENGTH_SHORT);
                 toast.show();
-            } else if (!Objects.equals(error_msgupdate_booking, "")) {
-                String OutputData = "Update booking fail : "
-                        + " ," + error_msgupdate_booking;
-                Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_LONG);
-                toast.show();
-            } else if (!Objects.equals(error_msgupdate_participant, "")) {
-                String OutputData = "Update participant fail : "
-                        + " ," + error_msgupdate_participant;
+            } else if (!Objects.equals(error_msgupdate_booking, "") || !Objects.equals(error_msgupdate_participant, "")) {
+                String OutputData = "Update fail : "
+                        + " " + error_msgupdate_booking + " " + error_msgupdate_participant;
                 Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_LONG);
                 toast.show();
             }

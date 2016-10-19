@@ -175,10 +175,10 @@ public class SearchBookActivity extends AppCompatActivity {
         adapterroom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         room.setAdapter(adapterroom);
 
-
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bookBeans_to_list.clear();
                 txtstatus.setBackgroundColor(0xffffff00);
                 txtstatus.setText("please search_button");
             }
@@ -187,11 +187,18 @@ public class SearchBookActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bookBeans_to_list.clear();
                 if (Objects.equals(date_show.getText().toString(), "click to get date")) {
                     Snackbar.make(v, "Unselected Date", Snackbar.LENGTH_SHORT).show();
-                } else if (Objects.equals(room.getSelectedItem().toString(), "unselect")) {
-                    Snackbar.make(v, "Unselected Room", Snackbar.LENGTH_SHORT).show();
                 } else {
+                    //check case room : selected/unselected
+                    if (Objects.equals(room.getSelectedItem().toString(), "unselect")) {
+                        bookBean_select.setRoomid(0);
+                        Snackbar.make(v, "Unselected Room", Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        bookBean_select.setRoomid(Integer.parseInt(room.getSelectedItem().toString()));
+                    }
+
                     String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/searchbooking"};
                     /**  Params **/
                     try {
@@ -201,7 +208,6 @@ public class SearchBookActivity extends AppCompatActivity {
                     }
                     bookBean_select.setStarttime(setStartTime());
                     bookBean_select.setEndtime(setEndTime());
-                    bookBean_select.setRoomid(Integer.parseInt(room.getSelectedItem().toString()));
                     new Search().execute(URL);
                 }
             }
@@ -336,7 +342,6 @@ public class SearchBookActivity extends AppCompatActivity {
                 //set adapter
                 adapter = new CustomAdapter_search(getApplicationContext(), bookBeans_to_list);
                 searchlist.setAdapter(adapter);
-//                bookBeans_to_list.clear();
             }
 
         }

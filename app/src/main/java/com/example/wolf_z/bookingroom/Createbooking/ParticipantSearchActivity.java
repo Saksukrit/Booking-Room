@@ -62,9 +62,9 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
     protected Button undo_button;
     private AutoCompleteTextView auto_search;
     private View snack_view;
-    private Snackbar snackbar_selected;
     private ArrayList<AccountBean> accountBeens_arraylist = new ArrayList<>();
     private ArrayList<AccountBean> account_item_selected_arraylist = new ArrayList<>();
+    private boolean searchstatus = false;
 
 
     @Override
@@ -143,7 +143,9 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
                 finish();
                 return true;
             case 0:
-                if (item_Adapter.getSelectedItemCount() != 0) {
+                if (!searchstatus) {
+                    Snackbar.make(snack_view, "You not search", Snackbar.LENGTH_SHORT).show();
+                } else if (item_Adapter.getSelectedItemCount() != 0) {
                     /**loop get data by position mapping index*/
                     for (int i = 0; i < item_Adapter.getItemCount(); i++) {
                         for (int j = 0; j < item_Adapter.getSelectedItemCount(); j++) {
@@ -375,6 +377,7 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
             @Override
             public void onClick(View v) {
                 accountBeens_arraylist.clear();
+                searchstatus = true;
                 String URL = null;
                 if (Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() == "all") {
                     URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_all";
