@@ -234,6 +234,7 @@ public class BookingDetail extends AppCompatActivity {
 
             case 1:
                 Intent intentCreate = new Intent(this, Createbooking.class);
+                intentCreate.putExtra("from", "detail_to_create");
                 startActivity(intentCreate);
                 finish();
 

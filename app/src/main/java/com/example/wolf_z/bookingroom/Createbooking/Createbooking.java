@@ -80,6 +80,7 @@ public class Createbooking extends AppCompatActivity {
     private Participant participant_edit = new Participant();
 
     private String from;
+    private Intent intent_save_from_create;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -320,7 +321,9 @@ public class Createbooking extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_SHORT);
                     toast.show();
                 }
-
+                intent_save_from_create.putExtra("bookingid", bookingid);
+                startActivity(intent_save_from_create);
+                finish();
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -597,9 +600,10 @@ public class Createbooking extends AppCompatActivity {
         protected String[] doInBackground(String... urls) {
             result = new String[urls.length];
 
+            //booking
             result[0] = doUpdateBooking(urls[0], bookBean_to_create);
 
-
+            //participant
             String[] username = new String[accountBeen_selected_arraylist.size()];
             for (int i = 0; i < accountBeen_selected_arraylist.size(); i++) {
                 username[i] = accountBeen_selected_arraylist.get(i).getUsername();
@@ -733,14 +737,10 @@ public class Createbooking extends AppCompatActivity {
                 username[i] = accountBeen_selected_arraylist.get(i).getUsername();
             }
             participant_to_create.setUsername(username);
+            intent_save_from_create = new Intent(this, BookingDetail.class);
             String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/dobooking";
             new doCreateBooking().execute(URL);
 
-//            bookingid = "28";
-            Intent intent = new Intent(this, BookingDetail.class);
-            intent.putExtra("bookingid", bookingid);
-//            startActivity(intent);
-//            finish();
         }
     }
 
@@ -784,10 +784,9 @@ public class Createbooking extends AppCompatActivity {
                     , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/updatebooking/restservice/update_participant"};
             new Update().execute(URL);
 
-//            bookingid = "28";
             Intent intent = new Intent(this, BookingDetail.class);
             intent.putExtra("bookingid", bookingid);
-//            startActivity(intent);
+            startActivity(intent);
             finish();
         }
     }

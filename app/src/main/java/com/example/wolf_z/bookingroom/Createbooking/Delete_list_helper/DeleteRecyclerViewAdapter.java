@@ -20,8 +20,7 @@ public class DeleteRecyclerViewAdapter extends RecyclerView.Adapter<DeleteRecycl
 
     private final OnStartDragListener mDragStartListener;
 
-    private ArrayList<AccountBean> accountBeens;
-
+    private ArrayList<AccountBean> accountBeens = new ArrayList<>();
 
     public DeleteRecyclerViewAdapter(Context context, OnStartDragListener dragStartListener, ArrayList<AccountBean> accountBeens) {
         mDragStartListener = dragStartListener;
@@ -45,8 +44,8 @@ public class DeleteRecyclerViewAdapter extends RecyclerView.Adapter<DeleteRecycl
 
     @Override
     public void onItemDismiss(int position) {
-        int x = accountBeens.size();
-        accountBeens.remove(position);  //0
+        int x = accountBeens.size();//0
+        accountBeens.remove(position);
         notifyItemRemoved(position);
     }
 
@@ -62,10 +61,6 @@ public class DeleteRecyclerViewAdapter extends RecyclerView.Adapter<DeleteRecycl
         return accountBeens.size();
     }
 
-    /**
-     * Simple example of a view holder that implements {@link ItemTouchHelperViewHolder} and has a
-     * "handle" view that initiates a drag event when touched.
-     */
     public static class ItemViewHolder extends RecyclerView.ViewHolder implements
             ItemTouchHelperViewHolder {
 
