@@ -82,6 +82,8 @@ public class SearchBookActivity extends AppCompatActivity {
     private String intent_endtime;
     private int intent_roomid;
 
+    private boolean searchstatus = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,6 +190,7 @@ public class SearchBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bookBeans_to_list.clear();
+                searchstatus = true;
                 if (Objects.equals(date_show.getText().toString(), "click to get date")) {
                     Snackbar.make(v, "Unselected Date", Snackbar.LENGTH_SHORT).show();
                 } else {
@@ -239,7 +242,9 @@ public class SearchBookActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 0:
-                if (bookBeans_to_list.size() == 0) {
+                if (!searchstatus) {
+                    Snackbar.make(new View(this), "You not search", Snackbar.LENGTH_LONG);
+                } else if (bookBeans_to_list.size() == 0) {
                     Toast.makeText(this, "Go Create", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(this, Createbooking.class);
                     intent.putExtra("search_intent_date", intent_date);

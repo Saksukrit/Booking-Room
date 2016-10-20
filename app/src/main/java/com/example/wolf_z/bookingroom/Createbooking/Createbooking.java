@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
@@ -258,6 +260,65 @@ public class Createbooking extends AppCompatActivity {
 
     public ArrayList<String> getProjector_spinner_arraylist() {
         return projector_spinner_arraylist;
+    }
+
+    /**
+     * Check Check Check Booking
+     */
+    private class checkBooking extends AsyncTask<String, Void, String> {
+        String result = "";
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                /** POST **/
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(urls[0]);
+                Gson gson = new Gson();
+                StringEntity stringEntity = new StringEntity(gson.toJson(bookBean_to_create));
+                httpPost.setEntity(stringEntity);
+                httpPost.setHeader("Content-type", "application/json");
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                if (httpEntity != null) {
+                    result = EntityUtils.toString(httpEntity);
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            String status = "";
+            String error_msg = "";
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+
+                status = jsonObject.getString("status");
+                error_msg = jsonObject.getString("error_msg");
+
+                if (Objects.equals(error_msg, "")) {
+                    String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/dobooking";
+                    new doCreateParticipant().execute(URL);
+                } else {//Check not pass
+                    String OutputData = "Sory!! " + error_msg;
+                    Snackbar.make(new View(getApplicationContext()), OutputData, Snackbar.LENGTH_SHORT).show();
+                }
+                startActivity(intent_save_from_create);
+                finish();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     /**
