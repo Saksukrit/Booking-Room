@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -13,7 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
@@ -82,7 +80,10 @@ public class Createbooking extends AppCompatActivity {
     private Participant participant_edit = new Participant();
 
     private String from;
-    private Intent intent_save_from_create;
+    private Intent intent_save_from_create_to_detail;
+    private Intent intent_update_to_detail;
+    private Intent intent_create_to_create;
+    private String create_from = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -296,24 +297,28 @@ public class Createbooking extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            String status = "";
             String error_msg = "";
             try {
                 JSONObject jsonObject = new JSONObject(result);
-
-                status = jsonObject.getString("status");
                 error_msg = jsonObject.getString("error_msg");
 
                 if (Objects.equals(error_msg, "")) {
                     String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/dobooking";
-                    new doCreateParticipant().execute(URL);
+                    new doCreateBooking().execute(URL);
+
+                    //condition from ...
+//                    if (Objects.equals(create_from, "create")) {
+//                        intent_create_to_create.putExtra("from", "createbook");
+//                        startActivity(intent_create_to_create);
+//                        finish();
+//                    } else if (Objects.equals(create_from, "save")) {
+//                        startActivity(intent_save_from_create_to_detail);
+//                        finish();
+//                    }
                 } else {//Check not pass
                     String OutputData = "Sory!! " + error_msg;
-                    Snackbar.make(new View(getApplicationContext()), OutputData, Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_SHORT).show();
                 }
-                startActivity(intent_save_from_create);
-                finish();
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -355,13 +360,10 @@ public class Createbooking extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            String tag = "";
-            String status = "";
             String error_msg = "";
             try {
                 JSONObject jsonObject = new JSONObject(result);
 
-                status = jsonObject.getString("status");
                 error_msg = jsonObject.getString("error_msg");
                 bookingid = jsonObject.getString("bookingid");   //***********
 
@@ -377,15 +379,11 @@ public class Createbooking extends AppCompatActivity {
                     new doCreateParticipant().execute(URL);
 
                 } else {//Create Book Unsuccess
-                    String OutputData = "Sory!! ,Booking " + status + " "
-                            + " ," + error_msg;
+                    String OutputData = "Sory!! ,Booking : " + error_msg;
                     Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_SHORT);
                     toast.show();
                 }
-                intent_save_from_create.putExtra("bookingid", bookingid);
-                startActivity(intent_save_from_create);
-                finish();
-
+                intent_save_from_create_to_detail.putExtra("bookingid", bookingid);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -428,21 +426,24 @@ public class Createbooking extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-
-            String status = "";
             String error_msg = "";
             try {
                 JSONObject jsonObject = new JSONObject(result);
-                status = jsonObject.getString("status");
                 error_msg = jsonObject.getString("error_msg");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            String OutputData = "Participant " + status + " "
-                    + " ," + error_msg;
+            String OutputData = "Participant " + error_msg;
             Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_LONG);
             toast.show();
-
+            if (Objects.equals(create_from, "create")) {
+                intent_create_to_create.putExtra("from", "createbook");
+                startActivity(intent_create_to_create);
+                finish();
+            } else if (Objects.equals(create_from, "save")) {
+                startActivity(intent_save_from_create_to_detail);
+                finish();
+            }
         }
 
     }
@@ -704,6 +705,9 @@ public class Createbooking extends AppCompatActivity {
                 Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_LONG);
                 toast.show();
             }
+            intent_update_to_detail.putExtra("bookingid", bookingid);
+            startActivity(intent_update_to_detail);
+            finish();
         }
     }
 
@@ -741,13 +745,10 @@ public class Createbooking extends AppCompatActivity {
                 username[i] = accountBeen_selected_arraylist.get(i).getUsername();
             }
             participant_to_create.setUsername(username);
-            String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/dobooking";
-            new doCreateBooking().execute(URL);
-
-            Intent intent = new Intent(this, Createbooking.class);
-            intent.putExtra("from", "createbook");
-            startActivity(intent);
-            finish();
+            create_from = "create";
+            intent_create_to_create = new Intent(this, Createbooking.class);
+            String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/checkbooking";
+            new checkBooking().execute(URL);
         }
 
 
@@ -793,10 +794,10 @@ public class Createbooking extends AppCompatActivity {
                 username[i] = accountBeen_selected_arraylist.get(i).getUsername();
             }
             participant_to_create.setUsername(username);
-            intent_save_from_create = new Intent(this, BookingDetail.class);
-            String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/dobooking";
-            new doCreateBooking().execute(URL);
-
+            create_from = "save";
+            intent_save_from_create_to_detail = new Intent(this, BookingDetail.class);
+            String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/checkbooking";
+            new checkBooking().execute(URL);
         }
     }
 
@@ -836,14 +837,10 @@ public class Createbooking extends AppCompatActivity {
             bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
             bookBean_to_create.setBookingid(Integer.parseInt(bookingid));
 
+            intent_update_to_detail = new Intent(this, BookingDetail.class);
             String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/updatebooking/restservice/updatebooking"
                     , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/updatebooking/restservice/update_participant"};
             new Update().execute(URL);
-
-            Intent intent = new Intent(this, BookingDetail.class);
-            intent.putExtra("bookingid", bookingid);
-            startActivity(intent);
-            finish();
         }
     }
 

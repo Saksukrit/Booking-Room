@@ -42,6 +42,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class ParticipantSearchActivity extends AppCompatActivity implements MultiSelectRecyclerViewAdapter.ViewHolder.ClickListener {
@@ -157,16 +158,12 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
 
 
                     if (Createbooking.accountBeen_selected_arraylist.size() != 0) {
-                        for (int i = 0; i < Createbooking.accountBeen_selected_arraylist.size(); i++) {
-                            for (int j = i + 1; j < account_item_selected_arraylist.size(); j++) {
-                                if (i != j && !Objects.equals(account_item_selected_arraylist.get(j).getUsername(), Createbooking.accountBeen_selected_arraylist.get(i).getUsername())) {
-                                    Createbooking.accountBeen_selected_arraylist.add(account_item_selected_arraylist.get(j));
-                                }
-                            }
-                        }
+                        Createbooking.accountBeen_selected_arraylist.addAll(new ArrayList<>(account_item_selected_arraylist));
+                        ArrayList<AccountBean> unique = removeDuplicates(Createbooking.accountBeen_selected_arraylist);
+                        Createbooking.accountBeen_selected_arraylist.clear();
+                        Createbooking.accountBeen_selected_arraylist.addAll(new ArrayList<>(unique));
                     } else {
                         Createbooking.accountBeen_selected_arraylist.addAll(new ArrayList<>(account_item_selected_arraylist));
-
                     }
 
 //                    Bundle bundle = new Bundle();
@@ -440,5 +437,26 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
                 }
             }
         });
+    }
+
+    public ArrayList<AccountBean> removeDuplicates(ArrayList<AccountBean> list) {
+        ArrayList<AccountBean> result = new ArrayList<>();
+        HashSet<String> set = new HashSet<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            String username = list.get(i).getUsername();
+            String disusername = list.get(i).getDisplayname();
+            String department = list.get(i).getDepartment();
+
+            if (!set.contains(username)) {
+                AccountBean bean = new AccountBean();
+                bean.setUsername(username);
+                bean.setDisplayname(disusername);
+                bean.setDepartment(department);
+                result.add(bean);
+                set.add(username);
+            }
+        }
+        return result;
     }
 }
