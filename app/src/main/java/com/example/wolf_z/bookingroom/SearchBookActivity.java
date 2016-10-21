@@ -217,16 +217,6 @@ public class SearchBookActivity extends AppCompatActivity {
         });
     }
 
-    // setTime **/
-    public String setStartTime() {
-        settime = timeHr.getSelectedItem() + ":" + timeMin.getSelectedItem() + ":00";
-        return settime;
-    }
-
-    public String setEndTime() {
-        settotime = totimeHr.getSelectedItem() + ":" + totimeMin.getSelectedItem() + ":00";
-        return settotime;
-    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -243,10 +233,10 @@ public class SearchBookActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case 0:
                 if (!searchstatus) {
-                    Snackbar.make(new View(this), "You not search", Snackbar.LENGTH_LONG);
+                    Toast.makeText(this, "You not search", Toast.LENGTH_SHORT).show();
                 } else if (bookBeans_to_list.size() == 0) {
                     Toast.makeText(this, "Go Create", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(this, Createbooking.class);
+                    Intent intent = new Intent(getApplicationContext(), Createbooking.class);
                     intent.putExtra("search_intent_date", intent_date);
                     intent.putExtra("search_intent_starttime", intent_starttime);
                     intent.putExtra("search_intent_endtime", intent_endtime);
@@ -256,7 +246,7 @@ public class SearchBookActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Snackbar.make(new View(this), "Unable create on this time", Snackbar.LENGTH_LONG);
+                    Toast.makeText(this, "Unable create on this time", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case android.R.id.home:
@@ -415,4 +405,14 @@ public class SearchBookActivity extends AppCompatActivity {
 
     }
 
+    // setTime **/
+    public String setStartTime() {
+        settime = timeHr.getSelectedItem() + ":" + timeMin.getSelectedItem() + ":00";
+        return settime;
+    }
+
+    public String setEndTime() {
+        settotime = totimeHr.getSelectedItem() + ":" + totimeMin.getSelectedItem() + ":00";
+        return settotime;
+    }
 }

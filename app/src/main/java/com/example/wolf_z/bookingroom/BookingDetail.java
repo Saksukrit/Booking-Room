@@ -240,6 +240,8 @@ public class BookingDetail extends AppCompatActivity {
 
                 return true;
             case android.R.id.home:
+                Intent intent = new Intent();
+                setResult(1, intent);
                 finish();
                 return true;
         }

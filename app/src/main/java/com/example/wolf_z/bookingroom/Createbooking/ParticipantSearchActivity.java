@@ -154,9 +154,6 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
                             }
                         }
                     }
-//                    Createbooking.accountBeen_selected_arraylist.addAll(new ArrayList<>(account_item_selected_arraylist));
-
-
                     if (Createbooking.accountBeen_selected_arraylist.size() != 0) {
                         Createbooking.accountBeen_selected_arraylist.addAll(new ArrayList<>(account_item_selected_arraylist));
                         ArrayList<AccountBean> unique = removeDuplicates(Createbooking.accountBeen_selected_arraylist);
@@ -447,7 +444,7 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
             String username = list.get(i).getUsername();
             String disusername = list.get(i).getDisplayname();
             String department = list.get(i).getDepartment();
-
+            // check duplicate username
             if (!set.contains(username)) {
                 AccountBean bean = new AccountBean();
                 bean.setUsername(username);

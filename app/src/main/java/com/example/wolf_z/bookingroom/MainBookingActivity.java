@@ -44,6 +44,8 @@ import java.util.ArrayList;
 public class MainBookingActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
+    //    private BookingDetail bookingDetail = new BookingDetail(this);
+    private int requestCode;
     private ProgressDialog prgDialog;
     private Participant participant = new Participant();
     protected Button createbooking;
@@ -79,7 +81,7 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -97,7 +99,7 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
                 Intent intent = new Intent(getApplicationContext(), Createbooking.class);
                 intent.putExtra("username", username);
                 intent.putExtra("from", "main");
-                startActivityForResult(intent, 111);
+                startActivityForResult(intent, requestCode);
             }
         });
 
@@ -118,16 +120,23 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
                 intent.putExtra("username", username);
                 intent.putExtra("bookingid", bookingid);
                 intent.putExtra("checkfrommain", "main");
-                startActivity(intent);
+//                startActivity(intent);
+                startActivityForResult(intent, requestCode);
             }
         });
 
     }
 
+    public void RefreshMain_comeback() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        
+        RefreshMain_comeback();
     }
 
     /**

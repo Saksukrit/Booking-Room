@@ -231,36 +231,144 @@ public class Createbooking extends AppCompatActivity {
                 return true;
             case android.R.id.home:
                 Intent intent = new Intent();
-                setResult(111, intent);
+                setResult(1, intent);
                 finish();
                 return true;
         }
         return false;
     }
 
-
     /**
-     * get set
+     * setOptionOnclick
      */
+    private void setOptionCreate() {
+        if (Objects.equals(subjectFragment.getETsubject().getText().toString(), "")) {
+            Toast.makeText(this, "Not Subject", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getETdetail().getText().toString(), "")) {
+            Toast.makeText(this, "Not Detail", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getDate_send(), "click to get date")) {
+            Toast.makeText(this, "Date Unselected", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
+            Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
+        } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
+            Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
+        } else if (accountBeen_selected_arraylist.size() == 0) {
+            Toast.makeText(this, "Participant Unselected", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
+            Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
+        } else {
+            bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
+            bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
+            bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
+            bookBean_to_create.setDate(subjectFragment.getDate_send());
+            bookBean_to_create.setStarttime(subjectFragment.getStartTime());
+            bookBean_to_create.setEndtime(subjectFragment.getEndTime());
+            bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
+            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
 
-    public ArrayList<AccountBean> getAccountBeen_selected() {
-        return accountBeen_selected_arraylist;
+            /**Params participant_to_create*/
+            String[] username = new String[accountBeen_selected_arraylist.size()];
+            for (int i = 0; i < accountBeen_selected_arraylist.size(); i++) {
+                username[i] = accountBeen_selected_arraylist.get(i).getUsername();
+            }
+            participant_to_create.setUsername(username);
+            create_from = "create";
+            intent_create_to_create = new Intent(this, Createbooking.class);
+            String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/checkbooking";
+            new checkBooking().execute(URL);
+        }
+
+
     }
 
-    public ArrayList<String> getRoomshow_spinner_arraylist() {
-        return roomshow_spinner_arraylist;
+    private void setOptionSave() {
+        if (Objects.equals(from, "detail_to_edit")) {
+            setOptionSave_from_Update();
+        } else {
+            setOptionSave_from_Create();
+        }
     }
 
-    public SubjectFragment getSubjectFragment() {
-        return subjectFragment;
+    private void setOptionSave_from_Create() {
+        if (Objects.equals(subjectFragment.getETsubject().getText().toString(), "")) {
+            Toast.makeText(this, "Not Subject", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getETdetail().getText().toString(), "")) {
+            Toast.makeText(this, "Not Detail", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getDate_send(), "click to get date")) {
+            Toast.makeText(this, "Date Unselected", Toast.LENGTH_SHORT).show();
+        } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
+            Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
+            Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
+        } else if (accountBeen_selected_arraylist.size() == 0) {
+            Toast.makeText(this, "Participant Unselected", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
+            Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
+        } else {
+
+            bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
+            bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
+            bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
+            bookBean_to_create.setDate(subjectFragment.getDate_send());
+            bookBean_to_create.setStarttime(subjectFragment.getStartTime());
+            bookBean_to_create.setEndtime(subjectFragment.getEndTime());
+            bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
+            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
+
+            /**Params participant_to_create*/
+            String[] username = new String[accountBeen_selected_arraylist.size()];
+            for (int i = 0; i < accountBeen_selected_arraylist.size(); i++) {
+                username[i] = accountBeen_selected_arraylist.get(i).getUsername();
+            }
+            participant_to_create.setUsername(username);
+            create_from = "save";
+            intent_save_from_create_to_detail = new Intent(this, BookingDetail.class);
+            String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/checkbooking";
+            new checkBooking().execute(URL);
+        }
     }
 
-    public ParticipantFragment getParticipantFragment() {
-        return participantFragment;
-    }
+    private void setOptionSave_from_Update() {
+        Toast.makeText(this, "update", Toast.LENGTH_SHORT).show();
+        if (Objects.equals(subjectFragment.getETsubject().getText().toString(), "")) {
+            Toast.makeText(this, "Not Subject", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getETdetail().getText().toString(), "")) {
+            Toast.makeText(this, "Not Detail", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getDate_send(), "click to get date")) {
+            Toast.makeText(this, "Date Unselected", Toast.LENGTH_SHORT).show();
+        } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
+            Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
+            Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
+        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
+            Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
+        } else {
+            String date_send = null;
+            try {
+                String datefromtxt_year = dateFormatYear.format(dateFormatShow.parse(subjectFragment.getDate_show().getText().toString()));
+                String datefromtxt_month = dateFormatMonth.format(dateFormatShow.parse(subjectFragment.getDate_show().getText().toString()));
+                String datefromtxt_day = dateFormatDay.format(dateFormatShow.parse(subjectFragment.getDate_show().getText().toString()));
 
-    public ArrayList<String> getProjector_spinner_arraylist() {
-        return projector_spinner_arraylist;
+                date_send = dateFormatSend.format(dateFormatShow.parse(datefromtxt_day + "/" + datefromtxt_month + "/" + (Integer.valueOf(datefromtxt_year) - 543)));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
+            bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
+            bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
+            bookBean_to_create.setDate(date_send);
+            bookBean_to_create.setStarttime(subjectFragment.getStartTime());
+            bookBean_to_create.setEndtime(subjectFragment.getEndTime());
+            bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
+            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
+            bookBean_to_create.setBookingid(Integer.parseInt(bookingid));
+
+            intent_update_to_detail = new Intent(this, BookingDetail.class);
+            String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/updatebooking/restservice/updatebooking"
+                    , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/updatebooking/restservice/update_participant"};
+            new Update().execute(URL);
+        }
     }
 
     /**
@@ -305,16 +413,6 @@ public class Createbooking extends AppCompatActivity {
                 if (Objects.equals(error_msg, "")) {
                     String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/dobooking";
                     new doCreateBooking().execute(URL);
-
-                    //condition from ...
-//                    if (Objects.equals(create_from, "create")) {
-//                        intent_create_to_create.putExtra("from", "createbook");
-//                        startActivity(intent_create_to_create);
-//                        finish();
-//                    } else if (Objects.equals(create_from, "save")) {
-//                        startActivity(intent_save_from_create_to_detail);
-//                        finish();
-//                    }
                 } else {//Check not pass
                     String OutputData = "Sory!! " + error_msg;
                     Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_SHORT).show();
@@ -383,7 +481,9 @@ public class Createbooking extends AppCompatActivity {
                     Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_SHORT);
                     toast.show();
                 }
-                intent_save_from_create_to_detail.putExtra("bookingid", bookingid);
+                if (Objects.equals(create_from, "save")) {
+                    intent_save_from_create_to_detail.putExtra("bookingid", bookingid);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -711,139 +811,6 @@ public class Createbooking extends AppCompatActivity {
         }
     }
 
-    /**
-     * setOptionOnclick
-     */
-    private void setOptionCreate() {
-        if (Objects.equals(subjectFragment.getETsubject().getText().toString(), "")) {
-            Toast.makeText(this, "Not Subject", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getETdetail().getText().toString(), "")) {
-            Toast.makeText(this, "Not Detail", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getDate_send(), "click to get date")) {
-            Toast.makeText(this, "Date Unselected", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
-            Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
-        } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
-            Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
-        } else if (accountBeen_selected_arraylist.size() == 0) {
-            Toast.makeText(this, "Participant Unselected", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
-            Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
-        } else {
-            bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
-            bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
-            bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
-            bookBean_to_create.setDate(subjectFragment.getDate_send());
-            bookBean_to_create.setStarttime(subjectFragment.getStartTime());
-            bookBean_to_create.setEndtime(subjectFragment.getEndTime());
-            bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
-            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
-
-            /**Params participant_to_create*/
-            String[] username = new String[accountBeen_selected_arraylist.size()];
-            for (int i = 0; i < accountBeen_selected_arraylist.size(); i++) {
-                username[i] = accountBeen_selected_arraylist.get(i).getUsername();
-            }
-            participant_to_create.setUsername(username);
-            create_from = "create";
-            intent_create_to_create = new Intent(this, Createbooking.class);
-            String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/checkbooking";
-            new checkBooking().execute(URL);
-        }
-
-
-    }
-
-    private void setOptionSave() {
-        if (Objects.equals(from, "detail_to_edit")) {
-            setOptionSave_from_Update();
-        } else {
-            setOptionSave_from_Create();
-        }
-    }
-
-    private void setOptionSave_from_Create() {
-        if (Objects.equals(subjectFragment.getETsubject().getText().toString(), "")) {
-            Toast.makeText(this, "Not Subject", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getETdetail().getText().toString(), "")) {
-            Toast.makeText(this, "Not Detail", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getDate_send(), "click to get date")) {
-            Toast.makeText(this, "Date Unselected", Toast.LENGTH_SHORT).show();
-        } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
-            Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
-            Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
-        } else if (accountBeen_selected_arraylist.size() == 0) {
-            Toast.makeText(this, "Participant Unselected", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
-            Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
-        } else {
-
-            bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
-            bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
-            bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
-            bookBean_to_create.setDate(subjectFragment.getDate_send());
-            bookBean_to_create.setStarttime(subjectFragment.getStartTime());
-            bookBean_to_create.setEndtime(subjectFragment.getEndTime());
-            bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
-            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
-
-            /**Params participant_to_create*/
-            String[] username = new String[accountBeen_selected_arraylist.size()];
-            for (int i = 0; i < accountBeen_selected_arraylist.size(); i++) {
-                username[i] = accountBeen_selected_arraylist.get(i).getUsername();
-            }
-            participant_to_create.setUsername(username);
-            create_from = "save";
-            intent_save_from_create_to_detail = new Intent(this, BookingDetail.class);
-            String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/checkbooking";
-            new checkBooking().execute(URL);
-        }
-    }
-
-    private void setOptionSave_from_Update() {
-        Toast.makeText(this, "update", Toast.LENGTH_SHORT).show();
-        if (Objects.equals(subjectFragment.getETsubject().getText().toString(), "")) {
-            Toast.makeText(this, "Not Subject", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getETdetail().getText().toString(), "")) {
-            Toast.makeText(this, "Not Detail", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getDate_send(), "click to get date")) {
-            Toast.makeText(this, "Date Unselected", Toast.LENGTH_SHORT).show();
-        } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
-            Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
-            Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
-            Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
-        } else {
-            String date_send = null;
-            try {
-                String datefromtxt_year = dateFormatYear.format(dateFormatShow.parse(subjectFragment.getDate_show().getText().toString()));
-                String datefromtxt_month = dateFormatMonth.format(dateFormatShow.parse(subjectFragment.getDate_show().getText().toString()));
-                String datefromtxt_day = dateFormatDay.format(dateFormatShow.parse(subjectFragment.getDate_show().getText().toString()));
-
-                date_send = dateFormatSend.format(dateFormatShow.parse(datefromtxt_day + "/" + datefromtxt_month + "/" + (Integer.valueOf(datefromtxt_year) - 543)));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
-            bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
-            bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
-            bookBean_to_create.setDate(date_send);
-            bookBean_to_create.setStarttime(subjectFragment.getStartTime());
-            bookBean_to_create.setEndtime(subjectFragment.getEndTime());
-            bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
-            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
-            bookBean_to_create.setBookingid(Integer.parseInt(bookingid));
-
-            intent_update_to_detail = new Intent(this, BookingDetail.class);
-            String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/updatebooking/restservice/updatebooking"
-                    , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/updatebooking/restservice/update_participant"};
-            new Update().execute(URL);
-        }
-    }
-
 
     /**
      * other method
@@ -1024,5 +991,31 @@ public class Createbooking extends AppCompatActivity {
         String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/search_projector"};
         new SetProjector_Spinner().execute(URL);
     }
+
+
+    /**
+     * get set
+     */
+
+    public ArrayList<AccountBean> getAccountBeen_selected() {
+        return accountBeen_selected_arraylist;
+    }
+
+    public ArrayList<String> getRoomshow_spinner_arraylist() {
+        return roomshow_spinner_arraylist;
+    }
+
+    public SubjectFragment getSubjectFragment() {
+        return subjectFragment;
+    }
+
+    public ParticipantFragment getParticipantFragment() {
+        return participantFragment;
+    }
+
+    public ArrayList<String> getProjector_spinner_arraylist() {
+        return projector_spinner_arraylist;
+    }
+
 }
 
