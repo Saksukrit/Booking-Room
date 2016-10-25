@@ -181,8 +181,10 @@ public class SearchBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bookBeans_to_list.clear();
+                searchlist.setAdapter(null);
                 txtstatus.setBackgroundColor(0xffffff00);
                 txtstatus.setText("please search_button");
+                searchstatus = false;
             }
         });
 
@@ -190,18 +192,20 @@ public class SearchBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bookBeans_to_list.clear();
+                searchlist.setAdapter(null);
                 searchstatus = true;
+                int roomid_token = 0;
                 if (Objects.equals(date_show.getText().toString(), "click to get date")) {
                     Snackbar.make(v, "Unselected Date", Snackbar.LENGTH_SHORT).show();
+                } else if (!checkTimeInputCommon(getStartTime(), getEndTime())) {
+                    Toast.makeText(getApplicationContext() , "Time invalid - -*", Toast.LENGTH_SHORT).show();
                 } else {
                     //check case room : selected/unselected
                     if (Objects.equals(room.getSelectedItem().toString(), "unselect")) {
-                        bookBean_select.setRoomid(0);
                         Snackbar.make(v, "Unselected Room", Snackbar.LENGTH_SHORT).show();
                     } else {
-                        bookBean_select.setRoomid(Integer.parseInt(room.getSelectedItem().toString()));
+                        roomid_token = Integer.parseInt(room.getSelectedItem().toString());
                     }
-
                     String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/searchrest/restservice/searchbooking"};
                     /**  Params **/
                     try {
@@ -209,14 +213,40 @@ public class SearchBookActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    bookBean_select.setStarttime(setStartTime());
-                    bookBean_select.setEndtime(setEndTime());
+                    bookBean_select.setStarttime(getStartTime());
+                    bookBean_select.setEndtime(getEndTime());
+                    bookBean_select.setRoomid(roomid_token);
                     new Search().execute(URL);
                 }
             }
         });
     }
 
+    private boolean checkTimeInputCommon(String starttime, String endtime) {
+        boolean check = true;
+        SimpleDateFormat timeParse = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        SimpleDateFormat timeHrformat = new SimpleDateFormat("HH", Locale.ENGLISH);
+        SimpleDateFormat timeMinformat = new SimpleDateFormat("mm", Locale.ENGLISH);
+        int start_hr = 0;
+        int start_min = 0;
+        int end_hr = 0;
+        int end_min = 0;
+        try {
+            start_hr = Integer.parseInt(timeHrformat.format(timeParse.parse(starttime)));
+            start_min = Integer.parseInt(timeMinformat.format(timeParse.parse(starttime)));
+            end_hr = Integer.parseInt(timeHrformat.format(timeParse.parse(endtime)));
+            end_min = Integer.parseInt(timeMinformat.format(timeParse.parse(endtime)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (start_hr > end_hr) {
+            check = false;
+        } else if (start_hr == end_hr & start_min >= end_min) {
+            check = false;
+        }
+        return check;
+    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -251,12 +281,6 @@ public class SearchBookActivity extends AppCompatActivity {
                 return true;
             case android.R.id.home:
                 finish();
-//                Intent upIntent = NavUtils.getParentActivityIntent(this);
-//                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-//                    TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-//                } else {
-//                    NavUtils.navigateUpTo(this, upIntent);
-//                }
                 return true;
         }
         return false;
@@ -268,11 +292,6 @@ public class SearchBookActivity extends AppCompatActivity {
     private class Search extends AsyncTask<String, Void, String> {
 
         String result = "";
-
-        @Override
-        protected void onPreExecute() {
-            prgDialog.show();
-        }
 
         @Override
         protected String doInBackground(String... urls) {
@@ -301,7 +320,6 @@ public class SearchBookActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            prgDialog.dismiss();
             JSONArray jsonArray;
             try {
                 jsonArray = new JSONArray(result);
@@ -325,8 +343,8 @@ public class SearchBookActivity extends AppCompatActivity {
                 /**set value intent*/
                 try {
                     intent_date = date_show.getText().toString();
-                    intent_starttime = timeFormatter.format(timeFormatter2.parse(setStartTime()));
-                    intent_endtime = timeFormatter.format(timeFormatter2.parse(setEndTime()));
+                    intent_starttime = timeFormatter.format(timeFormatter2.parse(getStartTime()));
+                    intent_endtime = timeFormatter.format(timeFormatter2.parse(getEndTime()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -406,12 +424,12 @@ public class SearchBookActivity extends AppCompatActivity {
     }
 
     // setTime **/
-    public String setStartTime() {
+    public String getStartTime() {
         settime = timeHr.getSelectedItem() + ":" + timeMin.getSelectedItem() + ":00";
         return settime;
     }
 
-    public String setEndTime() {
+    public String getEndTime() {
         settotime = totimeHr.getSelectedItem() + ":" + totimeMin.getSelectedItem() + ":00";
         return settotime;
     }

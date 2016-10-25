@@ -103,7 +103,7 @@
         android:layout_height="20dp" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -117,11 +117,12 @@
         <Spinner
             android:id="@+id/room"
             android:layout_width="100dp"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical" />
 
         <Button
             android:id="@+id/btnsearch"
-            android:layout_width="140dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Search" />
 
@@ -138,22 +139,21 @@
         android:layout_height="20dp" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status Booking : "
+            android:text="Status : "
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtstatus"
-            android:layout_width="245dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="Room and Time is Empty"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -162,8 +162,7 @@
     <ListView
         android:id="@+id/searchlist"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent" />
-
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

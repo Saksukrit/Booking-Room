@@ -20,7 +20,7 @@ public class DeleteRecyclerViewAdapter extends RecyclerView.Adapter<DeleteRecycl
 
     private final OnStartDragListener mDragStartListener;
 
-    private ArrayList<AccountBean> accountBeens = new ArrayList<>();
+    private ArrayList<AccountBean> accountBeens ;
 
     public DeleteRecyclerViewAdapter(Context context, OnStartDragListener dragStartListener, ArrayList<AccountBean> accountBeens) {
         mDragStartListener = dragStartListener;
@@ -45,6 +45,8 @@ public class DeleteRecyclerViewAdapter extends RecyclerView.Adapter<DeleteRecycl
     @Override
     public void onItemDismiss(int position) {
         int x = accountBeens.size();//0
+        // confirm check
+
         accountBeens.remove(position);
         notifyItemRemoved(position);
     }

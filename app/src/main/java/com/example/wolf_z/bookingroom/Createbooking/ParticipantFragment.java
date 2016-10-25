@@ -14,11 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Createbooking.Delete_list_helper.DeleteRecyclerViewAdapter;
 import com.example.wolf_z.bookingroom.Createbooking.Delete_list_helper.OnStartDragListener;
 import com.example.wolf_z.bookingroom.Createbooking.Delete_list_helper.SimpleItemTouchHelperCallback;
-import com.example.wolf_z.bookingroom.Createbooking.Multi_select_iin_Search.MultiSelectRecyclerViewAdapter;
 import com.example.wolf_z.bookingroom.R;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class ParticipantFragment extends Fragment implements OnStartDragListener {
@@ -53,7 +56,10 @@ public class ParticipantFragment extends Fragment implements OnStartDragListener
         prgDialog.setCancelable(false);
 
         selected_recyclerview = (RecyclerView) view.findViewById(R.id.selected_list);
-        setAdapter();
+
+        if (!Objects.equals(createbooking.getFrom(), "detail_to_edit")) {
+            setAdapter(createbooking.getAccountBeen_selected());
+        }
 
         search_participant_button = (Button) view.findViewById(R.id.search_participant);
         search_participant_button.setOnClickListener(new View.OnClickListener() {
@@ -66,8 +72,8 @@ public class ParticipantFragment extends Fragment implements OnStartDragListener
         return view;
     }
 
-    public void setAdapter() {
-        item_selected_Adapter = new DeleteRecyclerViewAdapter(getActivity(), this, createbooking.getAccountBeen_selected());
+    public void setAdapter(ArrayList<AccountBean> accountBeen_selected_arraylist) {
+        item_selected_Adapter = new DeleteRecyclerViewAdapter(getActivity(), this, accountBeen_selected_arraylist);
         selected_recyclerview.setAdapter(item_selected_Adapter);
         selected_recyclerview.setHasFixedSize(true);
         selected_recyclerview.setLayoutManager(new LinearLayoutManager(getActivity()));

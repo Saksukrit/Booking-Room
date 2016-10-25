@@ -371,6 +371,10 @@ public class Createbooking extends AppCompatActivity {
         }
     }
 
+    public String getFrom() {
+        return from;
+    }
+
     /**
      * Check Check Check Booking
      */
@@ -461,18 +465,15 @@ public class Createbooking extends AppCompatActivity {
             String error_msg = "";
             try {
                 JSONObject jsonObject = new JSONObject(result);
-
                 error_msg = jsonObject.getString("error_msg");
-                bookingid = jsonObject.getString("bookingid");   //***********
-
 
                 if (Objects.equals(error_msg, "")) {
                     String success = "Create Book Success! " + bookingid;
                     Toast toast = Toast.makeText(getApplicationContext(), success, Toast.LENGTH_SHORT);
                     toast.show();
                     /**Params participant_to_create*/
+                    bookingid = jsonObject.getString("bookingid");
                     participant_to_create.setBookingid(Integer.parseInt(bookingid));
-
                     String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/doparticipant";
                     new doCreateParticipant().execute(URL);
 
@@ -697,7 +698,7 @@ public class Createbooking extends AppCompatActivity {
                 e.printStackTrace();
             }
             accountBeen_selected_arraylist = accountBeans_edit;
-            participantFragment.setAdapter();
+            participantFragment.setAdapter(accountBeen_selected_arraylist);
         }
     }
 

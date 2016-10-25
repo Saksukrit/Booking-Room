@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
+    android:layout_height="180dp"
     android:background="@drawable/side_nav_bar"
     android:gravity="bottom"
     android:orientation="vertical"
@@ -19,14 +19,15 @@
 
     <TextView
         android:layout_width="match_parent"
+        android:id="@+id/profile_displayname"
         android:layout_height="wrap_content"
         android:paddingTop="16dp"
         android:text="Displayname"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
-        android:id="@+id/txtdepartment"
-        android:layout_width="wrap_content"
+        android:id="@+id/profile_department"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Department" />
 

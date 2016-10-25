@@ -15,8 +15,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.Bean.Participant;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
@@ -44,10 +46,9 @@ import java.util.ArrayList;
 public class MainBookingActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
-    //    private BookingDetail bookingDetail = new BookingDetail(this);
-    private int requestCode;
     private ProgressDialog prgDialog;
     private Participant participant = new Participant();
+    private AccountBean accountBean = new AccountBean();
     protected Button createbooking;
     protected Button searchbooking;
     protected Bundle bundle;
@@ -55,6 +56,9 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
     private String bookingid;
     private ArrayList<BookBean> bookBeans = new ArrayList<>();
     private ListView listView;
+    private TextView profile_displayname;
+    private TextView profile_department;
+    private View header;
 
 
     @Override
@@ -64,8 +68,9 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
 
 
         bundle = getIntent().getExtras();
-//        username = bundle.getString("username");
+//       username = bundle.getString("username");
         username = "krit025";
+        accountBean.setUsername(username);
 
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
@@ -83,10 +88,17 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
         toggle.syncState();
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        header = navigationView.getHeaderView(0);
 
+//        profile_displayname = (TextView) header.findViewById(R.id.profile_displayname);
+//        profile_displayname.setText(username);
+//
+//        profile_department = (TextView) header.findViewById(R.id.profile_department);
+//        profile_department.setText("test");
 
         /** Query */
-        String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/mainrest/restservice/showlistsubject";
+        String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/mainrest/restservice/showlistsubject"
+                , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/mainrest/restservice/getprofile"};
         //  Params
         participant.setUsername(username);
         new MainApp().execute(URL);
@@ -99,7 +111,7 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
                 Intent intent = new Intent(getApplicationContext(), Createbooking.class);
                 intent.putExtra("username", username);
                 intent.putExtra("from", "main");
-                startActivityForResult(intent, requestCode);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -121,7 +133,7 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
                 intent.putExtra("bookingid", bookingid);
                 intent.putExtra("checkfrommain", "main");
 //                startActivity(intent);
-                startActivityForResult(intent, requestCode);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -129,6 +141,7 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
 
     public void RefreshMain_comeback() {
         Intent intent = getIntent();
+        intent.putExtra("username", username);
         finish();
         startActivity(intent);
     }
@@ -175,38 +188,25 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
 
     /**************************************************************/
 
-    private class MainApp extends AsyncTask<String, Void, String> {
+    private class MainApp extends AsyncTask<String, Void, String[]> {
 
-        String result = "";
+        String[] result = {};
 
-        @Override
-        protected void onPreExecute() {
-            //Start Progress Dialog (Message)
-            prgDialog.show();
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
+        String doIn_listSubject(String... urls) {
+            String result = "";
             try {
                 /** POST **/
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(urls[0]);
-
-
                 Gson gson = new Gson();
                 StringEntity stringEntity = new StringEntity(gson.toJson(participant));
-
                 httpPost.setEntity(stringEntity);
                 httpPost.setHeader("Content-type", "application/json");
-
                 HttpResponse httpResponse = httpClient.execute(httpPost);
-
                 HttpEntity httpEntity = httpResponse.getEntity();
                 if (httpEntity != null) {
                     result = EntityUtils.toString(httpEntity);
                 }
-
-
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (ClientProtocolException e) {
@@ -214,18 +214,48 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return result;
+        }
 
+        String doIn_getprofile(String... urls) {
+            String result = "";
+            try {
+                /** POST **/
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(urls[0]);
+                Gson gson = new Gson();
+                StringEntity stringEntity = new StringEntity(gson.toJson(accountBean));
+                httpPost.setEntity(stringEntity);
+                httpPost.setHeader("Content-type", "application/json");
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                if (httpEntity != null) {
+                    result = EntityUtils.toString(httpEntity);
+                }
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected String[] doInBackground(String... urls) {
+            result = new String[urls.length];
+            result[0] = doIn_listSubject(urls[0]);
+            result[1] = doIn_getprofile(urls[1]);
 
             return result;
         }
 
         @Override
-        protected void onPostExecute(String result) {
-            prgDialog.dismiss();
-
+        protected void onPostExecute(String[] result) {
             JSONArray jsonArray;
             try {
-                jsonArray = new JSONArray(result);
+                jsonArray = new JSONArray(result[0]);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     BookBean bookBean = new BookBean();
@@ -239,9 +269,25 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
             CustomAdapter_subject adapter = new CustomAdapter_subject(getApplicationContext(), bookBeans);
             listView.setAdapter(adapter);
+
+            /*** get profile ********/
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(result[1]);
+
+                accountBean.setUsername(jsonObject.getString("username"));
+                accountBean.setDisplayname(jsonObject.getString("displayname"));
+                accountBean.setDepartment(jsonObject.getString("department"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            profile_displayname = (TextView) header.findViewById(R.id.profile_displayname);
+            profile_displayname.setText(accountBean.getDisplayname());
+
+            profile_department = (TextView) header.findViewById(R.id.profile_department);
+            profile_department.setText(accountBean.getDepartment());
 
         }
     }

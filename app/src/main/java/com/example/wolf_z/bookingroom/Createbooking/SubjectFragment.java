@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.example.wolf_z.bookingroom.R;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -140,7 +141,7 @@ public class SubjectFragment extends Fragment {
                 newDate.set(year, monthOfYear, dayOfMonth);
                 /****format*/
                 date_show.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + (year + 543));
-                date_send = dateFormatSend.format(newDate.getTime());
+
             }
         }, caledar.get(Calendar.YEAR), caledar.get(Calendar.MONTH), caledar.get(Calendar.DAY_OF_MONTH));
     }
@@ -226,7 +227,7 @@ public class SubjectFragment extends Fragment {
                     createbooking.getProjector_spinner_arraylist().clear();
                     final Dialog room_dialog = new Dialog(getActivity());
                     room_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    room_dialog.setContentView(R.layout.customdialog);
+                    room_dialog.setContentView(R.layout.customdialog_projector);
                     room_dialog.setCancelable(true);
                     createbooking.getProjector_spinner_arraylist().add("unselected");
                     createbooking.getSetProjector_Spinner();//task
@@ -289,6 +290,21 @@ public class SubjectFragment extends Fragment {
     }
 
     public String getDate_send() {
+        SimpleDateFormat dateFormatShow = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        SimpleDateFormat dateFormatYear = new SimpleDateFormat("yyyy", Locale.ENGLISH);
+        SimpleDateFormat dateFormatMonth = new SimpleDateFormat("MM", Locale.ENGLISH);
+        SimpleDateFormat dateFormatDay = new SimpleDateFormat("dd", Locale.ENGLISH);
+
+        try {
+            String date_show_des_year = dateFormatYear.format(dateFormatShow.parse(date_show.getText().toString()));
+            date_show_des_year = String.valueOf(Integer.valueOf(date_show_des_year) - 543);
+            String date_show_des_month = dateFormatMonth.format(dateFormatShow.parse(date_show.getText().toString()));
+            String date_show_des_day = dateFormatDay.format(dateFormatShow.parse(date_show.getText().toString()));
+            String date_pre_send = date_show_des_day + "/" + date_show_des_month + "/" + date_show_des_year;
+            date_send = dateFormatSend.format(dateFormatShow.parse(date_pre_send));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return date_send;
     }
 

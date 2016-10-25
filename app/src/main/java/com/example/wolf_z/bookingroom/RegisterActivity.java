@@ -9,6 +9,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -93,14 +94,14 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //check input data
-                if (department.getSelectedItem() == "unselect") {
-                    Toast.makeText(getApplicationContext(), "department unselected", Toast.LENGTH_SHORT);
-                } else if (Objects.equals(displaynameET.getText().toString(), "")) {
-                    Snackbar.make(v, "Not Displayname", Snackbar.LENGTH_SHORT).show();
+                if (Objects.equals(displaynameET.getText().toString(), "")) {
+                    Snackbar.make(v, "No Displayname", Snackbar.LENGTH_SHORT).show();
                 } else if (Objects.equals(usernameET.getText().toString(), "")) {
-                    Snackbar.make(v, "Not Username", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(v, "No Username", Snackbar.LENGTH_SHORT).show();
                 } else if (Objects.equals(pwdET.getText().toString(), "")) {
-                    Snackbar.make(v, "Not Password", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(v, "No Password", Snackbar.LENGTH_SHORT).show();
+                } else if (department.getSelectedItem() == "unselect") {
+                    Snackbar.make(v, "Department unselected", Snackbar.LENGTH_SHORT).show();
                 } else {
                     String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/registerrest/restservice/doregister";
                     /**  Params **/
