@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.Button;
@@ -95,6 +96,7 @@ public class SubjectFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 fromDatePickerDialog.show();
+                projector_txt.setText("unselected");
             }
         });
 
@@ -104,6 +106,7 @@ public class SubjectFragment extends Fragment {
         endtimeHr = (Spinner) view.findViewById(R.id.totimeHr);
         endtimeMin = (Spinner) view.findViewById(R.id.totimeMin);
         getSpinnerTimeData();
+
 
         /** select room_spinner */
         room_spinner = (Spinner) view.findViewById(R.id.room);
@@ -181,6 +184,53 @@ public class SubjectFragment extends Fragment {
         endtimeHr.setAdapter(adapterhr);
         endtimeHr.setSelection(adapterhr.getPosition(hr.get(4)));  //set default show
         endtimeMin.setAdapter(adaptermin);
+
+        starttimeHr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                projector_txt.setText("unselected");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        starttimeMin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                projector_txt.setText("unselected");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        endtimeHr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                projector_txt.setText("unselected");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        endtimeMin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                projector_txt.setText("unselected");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
     }
 
     private void getSpinnerRoom() {

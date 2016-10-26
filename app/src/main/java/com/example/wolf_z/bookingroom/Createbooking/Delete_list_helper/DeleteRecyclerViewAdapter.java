@@ -2,6 +2,7 @@ package com.example.wolf_z.bookingroom.Createbooking.Delete_list_helper;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +18,14 @@ import java.util.Collections;
 
 public class DeleteRecyclerViewAdapter extends RecyclerView.Adapter<DeleteRecyclerViewAdapter.ItemViewHolder>
         implements ItemTouchHelperAdapter {
-
+    private Context context;
     private final OnStartDragListener mDragStartListener;
-
-    private ArrayList<AccountBean> accountBeens ;
+    private ArrayList<AccountBean> accountBeens;
 
     public DeleteRecyclerViewAdapter(Context context, OnStartDragListener dragStartListener, ArrayList<AccountBean> accountBeens) {
-        mDragStartListener = dragStartListener;
+        this.mDragStartListener = dragStartListener;
         this.accountBeens = accountBeens;
+        this.context = context;
     }
 
     @Override
@@ -43,12 +44,17 @@ public class DeleteRecyclerViewAdapter extends RecyclerView.Adapter<DeleteRecycl
     }
 
     @Override
-    public void onItemDismiss(int position) {
+    public void onItemDismiss(final int position) {
         int x = accountBeens.size();//0
-        // confirm check
+        // confirm check;
+//        Snackbar.make(, "you want delete ?", Snackbar.LENGTH_INDEFINITE).setAction("ok", new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+                accountBeens.remove(position);
+                notifyItemRemoved(position);
+//            }
+//        }).show();
 
-        accountBeens.remove(position);
-        notifyItemRemoved(position);
     }
 
     @Override
