@@ -56,7 +56,7 @@ public class DeleteRecyclerViewAdapter extends RecyclerView.Adapter<DeleteRecycl
 //        }).show();
 
     }
-
+    
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         Collections.swap(accountBeens, fromPosition, toPosition);

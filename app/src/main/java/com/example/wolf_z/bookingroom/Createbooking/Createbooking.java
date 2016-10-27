@@ -535,7 +535,7 @@ public class Createbooking extends AppCompatActivity {
                 e.printStackTrace();
             }
             String OutputData = "Participant " + error_msg;
-            Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_SHORT);
             toast.show();
             if (Objects.equals(create_from, "create")) {
                 intent_create_to_create.putExtra("from", "createbook");
@@ -674,7 +674,7 @@ public class Createbooking extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
+            //set data in view
             subjectFragment.getETsubject().setText(bookBeans_edit.get(0).getSubject());
             setMeeting_type(bookBeans_edit.get(0).getMeeting_type());
             subjectFragment.getETdetail().setText(bookBeans_edit.get(0).getDetail());
@@ -682,6 +682,8 @@ public class Createbooking extends AppCompatActivity {
             setTimeSpinner(bookBeans_edit.get(0).getStarttime(), bookBeans_edit.get(0).getEndtime());
             setRoomSpinner(bookBeans_edit.get(0).getRoomid());
             subjectFragment.getProjector_txt().setText(String.valueOf(bookBeans_edit.get(0).getProjid()));
+            subjectFragment.setOld_projector_txt(subjectFragment.getProjector_txt().getText().toString());
+
 
             /** participant_to_update*/
             try {
@@ -871,13 +873,28 @@ public class Createbooking extends AppCompatActivity {
 
         //Hr.
         for (int ih = 0; ih < subjectFragment.getHr().size(); ih++) {
+            if (Objects.equals(start_hr, "08")) {
+                start_hr = "8";
+            } else if (Objects.equals(start_hr, "09")) {
+                start_hr = "9";
+            }
+
+            if (Objects.equals(end_hr, "08")) {
+                start_hr = "8";
+            } else if (Objects.equals(end_hr, "09")) {
+                start_hr = "9";
+            }
+
+
             //start hr
             if (Objects.equals(start_hr, subjectFragment.getHr().get(ih))) {
                 subjectFragment.getStarttimeHr().setSelection(ih);
+                subjectFragment.setOldposition_starthr(ih);
             }
             //end hr
             if (Objects.equals(end_hr, subjectFragment.getHr().get(ih))) {
                 subjectFragment.getEndtimeHr().setSelection(ih);
+                subjectFragment.setOldposition_endhr(ih);
             }
         }
         //Min.
@@ -885,10 +902,12 @@ public class Createbooking extends AppCompatActivity {
             //start hr
             if (Objects.equals(start_min, subjectFragment.getMin().get(im))) {
                 subjectFragment.getStarttimeMin().setSelection(im);
+                subjectFragment.setOldposition_startmin(im);
             }
             //end hr
             if (Objects.equals(end_min, subjectFragment.getMin().get(im))) {
                 subjectFragment.getEndtimeMin().setSelection(im);
+                subjectFragment.setOldposition_endmin(im);
             }
         }
     }

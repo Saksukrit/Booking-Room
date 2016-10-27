@@ -57,6 +57,7 @@ public class ParticipantFragment extends Fragment implements OnStartDragListener
 
         selected_recyclerview = (RecyclerView) view.findViewById(R.id.selected_list);
 
+        // check from ... to setAdapter
         if (!Objects.equals(createbooking.getFrom(), "detail_to_edit")) {
             setAdapter(createbooking.getAccountBeen_selected());
         }

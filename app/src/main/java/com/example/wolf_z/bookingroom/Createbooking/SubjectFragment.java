@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +60,12 @@ public class SubjectFragment extends Fragment {
     protected Createbooking createbooking;
     private View view;
 
+    private int oldposition_starthr;
+    private int oldposition_startmin;
+    private int oldposition_endhr;
+    private int oldposition_endmin;
+    private String old_projector_txt;
+
     public SubjectFragment(Createbooking createbooking) {
         this.createbooking = createbooking;
     }
@@ -96,7 +101,7 @@ public class SubjectFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 fromDatePickerDialog.show();
-                projector_txt.setText("unselected");
+                projector_txt.setText("click select projector");
             }
         });
 
@@ -106,6 +111,7 @@ public class SubjectFragment extends Fragment {
         endtimeHr = (Spinner) view.findViewById(R.id.totimeHr);
         endtimeMin = (Spinner) view.findViewById(R.id.totimeMin);
         getSpinnerTimeData();
+        setSpinnerTimeDateEvent();
 
 
         /** select room_spinner */
@@ -184,11 +190,17 @@ public class SubjectFragment extends Fragment {
         endtimeHr.setAdapter(adapterhr);
         endtimeHr.setSelection(adapterhr.getPosition(hr.get(4)));  //set default show
         endtimeMin.setAdapter(adaptermin);
+    }
 
+    public void setSpinnerTimeDateEvent() {
         starttimeHr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                projector_txt.setText("unselected");
+                if (oldposition_starthr != position) {
+                    projector_txt.setText("click select projector");
+                } else {
+                    projector_txt.setText(old_projector_txt);
+                }
             }
 
             @Override
@@ -199,7 +211,11 @@ public class SubjectFragment extends Fragment {
         starttimeMin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                projector_txt.setText("unselected");
+                if (oldposition_startmin != position) {
+                    projector_txt.setText("click select projector");
+                } else {
+                    projector_txt.setText(old_projector_txt);
+                }
             }
 
             @Override
@@ -210,7 +226,11 @@ public class SubjectFragment extends Fragment {
         endtimeHr.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                projector_txt.setText("unselected");
+                if (oldposition_endhr != position) {
+                    projector_txt.setText("click select projector");
+                } else {
+                    projector_txt.setText(old_projector_txt);
+                }
             }
 
             @Override
@@ -221,7 +241,11 @@ public class SubjectFragment extends Fragment {
         endtimeMin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                projector_txt.setText("unselected");
+                if (oldposition_endmin != position) {
+                    projector_txt.setText("click select projector");
+                } else {
+                    projector_txt.setText(old_projector_txt);
+                }
             }
 
             @Override
@@ -229,8 +253,6 @@ public class SubjectFragment extends Fragment {
 
             }
         });
-
-
     }
 
     private void getSpinnerRoom() {
@@ -286,16 +308,15 @@ public class SubjectFragment extends Fragment {
                     adapterprojector.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     projector2_spinner.setAdapter(adapterprojector);
 
-                    Log.d("projector num ", String.valueOf(createbooking.getProjector_spinner_arraylist().size()));
 //                    projector2_spinner.setSelection(1);
 
-
+                    //check set select projector in spinner
 //                    if (!Objects.equals(projector_txt.getText().toString(), "unselected") || !Objects.equals(projector_txt.getText().toString(), "click select projector")) {
-                    for (int i = 1; i < createbooking.getProjector_spinner_arraylist().size(); i++) {
-                        if (Objects.equals(projector_txt.getText().toString(), createbooking.getProjector_spinner_arraylist().get(i))) {
-                            projector2_spinner.setSelection(i);
-                        }
-                    }
+//                    for (int i = 1; i < createbooking.getProjector_spinner_arraylist().size(); i++) {
+//                        if (Objects.equals(projector_txt.getText().toString(), createbooking.getProjector_spinner_arraylist().get(i))) {
+//                            projector2_spinner.setSelection(i);
+//                        }
+//                    }
 //                    }
                     select = (Button) room_dialog.findViewById(R.id.select);
                     select.setOnClickListener(new View.OnClickListener() {
@@ -408,4 +429,24 @@ public class SubjectFragment extends Fragment {
         return meeting_redioButton;
     }
 
+    // set position time to config projector spinner
+    public void setOldposition_starthr(int oldposition_starthr) {
+        this.oldposition_starthr = oldposition_starthr;
+    }
+
+    public void setOldposition_startmin(int oldposition_startmin) {
+        this.oldposition_startmin = oldposition_startmin;
+    }
+
+    public void setOldposition_endhr(int oldposition_endhr) {
+        this.oldposition_endhr = oldposition_endhr;
+    }
+
+    public void setOldposition_endmin(int oldposition_endmin) {
+        this.oldposition_endmin = oldposition_endmin;
+    }
+
+    public void setOld_projector_txt(String old_projector_txt) {
+        this.old_projector_txt = old_projector_txt;
+    }
 }
