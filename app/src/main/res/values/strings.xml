@@ -8,4 +8,10 @@
     <string name="button_undo">undo</string>
     <string name="button_delete">delete</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="password_confirm">Password Confirm</string>
+    <string name="save_displayname">Save Displayname</string>
+    <string name="new_displayname">New Displayname</string>
+
 </resources>

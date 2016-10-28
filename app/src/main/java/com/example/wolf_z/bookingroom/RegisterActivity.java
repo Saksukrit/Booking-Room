@@ -58,7 +58,6 @@ public class RegisterActivity extends AppCompatActivity {
     private Spinner department;
     private AccountBean accountbean = new AccountBean();
     private Button btnregister;
-    private Button btnlogin;
     private ActionBar actionBar;
 
     @Override

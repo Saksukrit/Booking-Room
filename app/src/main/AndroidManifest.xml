@@ -90,9 +90,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Menu.SettingActivity"
+            android:name=".Menu.Profile_Setting.Profile_Setting_Activity"
             android:label="@string/title_activity_setting"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:parentActivityName=".MainBookingActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainBookingActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Menu.AboutActivity"></activity>
     </application>
 

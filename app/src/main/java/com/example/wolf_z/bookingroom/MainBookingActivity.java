@@ -24,6 +24,7 @@ import com.example.wolf_z.bookingroom.Bean.Participant;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.example.wolf_z.bookingroom.Createbooking.Createbooking;
 import com.example.wolf_z.bookingroom.Custom.CustomAdapter_subject;
+import com.example.wolf_z.bookingroom.Menu.Profile_Setting.Profile_Setting_Activity;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
@@ -163,8 +164,8 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
             Toast.makeText(getApplicationContext(), "about", Toast.LENGTH_LONG).show();
         } else if (id == R.id.setting) {
             Toast.makeText(getApplicationContext(), "setting", Toast.LENGTH_LONG).show();
-//            Intent intent = new Intent(getApplicationContext(), Main2Activity.class);
-//            startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), Profile_Setting_Activity.class);
+            startActivity(intent);
         } else if (id == R.id.logout) {
             Toast.makeText(getApplicationContext(), "logout", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
