@@ -10,7 +10,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
@@ -19,7 +18,6 @@ import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -29,29 +27,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.util.Objects;
 
-/**
- * Created by Wolf-Z on 12/9/2559.
- */
 public class LoginActivity extends AppCompatActivity {
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     private ProgressDialog prgDialog;
-    private TextView errorMsg;
     private EditText usernameET;
     private EditText pwdET;
     private AccountBean accountBean = new AccountBean();
     private Animation anim;
     private View view_password;
     private View view_username;
-    private Button btnlogin;
-    private Button btnregister;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        errorMsg = (TextView) findViewById(R.id.login_error);
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
@@ -88,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        btnlogin = (Button) findViewById(R.id.btnLogin);
+        Button btnlogin = (Button) findViewById(R.id.btnLogin);
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        btnregister = (Button) findViewById(R.id.btnRegister);
+        Button btnregister = (Button) findViewById(R.id.btnRegister);
         btnregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,26 +118,15 @@ public class LoginActivity extends AppCompatActivity {
                 /** POST **/
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpPost httpPost = new HttpPost(urls[0]);
-
-
                 Gson gson = new Gson();
                 StringEntity stringEntity = new StringEntity(gson.toJson(accountBean));
-
                 httpPost.setEntity(stringEntity);
                 httpPost.setHeader("Content-type", "application/json");
-
                 HttpResponse httpResponse = httpClient.execute(httpPost);
-
                 HttpEntity httpEntity = httpResponse.getEntity();
                 if (httpEntity != null) {
                     result = EntityUtils.toString(httpEntity);
                 }
-
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -157,25 +137,16 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             prgDialog.dismiss();
-
-            String tag = "";
             String status = "";
             String error_msg = "";
             try {
-
                 JSONObject jsonObject = new JSONObject(result);
-
-                tag = jsonObject.getString("tag").toString();
-                status = jsonObject.getString("status").toString();
-                error_msg = jsonObject.getString("error_msg").toString();
-
-
+                status = jsonObject.getString("status");
+                error_msg = jsonObject.getString("error_msg");
             } catch (JSONException e) {
-
                 e.printStackTrace();
             }
-
-            if (error_msg == "") {
+            if (Objects.equals(error_msg, "") || Objects.equals(error_msg, null)) {
                 String success = "Login Success!";
                 Toast toast = Toast.makeText(getBaseContext(), success, Toast.LENGTH_LONG);
                 toast.show();

@@ -193,13 +193,16 @@ public class SearchBookActivity extends AppCompatActivity {
             public void onClick(View v) {
                 bookBeans_to_list.clear();
                 searchlist.setAdapter(null);
-                searchstatus = true;
                 int roomid_token = 0;
                 if (Objects.equals(date_show.getText().toString(), "click to get date")) {
                     Snackbar.make(v, "Unselected Date", Snackbar.LENGTH_SHORT).show();
+                    searchstatus = false;
                 } else if (!checkTimeInputCommon(getStartTime(), getEndTime())) {
-                    Toast.makeText(getApplicationContext() , "Time invalid - -*", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Time invalid - -*", Toast.LENGTH_SHORT).show();
+                    searchstatus = false;
                 } else {
+                    //config searchstatus when pass condition
+                    searchstatus = true;
                     //check case room : selected/unselected
                     if (Objects.equals(room.getSelectedItem().toString(), "unselect")) {
                         Snackbar.make(v, "Unselected Room", Snackbar.LENGTH_SHORT).show();

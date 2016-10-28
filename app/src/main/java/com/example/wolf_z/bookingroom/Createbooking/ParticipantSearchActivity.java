@@ -154,6 +154,7 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
                             }
                         }
                     }
+                    //duplicate account
                     if (Createbooking.accountBeen_selected_arraylist.size() != 0) {
                         Createbooking.accountBeen_selected_arraylist.addAll(new ArrayList<>(account_item_selected_arraylist));
                         ArrayList<AccountBean> unique = removeDuplicates(Createbooking.accountBeen_selected_arraylist);

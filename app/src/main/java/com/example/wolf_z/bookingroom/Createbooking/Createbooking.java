@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,6 +85,7 @@ public class Createbooking extends AppCompatActivity {
     private Intent intent_update_to_detail;
     private Intent intent_create_to_create;
     private String create_from = "";
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -177,8 +179,7 @@ public class Createbooking extends AppCompatActivity {
 //        accountBeen_selected.addAll(x);
 
         Log.d("test get data ", String.valueOf(accountBeen_selected_arraylist));
-
-        participantFragment.getItem_selected_Adapter().notifyDataSetChanged();
+        participantFragment.getItem_selected_Adapter2().notifyDataSetChanged();
 
 //        if (requestCode != REQ_CODE_participant_search) return;
 //        if (resultCode != RESULT_OK) return;
@@ -701,6 +702,8 @@ public class Createbooking extends AppCompatActivity {
             }
             accountBeen_selected_arraylist = accountBeans_edit;
             participantFragment.setAdapter(accountBeen_selected_arraylist);
+
+
         }
     }
 
@@ -951,8 +954,8 @@ public class Createbooking extends AppCompatActivity {
             subjectFragment.getDate_show().setText(date);
             setTimeSpinner(starttime, endtime);
             setRoomSpinner(roomid);
+            subjectFragment.getProjector_txt().setText("click select projector");
         }
-
     }
 
     /**
