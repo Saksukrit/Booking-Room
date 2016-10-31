@@ -165,7 +165,8 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
         } else if (id == R.id.setting) {
             Toast.makeText(getApplicationContext(), "setting", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getApplicationContext(), Profile_Setting_Activity.class);
-            startActivity(intent);
+            intent.putExtra("username", username);
+            startActivityForResult(intent, 1);
         } else if (id == R.id.logout) {
             Toast.makeText(getApplicationContext(), "logout", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

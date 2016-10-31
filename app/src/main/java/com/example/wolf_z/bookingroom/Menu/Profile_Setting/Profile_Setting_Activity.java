@@ -1,5 +1,6 @@
 package com.example.wolf_z.bookingroom.Menu.Profile_Setting;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -11,9 +12,11 @@ import com.example.wolf_z.bookingroom.R;
 
 public class Profile_Setting_Activity extends AppCompatActivity {
 
-    private Profile_Change_Password_Fragment profile_change_password_fragment = new Profile_Change_Password_Fragment();
-    private Profile_Change_Displayname_Fragment profile_change_displayname_fragment = new Profile_Change_Displayname_Fragment();
+    private Profile_Change_Password_Fragment profile_change_password_fragment = new Profile_Change_Password_Fragment(this);
+    private Profile_Change_Displayname_Fragment profile_change_displayname_fragment = new Profile_Change_Displayname_Fragment(this);
     private ActionBar actionBar;
+    private Bundle bundle;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +24,9 @@ public class Profile_Setting_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_profile_setting);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        bundle = getIntent().getExtras();
+        username = bundle.getString("username");
 
         /** Tab */
         TabLayout tabLayout = (TabLayout) findViewById(R.id.profile_setting_tab_layout);
@@ -57,6 +63,8 @@ public class Profile_Setting_Activity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Intent intent = new Intent();
+                setResult(1, intent);
                 finish();
                 return true;
         }
@@ -69,5 +77,9 @@ public class Profile_Setting_Activity extends AppCompatActivity {
 
     public Profile_Change_Displayname_Fragment getProfile_change_displayname_fragment() {
         return profile_change_displayname_fragment;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
