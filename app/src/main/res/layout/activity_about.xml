@@ -1,13 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_about"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.wolf_z.bookingroom.Menu.AboutActivity">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:weightSum="1">
 
-</RelativeLayout>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dip"
+        android:gravity="center"
+        android:text="About App"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <android.support.v4.widget.Space
+        android:layout_width="fill_parent"
+        android:layout_height="15dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2sp"
+        android:background="#606860"
+        android:padding="10dp" />
+
+    <android.support.v4.widget.Space
+        android:layout_width="fill_parent"
+        android:layout_height="15dp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="เวอร์ชั่นปัจจุบัน : 1.0" />
+
+    <android.support.v4.widget.Space
+        android:layout_width="fill_parent"
+        android:layout_height="15dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2sp"
+        android:background="#606860"
+        android:padding="10dp" />
+
+    <android.support.v4.widget.Space
+        android:layout_width="fill_parent"
+        android:layout_height="15dp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="เวอร์ชั่นล่าสุด : 1.0"
+        android:textSize="15sp" />
+
+    <android.support.v4.widget.Space
+        android:layout_width="fill_parent"
+        android:layout_height="15dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2sp"
+        android:background="#606860"
+        android:padding="10dp" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Application สามารถแสดงห้องประชุมที่ว่างตามช่วงเวลาที่ต้องการ,สามารถจองห้องประชุมที่ว่าง,สามารถแก้ไขการจองห้องประชุม,สามารถยกเลิกการจองห้องประชุมได้"
+        android:textSize="15sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2sp"
+        android:background="#606860"
+        android:padding="10dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Application สามารถแสดงรายละเอียดของการประชุม,สามารถแจ้งเตือนผู้เข้าร่วมประชุม"
+        android:textSize="15sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2sp"
+        android:background="#606860"
+        android:padding="10dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="พัฒนาโดยทีมนักศึกษาสหกิจจากมหาวิทยาลัยสงขลานครินทร์(วิทยาเขตภูเก็ต)"
+        android:textSize="15sp" />
+
+</LinearLayout>

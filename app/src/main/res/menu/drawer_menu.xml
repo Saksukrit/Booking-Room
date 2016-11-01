@@ -6,9 +6,9 @@
             android:icon="@drawable/abouticon"
             android:title="About" />
         <item
-            android:id="@+id/setting"
+            android:id="@+id/profilesetting"
             android:icon="@drawable/settings"
-            android:title="Setting" />
+            android:title="Profile Setting" />
         <item
             android:id="@+id/logout"
             android:icon="@drawable/logout"

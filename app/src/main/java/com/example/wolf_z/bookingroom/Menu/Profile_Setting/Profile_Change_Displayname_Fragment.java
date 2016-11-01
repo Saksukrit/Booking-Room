@@ -26,6 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Objects;
 
 
@@ -62,7 +64,13 @@ public class Profile_Change_Displayname_Fragment extends Fragment {
                 } else if (Objects.equals(edittext_password_confirm.getText().toString(), "") || Objects.equals(edittext_password_confirm.getText().toString(), null)) {
                     Snackbar.make(view, "Not password confirm", Snackbar.LENGTH_SHORT).show();
                 } else {
-                    json = "{username:\"" + profile_setting_activity.getUsername() + "\",current_password:\"" + edittext_password_confirm.getText().toString() + "\",new_displayname:\"" + edittext_new_displayname.getText().toString() + "\"}";
+                    String displayname_utf8 = "";
+                    try {
+                        displayname_utf8 = URLEncoder.encode(edittext_new_displayname.getText().toString(), "UTF-8");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    json = "{username:\"" + profile_setting_activity.getUsername() + "\",current_password:\"" + edittext_password_confirm.getText().toString() + "\",new_displayname:\"" + displayname_utf8 + "\"}";
                     //task
                     String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/profilesetting/restservice/change_account_displayname";
                     new ChangeDisplayname_Task().execute(URL);
