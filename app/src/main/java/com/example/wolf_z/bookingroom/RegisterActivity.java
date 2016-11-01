@@ -5,15 +5,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +38,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Wolf-Z on 12/9/2559.
@@ -93,13 +90,30 @@ public class RegisterActivity extends AppCompatActivity {
         btnregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Pattern pattern_username = Pattern.compile("[@.a-z0-9 ]", Pattern.CASE_INSENSITIVE);  // ^ as space
+                Pattern pattern_password = Pattern.compile("[a-z0-9 ]", Pattern.CASE_INSENSITIVE);  // ^ as space
+                Matcher matcher;
+                //check username special character
+                matcher = pattern_username.matcher(usernameET.getText().toString());
+                boolean username_special_character = matcher.find();
+
+                //check password special character
+                matcher = pattern_password.matcher(pwdET.getText().toString());
+                boolean password_special_character = matcher.find();
+
+
                 //check input data
                 if (Objects.equals(displaynameET.getText().toString(), "")) {
                     Snackbar.make(v, "No Displayname", Snackbar.LENGTH_SHORT).show();
                 } else if (Objects.equals(usernameET.getText().toString(), "")) {
                     Snackbar.make(v, "No Username", Snackbar.LENGTH_SHORT).show();
+                } else if (username_special_character) {
+                    Snackbar.make(v, "Username is not accept special character", Snackbar.LENGTH_SHORT).show();
                 } else if (Objects.equals(pwdET.getText().toString(), "")) {
                     Snackbar.make(v, "No Password", Snackbar.LENGTH_SHORT).show();
+                } else if (password_special_character) {
+                    Snackbar.make(v, "Password is not accept special character", Snackbar.LENGTH_SHORT).show();
                 } else if (department.getSelectedItem() == "unselect") {
                     Snackbar.make(v, "Department unselected", Snackbar.LENGTH_SHORT).show();
                 } else {

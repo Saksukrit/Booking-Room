@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="56dp"
+    android:layout_marginTop="3dp"
     android:orientation="horizontal"
     android:weightSum="1">
 
@@ -20,6 +21,7 @@
             android:layout_toStartOf="@+id/delete_button"
             android:gravity="start|center_vertical"
             android:paddingLeft="10dp"
+            android:textColor="#1d1d1d"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -61,6 +63,7 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/tvdisplayname"
             android:gravity="center"
+            android:textColor="#1d1d1d"
             android:textSize="16sp"
             android:textStyle="bold" />
     </RelativeLayout>

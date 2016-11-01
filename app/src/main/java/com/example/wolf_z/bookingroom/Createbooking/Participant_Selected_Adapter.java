@@ -71,7 +71,7 @@ public class Participant_Selected_Adapter extends RecyclerView.Adapter<Participa
 
         } else {
             // we need to show the "normal" state
-            holder.itemView.setBackgroundColor(Color.WHITE);
+            holder.itemView.setBackgroundColor(Color.parseColor("#ffd477"));
             holder.tvdisplayname.setVisibility(View.VISIBLE);
             holder.tvdisplayname.setText(displayname);
             holder.tvdepartment.setVisibility(View.VISIBLE);
@@ -125,7 +125,7 @@ public class Participant_Selected_Adapter extends RecyclerView.Adapter<Participa
         Button deleteButton;
 
         TestViewHolder(ViewGroup parent) {
-            super(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_view, parent, false));
+            super(LayoutInflater.from(parent.getContext()).inflate(R.layout.row_name_selected, parent, false));
             tvdisplayname = (TextView) itemView.findViewById(R.id.tvdisplayname);
             tvdepartment = (TextView) itemView.findViewById(R.id.tvdepartment);
             undoButton = (Button) itemView.findViewById(R.id.undo_button);

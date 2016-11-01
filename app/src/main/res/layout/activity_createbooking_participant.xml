@@ -37,15 +37,11 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <!--<ListView-->
-        <!--android:id="@+id/namelist"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/selected_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
             android:layout_margin="1dp"
             android:layout_weight="1"
             android:scrollbars="vertical" />

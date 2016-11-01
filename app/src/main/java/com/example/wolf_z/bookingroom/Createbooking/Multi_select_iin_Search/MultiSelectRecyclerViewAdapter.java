@@ -73,7 +73,7 @@ public class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelec
             tvDisplayname = (TextView) itemLayoutView.findViewById(R.id.tvName);
             tvDepartment = (TextView) itemLayoutView.findViewById(R.id.tvDepartment);
             tvUsername = (TextView) itemLayoutView.findViewById(R.id.tvUsername);
-            selectedOverlay = (View) itemView.findViewById(R.id.selected_overlay);
+            selectedOverlay = itemView.findViewById(R.id.selected_overlay);
 
             itemLayoutView.setOnClickListener(this);
 
