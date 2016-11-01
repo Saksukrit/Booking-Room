@@ -102,6 +102,7 @@ public class SubjectFragment extends Fragment {
             public void onClick(View v) {
                 fromDatePickerDialog.show();
                 projector_txt.setText("click select projector");
+                createbooking.setProjector_accept(false);
             }
         });
 
@@ -198,6 +199,7 @@ public class SubjectFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (oldposition_starthr != position) {
                     projector_txt.setText("click select projector");
+                    createbooking.setProjector_accept(false);
                 } else {
                     projector_txt.setText(old_projector_txt);
                 }
@@ -213,6 +215,7 @@ public class SubjectFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (oldposition_startmin != position) {
                     projector_txt.setText("click select projector");
+                    createbooking.setProjector_accept(false);
                 } else {
                     projector_txt.setText(old_projector_txt);
                 }
@@ -228,6 +231,7 @@ public class SubjectFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (oldposition_endhr != position) {
                     projector_txt.setText("click select projector");
+                    createbooking.setProjector_accept(false);
                 } else {
                     projector_txt.setText(old_projector_txt);
                 }
@@ -243,6 +247,7 @@ public class SubjectFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (oldposition_endmin != position) {
                     projector_txt.setText("click select projector");
+                    createbooking.setProjector_accept(false);
                 } else {
                     projector_txt.setText(old_projector_txt);
                 }

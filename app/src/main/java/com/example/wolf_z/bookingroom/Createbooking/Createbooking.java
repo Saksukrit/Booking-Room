@@ -262,16 +262,14 @@ public class Createbooking extends AppCompatActivity {
             Snackbar.make(rootview, "Time invalid - -*", Snackbar.LENGTH_SHORT).show();
         } else if (accountBeen_selected_arraylist.size() == 0) {
             Snackbar.make(rootview, "Participant Unselected", Snackbar.LENGTH_SHORT).show();
-        } else if (!projector_accept) {
-            if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
-                Snackbar.make(rootview, "Projector Unselected", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        projector_accept = true;
-                        subjectFragment.getProjector_txt().setText(0);
-                    }
-                }).show();
-            }
+        } else if ((Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) && !projector_accept) {
+            Snackbar.make(rootview, "Projector Unselected", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    projector_accept = true;
+                }
+            }).show();
+
         } else {
             bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
             bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
@@ -280,7 +278,11 @@ public class Createbooking extends AppCompatActivity {
             bookBean_to_create.setStarttime(subjectFragment.getStartTime());
             bookBean_to_create.setEndtime(subjectFragment.getEndTime());
             bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
-            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
+            if (projector_accept) {
+                bookBean_to_create.setProjid(0);
+            } else {
+                bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
+            }
 
             /**Params participant_to_create*/
             String[] username = new String[accountBeen_selected_arraylist.size()];
@@ -307,21 +309,26 @@ public class Createbooking extends AppCompatActivity {
 
     private void setOptionSave_from_Create() {
         if (Objects.equals(subjectFragment.getETsubject().getText().toString(), "")) {
-            Toast.makeText(this, "Not Subject", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Not Subject", Snackbar.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getETdetail().getText().toString(), "")) {
-            Toast.makeText(this, "Not Detail", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Not Detail", Snackbar.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getDate_send(), "click to get date")) {
-            Toast.makeText(this, "Date Unselected", Toast.LENGTH_SHORT).show();
-        } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
-            Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Date Unselected", Snackbar.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
-            Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Room Unselected", Snackbar.LENGTH_SHORT).show();
+        } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
+            Snackbar.make(rootview, "Time invalid - -*", Snackbar.LENGTH_SHORT).show();
         } else if (accountBeen_selected_arraylist.size() == 0) {
-            Toast.makeText(this, "Participant Unselected", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
-            Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
-        } else {
+            Snackbar.make(rootview, "Participant Unselected", Snackbar.LENGTH_SHORT).show();
+        } else if ((Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) && !projector_accept) {
+            Snackbar.make(rootview, "Projector Unselected", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    projector_accept = true;
+                }
+            }).show();
 
+        } else {
             bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
             bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
             bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
@@ -329,8 +336,11 @@ public class Createbooking extends AppCompatActivity {
             bookBean_to_create.setStarttime(subjectFragment.getStartTime());
             bookBean_to_create.setEndtime(subjectFragment.getEndTime());
             bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
-            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
-
+            if (projector_accept) {
+                bookBean_to_create.setProjid(0);
+            } else {
+                bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
+            }
             /**Params participant_to_create*/
             String[] username = new String[accountBeen_selected_arraylist.size()];
             for (int i = 0; i < accountBeen_selected_arraylist.size(); i++) {
@@ -345,20 +355,28 @@ public class Createbooking extends AppCompatActivity {
     }
 
     private void setOptionSave_from_Update() {
-        Toast.makeText(this, "update", Toast.LENGTH_SHORT).show();
         if (Objects.equals(subjectFragment.getETsubject().getText().toString(), "")) {
-            Toast.makeText(this, "Not Subject", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Not Subject", Snackbar.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getETdetail().getText().toString(), "")) {
-            Toast.makeText(this, "Not Detail", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Not Detail", Snackbar.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getDate_send(), "click to get date")) {
-            Toast.makeText(this, "Date Unselected", Toast.LENGTH_SHORT).show();
-        } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
-            Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Date Unselected", Snackbar.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
-            Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
-            Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Room Unselected", Snackbar.LENGTH_SHORT).show();
+        } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
+            Snackbar.make(rootview, "Time invalid - -*", Snackbar.LENGTH_SHORT).show();
+        } else if (accountBeen_selected_arraylist.size() == 0) {
+            Snackbar.make(rootview, "Participant Unselected", Snackbar.LENGTH_SHORT).show();
+        } else if ((Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) && !projector_accept) {
+            Snackbar.make(rootview, "Projector Unselected", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    projector_accept = true;
+                }
+            }).show();
         } else {
+            Toast.makeText(this, "Updating ...", Toast.LENGTH_SHORT).show();   //******
+
             String date_send = null;
             try {
                 String datefromtxt_year = dateFormatYear.format(dateFormatShow.parse(subjectFragment.getDate_show().getText().toString()));
@@ -377,7 +395,11 @@ public class Createbooking extends AppCompatActivity {
             bookBean_to_create.setStarttime(subjectFragment.getStartTime());
             bookBean_to_create.setEndtime(subjectFragment.getEndTime());
             bookBean_to_create.setRoomid(Integer.parseInt(subjectFragment.getRoom_spinner().getSelectedItem().toString())); //check
-            bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
+            if (projector_accept) {
+                bookBean_to_create.setProjid(0);
+            } else {
+                bookBean_to_create.setProjid(Integer.parseInt(subjectFragment.getProjector_txt().getText().toString())); // check
+            }
             bookBean_to_create.setBookingid(Integer.parseInt(bookingid));
 
             intent_update_to_detail = new Intent(this, BookingDetail.class);
@@ -389,6 +411,10 @@ public class Createbooking extends AppCompatActivity {
 
     public String getFrom() {
         return from;
+    }
+
+    public void setProjector_accept(boolean projector_accept) {
+        this.projector_accept = projector_accept;
     }
 
     /**
@@ -698,8 +724,11 @@ public class Createbooking extends AppCompatActivity {
             setTimeSpinner(bookBeans_edit.get(0).getStarttime(), bookBeans_edit.get(0).getEndtime());
             setRoomSpinner(bookBeans_edit.get(0).getRoomid());
             subjectFragment.getProjector_txt().setText(String.valueOf(bookBeans_edit.get(0).getProjid()));
-            subjectFragment.setOld_projector_txt(subjectFragment.getProjector_txt().getText().toString());
-
+            if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "0")) {
+                subjectFragment.setOld_projector_txt("unselected");
+            } else {
+                subjectFragment.setOld_projector_txt(subjectFragment.getProjector_txt().getText().toString());
+            }
 
             /** participant_to_update*/
             try {

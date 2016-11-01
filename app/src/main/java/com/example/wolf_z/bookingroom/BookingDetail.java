@@ -175,7 +175,7 @@ public class BookingDetail extends AppCompatActivity {
                 txtendtime.setText(bookBeans.get(i).getEndtime());
                 txtroomid.setText(String.valueOf(bookBeans.get(i).getRoomid()));
                 if (bookBeans.get(i).getProjid() == 0) {
-                    txtprojectorid.setText("unselect");
+                    txtprojectorid.setText("unselected");
                 } else {
                     txtprojectorid.setText(String.valueOf(bookBeans.get(i).getProjid()));
                 }
