@@ -59,6 +59,7 @@ public class BookingDetail extends AppCompatActivity {
     private TextView txtstarttime;
     private TextView txtendtime;
     private TextView txtroomid;
+    private TextView txtprojectorid;
     private ListView listView;
 
     @Override
@@ -82,6 +83,7 @@ public class BookingDetail extends AppCompatActivity {
         txtstarttime = (TextView) findViewById(R.id.txtstarttime);
         txtendtime = (TextView) findViewById(R.id.txtendtime);
         txtroomid = (TextView) findViewById(R.id.roomid);
+        txtprojectorid = (TextView) findViewById(R.id.projectorid);
 
         actionBar = getSupportActionBar();
 
@@ -172,6 +174,12 @@ public class BookingDetail extends AppCompatActivity {
                 txtstarttime.setText(bookBeans.get(i).getStarttime());
                 txtendtime.setText(bookBeans.get(i).getEndtime());
                 txtroomid.setText(String.valueOf(bookBeans.get(i).getRoomid()));
+                if (bookBeans.get(i).getProjid() == 0) {
+                    txtprojectorid.setText("unselect");
+                } else {
+                    txtprojectorid.setText(String.valueOf(bookBeans.get(i).getProjid()));
+                }
+
             }
             /**********************************************************/
 

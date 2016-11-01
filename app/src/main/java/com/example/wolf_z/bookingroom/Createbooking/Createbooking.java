@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -13,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
@@ -85,6 +87,8 @@ public class Createbooking extends AppCompatActivity {
     private Intent intent_update_to_detail;
     private Intent intent_create_to_create;
     private String create_from = "";
+    private View rootview;
+    private boolean projector_accept;
 
 
     @Override
@@ -98,6 +102,9 @@ public class Createbooking extends AppCompatActivity {
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
         actionBar = getSupportActionBar();
+
+        rootview = findViewById(R.id.rootview);
+        projector_accept = false;
 
         /** Tab */
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -244,19 +251,27 @@ public class Createbooking extends AppCompatActivity {
      */
     private void setOptionCreate() {
         if (Objects.equals(subjectFragment.getETsubject().getText().toString(), "")) {
-            Toast.makeText(this, "Not Subject", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Not Subject", Snackbar.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getETdetail().getText().toString(), "")) {
-            Toast.makeText(this, "Not Detail", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Not Detail", Snackbar.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getDate_send(), "click to get date")) {
-            Toast.makeText(this, "Date Unselected", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Date Unselected", Snackbar.LENGTH_SHORT).show();
         } else if (Objects.equals(subjectFragment.getRoom_spinner().getSelectedItem().toString(), "unselect")) {
-            Toast.makeText(this, "Room Unselected", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Room Unselected", Snackbar.LENGTH_SHORT).show();
         } else if (!checkTimeInputCommon(subjectFragment.getStartTime(), subjectFragment.getEndTime())) {
-            Toast.makeText(this, "Time invalid - -*", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Time invalid - -*", Snackbar.LENGTH_SHORT).show();
         } else if (accountBeen_selected_arraylist.size() == 0) {
-            Toast.makeText(this, "Participant Unselected", Toast.LENGTH_SHORT).show();
-        } else if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
-            Toast.makeText(this, "Projector Unselected", Toast.LENGTH_SHORT).show();
+            Snackbar.make(rootview, "Participant Unselected", Snackbar.LENGTH_SHORT).show();
+        } else if (!projector_accept) {
+            if (Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "unselected") || Objects.equals(subjectFragment.getProjector_txt().getText().toString(), "click select projector")) {
+                Snackbar.make(rootview, "Projector Unselected", Snackbar.LENGTH_LONG).setAction("OK", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        projector_accept = true;
+                        subjectFragment.getProjector_txt().setText(0);
+                    }
+                }).show();
+            }
         } else {
             bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
             bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
