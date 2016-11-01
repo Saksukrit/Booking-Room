@@ -35,6 +35,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +43,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -271,9 +274,14 @@ public class Createbooking extends AppCompatActivity {
             }).show();
 
         } else {
-            bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
+            //set data
+            try {
+                bookBean_to_create.setSubject(URLEncoder.encode(subjectFragment.getETsubject().getText().toString(), "UTF-8"));
+                bookBean_to_create.setDetail(URLEncoder.encode(subjectFragment.getETdetail().getText().toString(), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
-            bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
             bookBean_to_create.setDate(subjectFragment.getDate_send());
             bookBean_to_create.setStarttime(subjectFragment.getStartTime());
             bookBean_to_create.setEndtime(subjectFragment.getEndTime());
@@ -329,9 +337,14 @@ public class Createbooking extends AppCompatActivity {
             }).show();
 
         } else {
-            bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
+            //set data
+            try {
+                bookBean_to_create.setSubject(URLEncoder.encode(subjectFragment.getETsubject().getText().toString(), "UTF-8"));
+                bookBean_to_create.setDetail(URLEncoder.encode(subjectFragment.getETdetail().getText().toString(), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
-            bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
             bookBean_to_create.setDate(subjectFragment.getDate_send());
             bookBean_to_create.setStarttime(subjectFragment.getStartTime());
             bookBean_to_create.setEndtime(subjectFragment.getEndTime());
@@ -388,9 +401,14 @@ public class Createbooking extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            bookBean_to_create.setSubject(subjectFragment.getETsubject().getText().toString());
+            //set data
+            try {
+                bookBean_to_create.setSubject(URLEncoder.encode(subjectFragment.getETsubject().getText().toString(), "UTF-8"));
+                bookBean_to_create.setDetail(URLEncoder.encode(subjectFragment.getETdetail().getText().toString(), "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
             bookBean_to_create.setMeeting_type(subjectFragment.getMeeting_redioButton().getText().toString());
-            bookBean_to_create.setDetail(subjectFragment.getETdetail().getText().toString());
             bookBean_to_create.setDate(date_send);
             bookBean_to_create.setStarttime(subjectFragment.getStartTime());
             bookBean_to_create.setEndtime(subjectFragment.getEndTime());

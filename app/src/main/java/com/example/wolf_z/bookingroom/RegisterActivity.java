@@ -40,6 +40,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -104,7 +105,12 @@ public class RegisterActivity extends AppCompatActivity {
                 } else {
                     String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/registerrest/restservice/doregister";
                     /**  Params **/
-                    accountbean.setDisplayname(displaynameET.getText().toString());
+                    //set data
+                    try {
+                        accountbean.setDisplayname(URLEncoder.encode(displaynameET.getText().toString(), "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                     accountbean.setUsername(usernameET.getText().toString());
                     accountbean.setPassword(pwdET.getText().toString());
                     accountbean.setDepartment(department.getSelectedItem().toString());
