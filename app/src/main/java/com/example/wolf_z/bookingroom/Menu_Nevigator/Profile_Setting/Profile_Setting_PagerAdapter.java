@@ -1,4 +1,4 @@
-package com.example.wolf_z.bookingroom.Menu.Profile_Setting;
+package com.example.wolf_z.bookingroom.Menu_Nevigator.Profile_Setting;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

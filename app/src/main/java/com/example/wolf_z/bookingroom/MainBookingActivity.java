@@ -24,8 +24,8 @@ import com.example.wolf_z.bookingroom.Bean.Participant;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.example.wolf_z.bookingroom.Createbooking.Createbooking;
 import com.example.wolf_z.bookingroom.Custom.CustomAdapter_subject;
-import com.example.wolf_z.bookingroom.Menu.AboutActivity;
-import com.example.wolf_z.bookingroom.Menu.Profile_Setting.Profile_Setting_Activity;
+import com.example.wolf_z.bookingroom.Menu_Nevigator.AboutActivity;
+import com.example.wolf_z.bookingroom.Menu_Nevigator.Profile_Setting.Profile_Setting_Activity;
 import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;

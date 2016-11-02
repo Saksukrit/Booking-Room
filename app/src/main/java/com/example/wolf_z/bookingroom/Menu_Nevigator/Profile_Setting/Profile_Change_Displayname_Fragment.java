@@ -1,4 +1,4 @@
-package com.example.wolf_z.bookingroom.Menu.Profile_Setting;
+package com.example.wolf_z.bookingroom.Menu_Nevigator.Profile_Setting;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Profile_Change_Displayname_Fragment extends Fragment {
@@ -59,10 +61,20 @@ public class Profile_Change_Displayname_Fragment extends Fragment {
         btnSave_Displayname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //check username special character
+                Pattern pattern_displayname = Pattern.compile("[A-Za-z. ก-ฮะ-ๅ่-้์็ฯ]", Pattern.CASE_INSENSITIVE);  // ^ as space
+                Matcher matcher = pattern_displayname.matcher(edittext_new_displayname.getText().toString());
+                boolean displayname_special_character = matcher.find();
+
                 if (Objects.equals(edittext_new_displayname.getText().toString(), "") || Objects.equals(edittext_new_displayname.getText().toString(), null)) {
-                    Snackbar.make(view, "Not displayname", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, "No displayname", Snackbar.LENGTH_SHORT).show();
+                } else if (edittext_new_displayname.length() < 2 || edittext_new_displayname.length() > 20) { //check min length
+                    Snackbar.make(v, "Displayname length should be between 2 and 20", Snackbar.LENGTH_SHORT).show();
+                } else if (!displayname_special_character) {
+                    Snackbar.make(v, "Not accept special character in Displayname", Snackbar.LENGTH_SHORT).show();
+                    //*****************************************
                 } else if (Objects.equals(edittext_password_confirm.getText().toString(), "") || Objects.equals(edittext_password_confirm.getText().toString(), null)) {
-                    Snackbar.make(view, "Not password confirm", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, "No password confirm", Snackbar.LENGTH_SHORT).show();
                 } else {
                     String displayname_utf8 = "";
                     try {

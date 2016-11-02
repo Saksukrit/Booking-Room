@@ -1,7 +1,6 @@
-package com.example.wolf_z.bookingroom.Menu.Profile_Setting;
+package com.example.wolf_z.bookingroom.Menu_Nevigator.Profile_Setting;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -14,9 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
-import com.example.wolf_z.bookingroom.MainBookingActivity;
 import com.example.wolf_z.bookingroom.R;
-import com.google.gson.Gson;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -30,6 +27,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class Profile_Change_Password_Fragment extends Fragment {
@@ -64,14 +63,24 @@ public class Profile_Change_Password_Fragment extends Fragment {
         btnSave_Password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //check password special character
+                Pattern pattern_password = Pattern.compile("[A-Za-z0-9 ]", Pattern.CASE_INSENSITIVE);  // ^ as space
+                Matcher matcher = pattern_password.matcher(edit_new_password.getText().toString());
+                boolean password_special_character = matcher.find();
+
                 if (Objects.equals(edit_current_password.getText().toString(), "") || Objects.equals(edit_current_password.getText().toString(), null)) {
                     Snackbar.make(view, "Not current password", Snackbar.LENGTH_SHORT).show();
                 } else if (Objects.equals(edit_new_password.getText().toString(), "") || Objects.equals(edit_new_password.getText().toString(), null)) {
                     Snackbar.make(view, "Not new password", Snackbar.LENGTH_SHORT).show();
+                } else if (edit_new_password.length() < 8 || edit_new_password.length() > 16) { //check min length
+                    Snackbar.make(v, "Password length should be between 8 and 16", Snackbar.LENGTH_SHORT).show();
+                } else if (!password_special_character) {
+                    Snackbar.make(v, "Not accept special character in Password", Snackbar.LENGTH_SHORT).show();
+                    //*****************************************
                 } else if (Objects.equals(edit_new_again_password.getText().toString(), "") || Objects.equals(edit_new_again_password.getText().toString(), null)) {
                     Snackbar.make(view, "Not again password", Snackbar.LENGTH_SHORT).show();
                 } else if (!Objects.equals(edit_new_again_password.getText().toString(), edit_new_password.getText().toString())) {
-                    Snackbar.make(view, "Invalid again password", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, "Confirm password not match", Snackbar.LENGTH_SHORT).show();
                 } else {
                     json = "{username:\"" + profile_setting_activity.getUsername() + "\",current_password:\"" + edit_current_password.getText().toString() + "\",new_password:\"" + edit_new_password.getText().toString() + "\"}";
                     // task

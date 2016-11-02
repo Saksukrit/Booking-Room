@@ -90,7 +90,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Menu.Profile_Setting.Profile_Setting_Activity"
+            android:name=".Menu_Nevigator.Profile_Setting.Profile_Setting_Activity"
             android:label="@string/title_activity_setting"
             android:parentActivityName=".MainBookingActivity">
             <meta-data
@@ -100,7 +100,7 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".Menu.AboutActivity"></activity>
+        <activity android:name=".Menu_Nevigator.AboutActivity"></activity>
     </application>
 
 </manifest>
