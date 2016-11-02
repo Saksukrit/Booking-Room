@@ -33,7 +33,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
-                android:hint="Enter your Displayname"
+                android:hint="Enter your displayname"
                 android:maxLength="45"
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
@@ -64,11 +64,10 @@
 
             <EditText
                 android:id="@+id/ETusername"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
-                android:hint="Enter your Email ID  ( A-Z,a-z,0-9,@, . )"
-                android:inputType="textEmailAddress"
+                android:hint="Enter your username  (A-Z, a-z, 0-9, @, .)"
                 android:maxLength="30"
                 android:maxLines="1" />
         </android.support.design.widget.TextInputLayout>
@@ -98,10 +97,10 @@
 
             <EditText
                 android:id="@+id/ETpassword"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#00000000"
-                android:hint="Enter Password (A-Z,a-z,0-9)"
+                android:hint="Enter your password  (A-Z, a-z, 0-9)"
                 android:inputType="textPassword"
                 android:maxLength="16"
                 android:maxLines="1" />
@@ -116,6 +115,40 @@
 
             <View
                 android:id="@+id/view_password"
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:background="#aaaaaa" />
+
+        </FrameLayout>
+
+        <!-- Password Label -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/re_password_layout"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:gravity="bottom"
+            app:hintTextAppearance="@style/TextPopup">
+
+            <EditText
+                android:id="@+id/ETre_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:hint="Enter your password again (A-Z, a-z, 0-9)"
+                android:inputType="textPassword"
+                android:maxLength="16"
+                android:maxLines="1" />
+        </android.support.design.widget.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="5dp">
+
+            <View
+                android:id="@+id/view_re_password"
                 android:layout_width="wrap_content"
                 android:layout_height="2dp"
                 android:background="#aaaaaa" />
