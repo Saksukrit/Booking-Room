@@ -94,20 +94,42 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Matcher matcher;
 
-                //check username special character
+                //check displayname special character
                 Pattern pattern_displayname = Pattern.compile("[A-Za-z. ก-ฮะ-ๅ่-้์็ฯ]", Pattern.CASE_INSENSITIVE);  // ^ as space
-                matcher = pattern_displayname.matcher(displaynameET.getText().toString());
-                boolean displayname_special_character = matcher.find();
+                boolean displayname_special_character = true;
+                char[] displayname_char_check = displaynameET.getText().toString().toCharArray();
+                for (int i = 0; i < displayname_char_check.length; i++) {
+                    matcher = pattern_displayname.matcher(String.valueOf(displayname_char_check[i]));
+                    if (!matcher.find()) {
+                        displayname_special_character = false;
+                        break;
+                    }
+                }
 
                 //check username special character
                 Pattern pattern_username = Pattern.compile("[A-Za-z0-9@. ]", Pattern.CASE_INSENSITIVE);  // ^ as space
-                matcher = pattern_username.matcher(usernameET.getText().toString());
-                boolean username_special_character = matcher.find();
+                boolean username_special_character = true;
+                char[] username_char_check = usernameET.getText().toString().toCharArray();
+                for (int i = 0; i < username_char_check.length; i++) {
+                    matcher = pattern_username.matcher(String.valueOf(username_char_check[i]));
+                    if (!matcher.find()) {
+                        username_special_character = false;
+                        break;
+                    }
+                }
 
                 //check password special character
                 Pattern pattern_password = Pattern.compile("[A-Za-z0-9 ]", Pattern.CASE_INSENSITIVE);  // ^ as space
-                matcher = pattern_password.matcher(pwdET.getText().toString());
-                boolean password_special_character = matcher.find();
+                boolean password_special_character = true;
+                char[] pwd_char_check = pwdET.getText().toString().toCharArray();
+                for (int i = 0; i < pwd_char_check.length; i++) {
+                    matcher = pattern_password.matcher(String.valueOf(pwd_char_check[i]));
+                    if (!matcher.find()) {
+                        password_special_character = false;
+                        break;
+                    }
+                }
+
 
                 //check input data
                 if (Objects.equals(displaynameET.getText().toString(), "")) {

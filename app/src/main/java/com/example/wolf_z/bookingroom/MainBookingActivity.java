@@ -1,6 +1,9 @@
 package com.example.wolf_z.bookingroom;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
@@ -43,6 +46,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class MainBookingActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -62,6 +66,10 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
     private TextView profile_department;
     private View header;
 
+    //AlarmManager
+    AlarmManager alarmManager;
+    int notify_id;
+    Intent notificationIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +150,9 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
     }
 
     public void RefreshMain_comeback() {
+
+        getAL();
+
         Intent intent = getIntent();
         intent.putExtra("username", username);
         finish();
@@ -189,6 +200,31 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
         } else {
             super.onBackPressed();
         }
+    }
+
+
+    public void getAL() {
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        String subject = bookBeans.get(0).getSubject();
+        int bookingid = bookBeans.get(0).getBookingid();
+
+
+        notificationIntent = new Intent("Alarm_booking_room_service");
+        notificationIntent.addCategory("android.intent.category.DEFAULT");
+        notify_id = 999;
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(2016, 10, 3, 17, 2);
+        notificationIntent.putExtra("bookingid", bookingid);
+        notificationIntent.putExtra("content", "test " + bookingid);
+        int notify_id = 1;
+        notificationIntent.putExtra("notify_id", notify_id);
+        notificationIntent.putExtra("subject", subject);
+
+        PendingIntent broadcast = PendingIntent.getBroadcast(getApplicationContext(), notify_id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
+
     }
 
     /**************************************************************/
@@ -296,4 +332,5 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
 
         }
     }
+
 }

@@ -41,6 +41,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
@@ -374,28 +375,32 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
                 accountBeens_arraylist.clear();
                 searchstatus = true;
                 String URL = null;
-                if (Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() == "all") {
-                    URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_all";
-                    new Searchlist().execute(URL);
+                try {
+                    if (Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() == "all") {
+                        URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_all";
+                        new Searchlist().execute(URL);
 
-                } else if (!Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() == "all") {
-                    param_send_service.setDisplayname(auto_search.getText().toString());
-                    URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name";
-                    new Searchlist().execute(URL);
+                    } else if (!Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() == "all") {
+                        param_send_service.setDisplayname(URLEncoder.encode(auto_search.getText().toString(), "UTF-8"));
+                        URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name";
+                        new Searchlist().execute(URL);
 
-                } else if (!Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() != "all") {
-                    param_send_service.setDisplayname(auto_search.getText().toString());
-                    param_send_service.setDepartment(department_type_spinner.getSelectedItem().toString());
-                    URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name_department";
-                    new Searchlist().execute(URL);
+                    } else if (!Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() != "all") {
+                        param_send_service.setDisplayname(URLEncoder.encode(auto_search.getText().toString(), "UTF-8"));
+                        param_send_service.setDepartment(department_type_spinner.getSelectedItem().toString());
+                        URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name_department";
+                        new Searchlist().execute(URL);
 
-                } else if (Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() != "all") {
-                    param_send_service.setDepartment(department_type_spinner.getSelectedItem().toString());
-                    URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_department";
-                    new Searchlist().execute(URL);
+                    } else if (Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() != "all") {
+                        param_send_service.setDepartment(department_type_spinner.getSelectedItem().toString());
+                        URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_department";
+                        new Searchlist().execute(URL);
 
-                } else {
-                    Toast.makeText(getApplication(), "can't search_button", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplication(), "can't search_button", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -407,15 +412,19 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 accountBeens_arraylist.clear();
                 searchstatus = true;
-                if (department_type_spinner.getSelectedItem().toString() == "all") {
-                    param_send_service.setDisplayname(auto_search.getText().toString());
-                    String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name";
-                    new Searchlist().execute(URL);
-                } else {
-                    param_send_service.setDisplayname(auto_search.getText().toString());
-                    param_send_service.setDepartment(department_type_spinner.getSelectedItem().toString());
-                    String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name_department";
-                    new Searchlist().execute(URL);
+                try {
+                    if (department_type_spinner.getSelectedItem().toString() == "all") {
+                        param_send_service.setDisplayname(URLEncoder.encode(auto_search.getText().toString(), "UTF-8"));
+                        String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name";
+                        new Searchlist().execute(URL);
+                    } else {
+                        param_send_service.setDisplayname(URLEncoder.encode(auto_search.getText().toString(), "UTF-8"));
+                        param_send_service.setDepartment(department_type_spinner.getSelectedItem().toString());
+                        String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name_department";
+                        new Searchlist().execute(URL);
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
 
             }

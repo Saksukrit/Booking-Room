@@ -65,8 +65,16 @@ public class Profile_Change_Password_Fragment extends Fragment {
             public void onClick(View v) {
                 //check password special character
                 Pattern pattern_password = Pattern.compile("[A-Za-z0-9 ]", Pattern.CASE_INSENSITIVE);  // ^ as space
-                Matcher matcher = pattern_password.matcher(edit_new_password.getText().toString());
-                boolean password_special_character = matcher.find();
+                Matcher matcher;
+                boolean password_special_character = true;
+                char[] pwd_char_check = edit_new_password.getText().toString().toCharArray();
+                for (int i = 0; i < pwd_char_check.length; i++) {
+                    matcher = pattern_password.matcher(String.valueOf(pwd_char_check[i]));
+                    if (!matcher.find()) {
+                        password_special_character = false;
+                        break;
+                    }
+                }
 
                 if (Objects.equals(edit_current_password.getText().toString(), "") || Objects.equals(edit_current_password.getText().toString(), null)) {
                     Snackbar.make(view, "Not current password", Snackbar.LENGTH_SHORT).show();

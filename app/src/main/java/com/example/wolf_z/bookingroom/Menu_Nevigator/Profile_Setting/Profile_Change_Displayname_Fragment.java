@@ -63,8 +63,16 @@ public class Profile_Change_Displayname_Fragment extends Fragment {
             public void onClick(View v) {
                 //check username special character
                 Pattern pattern_displayname = Pattern.compile("[A-Za-z. ก-ฮะ-ๅ่-้์็ฯ]", Pattern.CASE_INSENSITIVE);  // ^ as space
-                Matcher matcher = pattern_displayname.matcher(edittext_new_displayname.getText().toString());
-                boolean displayname_special_character = matcher.find();
+                Matcher matcher;
+                boolean displayname_special_character = true;
+                char[] displayname_char_check = edittext_new_displayname.getText().toString().toCharArray();
+                for (int i = 0; i < displayname_char_check.length; i++) {
+                    matcher = pattern_displayname.matcher(String.valueOf(displayname_char_check[i]));
+                    if (!matcher.find()) {
+                        displayname_special_character = false;
+                        break;
+                    }
+                }
 
                 if (Objects.equals(edittext_new_displayname.getText().toString(), "") || Objects.equals(edittext_new_displayname.getText().toString(), null)) {
                     Snackbar.make(view, "No displayname", Snackbar.LENGTH_SHORT).show();

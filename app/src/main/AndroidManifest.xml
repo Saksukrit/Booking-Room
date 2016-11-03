@@ -96,11 +96,20 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainBookingActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".Menu_Nevigator.AboutActivity"></activity>
+        <activity android:name=".Menu_Nevigator.AboutActivity" />
+        <activity android:name=".BookingDetail_Offline"></activity>
+
+        <receiver android:name=".AlarmReceiver2">
+            <intent-filter>
+                <action android:name="Alarm_booking_room_service" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
