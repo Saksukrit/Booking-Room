@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,8 +46,11 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class MainBookingActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -65,11 +69,6 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
     private TextView profile_displayname;
     private TextView profile_department;
     private View header;
-
-    //AlarmManager
-    AlarmManager alarmManager;
-    int notify_id;
-    Intent notificationIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,17 +141,14 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
                 intent.putExtra("username", username);
                 intent.putExtra("bookingid", bookingid);
                 intent.putExtra("checkfrommain", "main");
-//                startActivity(intent);
                 startActivityForResult(intent, 1);
             }
         });
 
+
     }
 
     public void RefreshMain_comeback() {
-
-        getAL();
-
         Intent intent = getIntent();
         intent.putExtra("username", username);
         finish();
@@ -203,28 +199,71 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
     }
 
 
-    public void getAL() {
-        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-        String subject = bookBeans.get(0).getSubject();
-        int bookingid = bookBeans.get(0).getBookingid();
-
-
-        notificationIntent = new Intent("Alarm_booking_room_service");
-        notificationIntent.addCategory("android.intent.category.DEFAULT");
-        notify_id = 999;
-
+    public void set_Subject_Notification() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Calendar cal = Calendar.getInstance();
-        cal.set(2016, 10, 3, 17, 2);
-        notificationIntent.putExtra("bookingid", bookingid);
-        notificationIntent.putExtra("content", "test " + bookingid);
-        int notify_id = 1;
-        notificationIntent.putExtra("notify_id", notify_id);
-        notificationIntent.putExtra("subject", subject);
+        Intent notificationIntent_clear = new Intent("Alarm_booking_room_service");
+        notificationIntent_clear.addCategory("android.intent.category.DEFAULT");
+        Intent notificationIntent = new Intent("Alarm_booking_room_service");
+        notificationIntent.addCategory("android.intent.category.DEFAULT");
 
-        PendingIntent broadcast = PendingIntent.getBroadcast(getApplicationContext(), notify_id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        SimpleDateFormat format_date = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat format_year = new SimpleDateFormat("yyyy");
+        SimpleDateFormat format_month = new SimpleDateFormat("MM");
+        SimpleDateFormat format_day = new SimpleDateFormat("dd");
 
+        //clear all
+        Calendar calendar = Calendar.getInstance();   //this time
+        notificationIntent_clear.putExtra("command", "clear_all_notification");
+        PendingIntent broadcast_clear = PendingIntent.getBroadcast(getApplicationContext(), 0, notificationIntent_clear, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), broadcast_clear);
+
+        for (int i = 0; i < bookBeans.size(); i++) {
+            Date date_check = new Date();
+            Date date_now = new Date();
+            try {
+                String date_yser = String.valueOf(format_year.format(format_date.parse(bookBeans.get(i).getDate())));
+                date_yser = String.valueOf(Integer.valueOf(date_yser) - 543);
+                String date_month = String.valueOf(format_month.format(format_date.parse(bookBeans.get(i).getDate())));
+                String date_day = String.valueOf(format_day.format(format_date.parse(bookBeans.get(i).getDate())));
+                String date_pre_send = date_yser + "/" + date_month + "/" + date_day;
+
+                date_check = format.parse(date_pre_send + " " + bookBeans.get(i).getStarttime());
+                date_now = format.parse(format.format(calendar.getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+            //check date time is past
+            if (date_now.before(date_check)) {
+
+//                Log.d("date", date_now + ": before :" + date_check);
+            } else {
+//                Log.d("date", date_now + ": after :" + date_check);
+            }
+
+
+//            //notify_id
+//            int notify_id = bookBeans.get(i).getBookingid();
+//            notificationIntent.putExtra("notify_id", notify_id);
+//            notificationIntent.putExtra("command", "create_notification");
+//            //data
+//            notificationIntent.putExtra("bookingid", bookBeans.get(i).getBookingid());
+//            notificationIntent.putExtra("subject", bookBeans.get(i).getSubject());
+//            notificationIntent.putExtra("detail", bookBeans.get(i).getDetail());
+//            notificationIntent.putExtra("meetingtype", bookBeans.get(i).getMeeting_type());
+//            notificationIntent.putExtra("date", bookBeans.get(i).getDate());
+//            notificationIntent.putExtra("starttime", bookBeans.get(i).getStarttime());
+//            notificationIntent.putExtra("endtime", bookBeans.get(i).getEndtime());
+//            notificationIntent.putExtra("roomid", bookBeans.get(i).getRoomid()); //int
+//            notificationIntent.putExtra("projector", bookBeans.get(i).getProjid()); //int
+//
+//            cal.set(2016, 10, 4, 15, 0);
+//            PendingIntent broadcast = PendingIntent.getBroadcast(getApplicationContext(), notify_id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
+        }
     }
 
     /**************************************************************/
@@ -300,11 +339,15 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     BookBean bookBean = new BookBean();
-                    bookBean.setSubject(jsonObject.getString("subject"));
                     bookBean.setBookingid(jsonObject.getInt("bookingid"));
+                    bookBean.setSubject(jsonObject.getString("subject"));
+                    bookBean.setDetail(jsonObject.getString("detail"));
                     bookBean.setDate(jsonObject.getString("date"));
+                    bookBean.setMeeting_type(jsonObject.getString("meeting_type"));
                     bookBean.setStarttime(jsonObject.getString("starttime"));
+                    bookBean.setEndtime(jsonObject.getString("endtime"));
                     bookBean.setRoomid(jsonObject.getInt("roomid"));
+                    bookBean.setProjid(jsonObject.getInt("projid"));
                     bookBeans.add(bookBean);
                 }
             } catch (JSONException e) {
@@ -330,6 +373,8 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
             profile_department = (TextView) header.findViewById(R.id.profile_department);
             profile_department.setText(accountBean.getDepartment());
 
+            //set notification
+            set_Subject_Notification();
         }
     }
 
