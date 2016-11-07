@@ -1,11 +1,13 @@
 package com.example.wolf_z.bookingroom;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -91,7 +93,6 @@ public class BookingDetail extends AppCompatActivity {
         String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/mainrest/restservice/showdetail"
                 , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/mainrest/restservice/showpaticipant"};
         //  Params
-//        participant.setUsername(username);
         participant.setBookingid(Integer.parseInt(bookingid));
         new Detail().execute(URL);
     }
@@ -201,6 +202,56 @@ public class BookingDetail extends AppCompatActivity {
         }
     }
 
+    private class DeleteBooking extends AsyncTask<String, Void, String> {
+        String result = "";
+
+        @Override
+        protected void onPreExecute() {
+            prgDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+            try {
+                /** POST **/
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost httpPost = new HttpPost(urls[0]);
+                Gson gson = new Gson();
+                StringEntity stringEntity = new StringEntity(gson.toJson(participant));
+                httpPost.setEntity(stringEntity);
+                httpPost.setHeader("Content-type", "application/json");
+                HttpResponse httpResponse = httpClient.execute(httpPost);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                if (httpEntity != null) {
+                    result = EntityUtils.toString(httpEntity);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            prgDialog.dismiss();
+            String error_msg = "";
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                error_msg = jsonObject.getString("error_msg");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (Objects.equals(error_msg, "") || Objects.equals(error_msg, null)) {
+                String success = "Delete Booking Success ";
+                Toast toast = Toast.makeText(getApplicationContext(), success, Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                String OutputData = " Ops! : " + error_msg;
+                Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+    }
 
     /**
      * Actionbar
@@ -218,6 +269,12 @@ public class BookingDetail extends AppCompatActivity {
             menu_create.setIcon(R.drawable.create512);
             menu_create.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
         }
+        MenuItem menu_delete = menu.add(2, 2, 2, "Delete");
+        {
+            menu_delete.setIcon(R.drawable.clearicon25);
+            menu_delete.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT);
+        }
+
         //check create or edit
         if (Objects.equals(checkfrommain, "main")) {
             menu_create.setVisible(false);
@@ -237,15 +294,29 @@ public class BookingDetail extends AppCompatActivity {
                 intentEdit.putExtra("from", "detail_to_edit");
                 startActivity(intentEdit);
                 finish();
-
                 return true;
-
             case 1:
                 Intent intentCreate = new Intent(this, Createbooking.class);
                 intentCreate.putExtra("from", "detail_to_create");
                 startActivity(intentCreate);
                 finish();
-
+                return true;
+            case 2:
+                //show AlertDialog confirm to delete
+                new AlertDialog.Builder(this)
+                        .setTitle("Delete Booking")
+                        .setMessage("Do you want to delete this booking ?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/deletebooking";
+                                new DeleteBooking().execute(URL);
+                                Intent intentdelete = new Intent();
+                                setResult(1, intentdelete);
+                                finish();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).show();
                 return true;
             case android.R.id.home:
                 Intent intent = new Intent();
