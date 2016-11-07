@@ -37,9 +37,6 @@ public class BookingDetail_Offline extends AppCompatActivity {
         int roomid = bundle.getInt("roomid");
         int projector = bundle.getInt("projector");
 
-        Toast.makeText(this, "bookingid : " + bookingid + " >>>  Subject : " + subject, Toast.LENGTH_LONG).show();
-
-
         txtsubject.setText(subject);
         txtdetail.setText(detail);
         txtmeetingtype.setText(meetingtype);

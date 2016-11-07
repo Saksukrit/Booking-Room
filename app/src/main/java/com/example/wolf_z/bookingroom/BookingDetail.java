@@ -68,7 +68,7 @@ public class BookingDetail extends AppCompatActivity {
         setContentView(R.layout.activity_booking_detail);
 
         bundle = getIntent().getExtras();
-//        username = bundle.getString("username");
+        username = bundle.getString("username");  // for permission to delete
         bookingid = bundle.getString("bookingid");
         checkfrommain = bundle.getString("checkfrommain");
 

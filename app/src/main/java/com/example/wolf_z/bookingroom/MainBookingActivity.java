@@ -99,12 +99,6 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
         navigationView.setNavigationItemSelectedListener(this);
         header = navigationView.getHeaderView(0);
 
-//        profile_displayname = (TextView) header.findViewById(R.id.profile_displayname);
-//        profile_displayname.setText(username);
-//
-//        profile_department = (TextView) header.findViewById(R.id.profile_department);
-//        profile_department.setText("test");
-
         /** Query */
         String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/mainrest/restservice/showlistsubject"
                 , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/mainrest/restservice/getprofile"};
@@ -208,10 +202,14 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
         notificationIntent.addCategory("android.intent.category.DEFAULT");
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        SimpleDateFormat format_date = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat format_date = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat format_year = new SimpleDateFormat("yyyy");
         SimpleDateFormat format_month = new SimpleDateFormat("MM");
         SimpleDateFormat format_day = new SimpleDateFormat("dd");
+
+        SimpleDateFormat format_time = new SimpleDateFormat("HH:mm");
+        SimpleDateFormat format_Hr = new SimpleDateFormat("HH");
+        SimpleDateFormat format_Min = new SimpleDateFormat("mm");
 
         //clear all
         Calendar calendar = Calendar.getInstance();   //this time
@@ -219,50 +217,58 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
         PendingIntent broadcast_clear = PendingIntent.getBroadcast(getApplicationContext(), 0, notificationIntent_clear, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), broadcast_clear);
 
+
         for (int i = 0; i < bookBeans.size(); i++) {
             Date date_check = new Date();
             Date date_now = new Date();
+            String date_yser = null;
+            String date_month = null;
+            String date_day = null;
+            String date_pre_send;
+            String date_hr = null;
+            String date_min = null;
             try {
-                String date_yser = String.valueOf(format_year.format(format_date.parse(bookBeans.get(i).getDate())));
+                date_yser = String.valueOf(format_year.format(format_date.parse(bookBeans.get(i).getDate())));
                 date_yser = String.valueOf(Integer.valueOf(date_yser) - 543);
-                String date_month = String.valueOf(format_month.format(format_date.parse(bookBeans.get(i).getDate())));
-                String date_day = String.valueOf(format_day.format(format_date.parse(bookBeans.get(i).getDate())));
-                String date_pre_send = date_yser + "/" + date_month + "/" + date_day;
+                date_month = String.valueOf(format_month.format(format_date.parse(bookBeans.get(i).getDate())));
+                date_day = String.valueOf(format_day.format(format_date.parse(bookBeans.get(i).getDate())));
+                date_pre_send = date_yser + "/" + date_month + "/" + date_day;
 
-                date_check = format.parse(date_pre_send + " " + bookBeans.get(i).getStarttime());
+                date_hr = String.valueOf(format_Hr.format(format_time.parse(bookBeans.get(i).getStarttime())));
+                date_min = String.valueOf(format_Min.format(format_time.parse(bookBeans.get(i).getStarttime())));
+
+                date_check = format.parse(date_pre_send + " " + (Integer.valueOf(date_hr) - 1) + ":" + date_min);
+                Log.d("check ", String.valueOf(date_check));
                 date_now = format.parse(format.format(calendar.getTime()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-
-            //check date time is past
+            //check before/after date time ,before 1 hr.
             if (date_now.before(date_check)) {
+                Log.d("this time before ", bookBeans.get(i).getDate() + " " + date_hr + ":" + date_min);
+                //notify_id
+                int notify_id = bookBeans.get(i).getBookingid();
+                notificationIntent.putExtra("notify_id", notify_id);
+                notificationIntent.putExtra("command", "create_notification");
+                //data
+                notificationIntent.putExtra("bookingid", bookBeans.get(i).getBookingid());
+                notificationIntent.putExtra("subject", bookBeans.get(i).getSubject());
+                notificationIntent.putExtra("detail", bookBeans.get(i).getDetail());
+                notificationIntent.putExtra("meetingtype", bookBeans.get(i).getMeeting_type());
+                notificationIntent.putExtra("date", bookBeans.get(i).getDate());
+                notificationIntent.putExtra("starttime", bookBeans.get(i).getStarttime());
+                notificationIntent.putExtra("endtime", bookBeans.get(i).getEndtime());
+                notificationIntent.putExtra("roomid", bookBeans.get(i).getRoomid()); //int
+                notificationIntent.putExtra("projector", bookBeans.get(i).getProjid()); //int
 
-//                Log.d("date", date_now + ": before :" + date_check);
+                cal.set(Integer.parseInt(date_yser), Integer.parseInt(date_month) - 1, Integer.parseInt(date_day), Integer.parseInt(date_hr) - 1, Integer.parseInt(date_min));
+                PendingIntent broadcast = PendingIntent.getBroadcast(getApplicationContext(), notify_id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
             } else {
-//                Log.d("date", date_now + ": after :" + date_check);
+                Log.d("this time after ", bookBeans.get(i).getDate() + " " + date_hr + ":" + date_min);
             }
 
 
-//            //notify_id
-//            int notify_id = bookBeans.get(i).getBookingid();
-//            notificationIntent.putExtra("notify_id", notify_id);
-//            notificationIntent.putExtra("command", "create_notification");
-//            //data
-//            notificationIntent.putExtra("bookingid", bookBeans.get(i).getBookingid());
-//            notificationIntent.putExtra("subject", bookBeans.get(i).getSubject());
-//            notificationIntent.putExtra("detail", bookBeans.get(i).getDetail());
-//            notificationIntent.putExtra("meetingtype", bookBeans.get(i).getMeeting_type());
-//            notificationIntent.putExtra("date", bookBeans.get(i).getDate());
-//            notificationIntent.putExtra("starttime", bookBeans.get(i).getStarttime());
-//            notificationIntent.putExtra("endtime", bookBeans.get(i).getEndtime());
-//            notificationIntent.putExtra("roomid", bookBeans.get(i).getRoomid()); //int
-//            notificationIntent.putExtra("projector", bookBeans.get(i).getProjid()); //int
-//
-//            cal.set(2016, 10, 4, 15, 0);
-//            PendingIntent broadcast = PendingIntent.getBroadcast(getApplicationContext(), notify_id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//            alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), broadcast);
         }
     }
 
