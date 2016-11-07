@@ -6,6 +6,9 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.TaskStackBuilder;
@@ -58,10 +61,12 @@ public class AlarmReceiver extends BroadcastReceiver {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
             Uri notif_sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            //create bitmap from setLargeIcon
+            Bitmap bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.bookinglogo);
 
             Notification notification = builder.setContentTitle(intent.getExtras().getString("subject"))
                     .setContentText("Your have a meeting at " + intent.getExtras().getString("date") + " , " + intent.getExtras().getString("starttime"))
-                    .setSmallIcon(R.drawable.bookinglogo)
+                    .setLargeIcon(bm)
                     .setSound(notif_sound)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent).build();
