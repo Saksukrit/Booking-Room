@@ -104,7 +104,7 @@
         <activity android:name=".Menu_Nevigator.AboutActivity" />
         <activity android:name=".BookingDetail_Offline"></activity>
 
-        <receiver android:name=".AlarmReceiver">
+        <receiver android:name=".Custom.AlarmReceiver">
             <intent-filter>
                 <action android:name="Alarm_booking_room_service" />
                 <category android:name="android.intent.category.DEFAULT" />

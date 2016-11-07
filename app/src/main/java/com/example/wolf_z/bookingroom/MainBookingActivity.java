@@ -56,7 +56,6 @@ import java.util.Date;
 public class MainBookingActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
-    private ProgressDialog prgDialog;
     private Participant participant = new Participant();
     private AccountBean accountBean = new AccountBean();
     protected Button createbooking;
@@ -66,8 +65,6 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
     private String bookingid;
     private ArrayList<BookBean> bookBeans = new ArrayList<>();
     private ListView listView;
-    private TextView profile_displayname;
-    private TextView profile_department;
     private View header;
 
     @Override
@@ -81,7 +78,7 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
         username = "krit025";
         accountBean.setUsername(username);
 
-        prgDialog = new ProgressDialog(this);
+        ProgressDialog prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
         listView = (ListView) findViewById(R.id.subjectlist);
@@ -363,7 +360,7 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
             listView.setAdapter(adapter);
 
             /*** get profile ********/
-            JSONObject jsonObject = null;
+            JSONObject jsonObject;
             try {
                 jsonObject = new JSONObject(result[1]);
 
@@ -373,10 +370,10 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            profile_displayname = (TextView) header.findViewById(R.id.profile_displayname);
+            TextView profile_displayname = (TextView) header.findViewById(R.id.profile_displayname);
             profile_displayname.setText(accountBean.getDisplayname());
 
-            profile_department = (TextView) header.findViewById(R.id.profile_department);
+            TextView profile_department = (TextView) header.findViewById(R.id.profile_department);
             profile_department.setText(accountBean.getDepartment());
 
             //set notification

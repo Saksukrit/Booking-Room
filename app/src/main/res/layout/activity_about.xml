@@ -70,7 +70,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="Application สามารถแสดงห้องประชุมที่ว่างตามช่วงเวลาที่ต้องการ,สามารถจองห้องประชุมที่ว่าง,สามารถแก้ไขการจองห้องประชุม,สามารถยกเลิกการจองห้องประชุมได้"
+        android:text="Application สำหรับใช้เป็นระบบการจองห้องประชุมภายในองค์กร ใช้จัดการการจองห้องประชุมของบุคคลากรภายในองค์กร พร้อมระบบการแจ้งเตือนรายการการประชุมของแต่ละบุคคลเพื่อความสะดวกในการทำงาน"
         android:textSize="15sp" />
 
     <View
@@ -83,20 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="Application สามารถแสดงรายละเอียดของการประชุม,สามารถแจ้งเตือนผู้เข้าร่วมประชุม"
-        android:textSize="15sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2sp"
-        android:background="#606860"
-        android:padding="10dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="พัฒนาโดยทีมนักศึกษาสหกิจจากมหาวิทยาลัยสงขลานครินทร์(วิทยาเขตภูเก็ต)"
+        android:text="พัฒนาโดยทีมนักศึกษาโครงการสหกิจศึกษา มหาวิทยาลัยสงขลานครินทร์(วิทยาเขตภูเก็ต)"
         android:textSize="15sp" />
 
 </LinearLayout>

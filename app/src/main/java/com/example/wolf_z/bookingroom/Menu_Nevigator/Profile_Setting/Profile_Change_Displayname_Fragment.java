@@ -35,7 +35,6 @@ import java.util.regex.Pattern;
 
 public class Profile_Change_Displayname_Fragment extends Fragment {
 
-    private Button btnSave_Displayname;
     private EditText edittext_new_displayname;
     private EditText edittext_password_confirm;
     private String json;
@@ -57,7 +56,7 @@ public class Profile_Change_Displayname_Fragment extends Fragment {
 
         edittext_new_displayname = (EditText) view.findViewById(R.id.edittext_new_displayname);
         edittext_password_confirm = (EditText) view.findViewById(R.id.edittext_password_confirm);
-        btnSave_Displayname = (Button) view.findViewById(R.id.btnSave_Displayname);
+        Button btnSave_Displayname = (Button) view.findViewById(R.id.btnSave_Displayname);
         btnSave_Displayname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,8 +65,8 @@ public class Profile_Change_Displayname_Fragment extends Fragment {
                 Matcher matcher;
                 boolean displayname_special_character = true;
                 char[] displayname_char_check = edittext_new_displayname.getText().toString().toCharArray();
-                for (int i = 0; i < displayname_char_check.length; i++) {
-                    matcher = pattern_displayname.matcher(String.valueOf(displayname_char_check[i]));
+                for (char aDisplayname_char_check : displayname_char_check) {
+                    matcher = pattern_displayname.matcher(String.valueOf(aDisplayname_char_check));
                     if (!matcher.find()) {
                         displayname_special_character = false;
                         break;

@@ -15,8 +15,8 @@ import java.util.ArrayList;
 
 public class CustomAdapter_Pname extends BaseAdapter {
 
-    Context mContext;
-    ArrayList<AccountBean> accountBean = new ArrayList<>();
+    private Context mContext;
+    private ArrayList<AccountBean> accountBean = new ArrayList<>();
 
     public CustomAdapter_Pname(Context context, ArrayList<AccountBean> accountBean) {
         this.mContext = context;

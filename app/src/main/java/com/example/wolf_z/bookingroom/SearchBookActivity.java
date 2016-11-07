@@ -74,7 +74,6 @@ public class SearchBookActivity extends AppCompatActivity {
     private SimpleDateFormat dateFormatSend = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     private SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
     private SimpleDateFormat timeFormatter2 = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
-    private SimpleDateFormat dateFormatShow = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
     protected CustomAdapter_search adapter;
 
     private String intent_date;

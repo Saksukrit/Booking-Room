@@ -13,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
@@ -42,22 +41,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by Wolf-Z on 12/9/2559.
+ * Created by Wolf-Z on 12/9/2559. _
  */
 public class RegisterActivity extends AppCompatActivity {
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     private ArrayList<DepartmentBean> departmentBeens = new ArrayList<>();
     private ArrayList<String> Adepartment = new ArrayList<>();
     private ProgressDialog prgDialog;
-    private TextView errorMsg;
     private EditText displaynameET;
     private EditText usernameET;
     private EditText pwdET;
     private EditText re_pwdET;
     private Spinner department;
     private AccountBean accountbean = new AccountBean();
-    private Button btnregister;
-    private ActionBar actionBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,14 +63,14 @@ public class RegisterActivity extends AppCompatActivity {
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         displaynameET = (EditText) findViewById(R.id.ETdisplayname);
         usernameET = (EditText) findViewById(R.id.ETusername);
         pwdET = (EditText) findViewById(R.id.ETpassword);
         re_pwdET = (EditText) findViewById(R.id.ETre_password);
-        errorMsg = (TextView) findViewById(R.id.TVerror);
 
         /** room_spinner spinner Query */
         String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/getdepartment"};
@@ -88,7 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
         department.setAdapter(adapter);
 
 
-        btnregister = (Button) findViewById(R.id.btnRegister);
+        Button btnregister = (Button) findViewById(R.id.btnRegister);
         btnregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,8 +94,8 @@ public class RegisterActivity extends AppCompatActivity {
                 Pattern pattern_displayname = Pattern.compile("[A-Za-z. ก-ฮะ-ๅ่-้์็ฯ]", Pattern.CASE_INSENSITIVE);  // ^ as space
                 boolean displayname_special_character = true;
                 char[] displayname_char_check = displaynameET.getText().toString().toCharArray();
-                for (int i = 0; i < displayname_char_check.length; i++) {
-                    matcher = pattern_displayname.matcher(String.valueOf(displayname_char_check[i]));
+                for (char aDisplayname_char_check : displayname_char_check) {
+                    matcher = pattern_displayname.matcher(String.valueOf(aDisplayname_char_check));
                     if (!matcher.find()) {
                         displayname_special_character = false;
                         break;
@@ -110,8 +106,8 @@ public class RegisterActivity extends AppCompatActivity {
                 Pattern pattern_username = Pattern.compile("[A-Za-z0-9@. ]", Pattern.CASE_INSENSITIVE);  // ^ as space
                 boolean username_special_character = true;
                 char[] username_char_check = usernameET.getText().toString().toCharArray();
-                for (int i = 0; i < username_char_check.length; i++) {
-                    matcher = pattern_username.matcher(String.valueOf(username_char_check[i]));
+                for (char anUsername_char_check : username_char_check) {
+                    matcher = pattern_username.matcher(String.valueOf(anUsername_char_check));
                     if (!matcher.find()) {
                         username_special_character = false;
                         break;
@@ -122,14 +118,13 @@ public class RegisterActivity extends AppCompatActivity {
                 Pattern pattern_password = Pattern.compile("[A-Za-z0-9 ]", Pattern.CASE_INSENSITIVE);  // ^ as space
                 boolean password_special_character = true;
                 char[] pwd_char_check = pwdET.getText().toString().toCharArray();
-                for (int i = 0; i < pwd_char_check.length; i++) {
-                    matcher = pattern_password.matcher(String.valueOf(pwd_char_check[i]));
+                for (char aPwd_char_check : pwd_char_check) {
+                    matcher = pattern_password.matcher(String.valueOf(aPwd_char_check));
                     if (!matcher.find()) {
                         password_special_character = false;
                         break;
                     }
                 }
-
 
                 //check input data
                 if (Objects.equals(displaynameET.getText().toString(), "")) {

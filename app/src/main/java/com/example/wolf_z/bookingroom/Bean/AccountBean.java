@@ -5,7 +5,7 @@ import android.os.Parcelable;
 import org.parceler.Parcel;
 
 /**
- * Created by Wolf-Z on 12/9/2559.
+ * Created by Wolf-Z on 12/9/2559. _
  */
 
 @Parcel

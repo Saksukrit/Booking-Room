@@ -1,14 +1,13 @@
 package com.example.wolf_z.bookingroom.Config;
 
 /**
- * Created by Wolf-Z on 28/9/2559.
+ * Created by Wolf-Z on 28/9/2559. _
  */
 
 public class ServiceURLconfig {
-    private final String localhosturl = "http://157.179.8.109:8080";
 
     public String getLocalhosturl() {
-        return localhosturl;
+        return "http://157.179.8.109:8080";
     }
 
 }

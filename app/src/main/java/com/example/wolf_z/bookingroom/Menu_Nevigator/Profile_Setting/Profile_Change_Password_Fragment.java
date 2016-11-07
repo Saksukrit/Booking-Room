@@ -68,8 +68,8 @@ public class Profile_Change_Password_Fragment extends Fragment {
                 Matcher matcher;
                 boolean password_special_character = true;
                 char[] pwd_char_check = edit_new_password.getText().toString().toCharArray();
-                for (int i = 0; i < pwd_char_check.length; i++) {
-                    matcher = pattern_password.matcher(String.valueOf(pwd_char_check[i]));
+                for (char aPwd_char_check : pwd_char_check) {
+                    matcher = pattern_password.matcher(String.valueOf(aPwd_char_check));
                     if (!matcher.find()) {
                         password_special_character = false;
                         break;

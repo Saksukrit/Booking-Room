@@ -1,4 +1,4 @@
-package com.example.wolf_z.bookingroom;
+package com.example.wolf_z.bookingroom.Custom;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -6,13 +6,15 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.NotificationCompat;
+
+import com.example.wolf_z.bookingroom.BookingDetail_Offline;
+import com.example.wolf_z.bookingroom.R;
 
 import java.util.Objects;
 

@@ -9,13 +9,12 @@ import android.view.MenuItem;
 import com.example.wolf_z.bookingroom.R;
 
 public class AboutActivity extends AppCompatActivity {
-    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 

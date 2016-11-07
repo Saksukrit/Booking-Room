@@ -14,18 +14,16 @@ public class Profile_Setting_Activity extends AppCompatActivity {
 
     private Profile_Change_Password_Fragment profile_change_password_fragment = new Profile_Change_Password_Fragment(this);
     private Profile_Change_Displayname_Fragment profile_change_displayname_fragment = new Profile_Change_Displayname_Fragment(this);
-    private ActionBar actionBar;
-    private Bundle bundle;
     private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_setting);
-        actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        bundle = getIntent().getExtras();
+        Bundle bundle = getIntent().getExtras();
         username = bundle.getString("username");
 
         /** Tab */

@@ -49,7 +49,6 @@ import java.util.Objects;
 public class ParticipantSearchActivity extends AppCompatActivity implements MultiSelectRecyclerViewAdapter.ViewHolder.ClickListener {
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     protected ActionBar actionBar;
-    private Toolbar toolbar;
     protected ProgressDialog prgDialog;
     protected ArrayList<String> display_auto = new ArrayList<>();
 
@@ -73,7 +72,7 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_participant);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         actionBar = getSupportActionBar();
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -374,7 +373,7 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
             public void onClick(View v) {
                 accountBeens_arraylist.clear();
                 searchstatus = true;
-                String URL = null;
+                String URL;
                 try {
                     if (Objects.equals(auto_search.getText().toString(), "") && department_type_spinner.getSelectedItem() == "all") {
                         URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_all";
@@ -413,7 +412,7 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
                 accountBeens_arraylist.clear();
                 searchstatus = true;
                 try {
-                    if (department_type_spinner.getSelectedItem().toString() == "all") {
+                    if (Objects.equals(department_type_spinner.getSelectedItem().toString(), "all")) {
                         param_send_service.setDisplayname(URLEncoder.encode(auto_search.getText().toString(), "UTF-8"));
                         String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_by_name";
                         new Searchlist().execute(URL);

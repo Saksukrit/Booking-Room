@@ -16,14 +16,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class Participant_Selected_Adapter extends RecyclerView.Adapter<Participant_Selected_Adapter.TestViewHolder> {
+class Participant_Selected_Adapter extends RecyclerView.Adapter<Participant_Selected_Adapter.TestViewHolder> {
     private ArrayList<AccountBean> accountBeen;
     private ArrayList<AccountBean> itemsPendingRemoval = new ArrayList<>();
 
     private Handler handler = new Handler(); // hanlder for running delayed runnables
     private HashMap<String, Runnable> pendingRunnables = new HashMap<>(); // map of accountBeen to pending runnables, so we can cancel a removal if need be
 
-    public Participant_Selected_Adapter(ArrayList<AccountBean> accountBeen) {
+    Participant_Selected_Adapter(ArrayList<AccountBean> accountBeen) {
         this.accountBeen = accountBeen;
     }
 
@@ -34,7 +34,6 @@ public class Participant_Selected_Adapter extends RecyclerView.Adapter<Participa
 
     @Override
     public void onBindViewHolder(TestViewHolder holder, final int position) {
-        final int positionUndo = position;
         final String displayname = accountBeen.get(position).getDisplayname();
         final String department = accountBeen.get(position).getDepartment();
 
@@ -54,9 +53,9 @@ public class Participant_Selected_Adapter extends RecyclerView.Adapter<Participa
                     pendingRunnables.remove(displayname);
                     if (pendingRemovalRunnable != null)
                         handler.removeCallbacks(pendingRemovalRunnable);
-                    itemsPendingRemoval.remove(accountBeen.get(positionUndo));
+                    itemsPendingRemoval.remove(accountBeen.get(position));
                     // this will rebind the row in "normal" state
-                    notifyItemChanged(accountBeen.indexOf(accountBeen.get(positionUndo)));
+                    notifyItemChanged(accountBeen.indexOf(accountBeen.get(position)));
                 }
             });
 
@@ -65,7 +64,7 @@ public class Participant_Selected_Adapter extends RecyclerView.Adapter<Participa
                 @Override
                 public void onClick(View view) {
                     notifyItemRangeChanged(position, getItemCount());
-                    remove(accountBeen.indexOf(accountBeen.get(positionUndo)));
+                    remove(accountBeen.indexOf(accountBeen.get(position)));
                 }
             });
 
