@@ -32,7 +32,7 @@ public class MultiSelectRecyclerViewAdapter extends SelectableAdapter<MultiSelec
                                                                         int viewType) {
 
         View itemLayoutView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.row_multiselect, null);
+                R.layout.item_participant_search_multiselect, null);
 
         ViewHolder viewHolder = new ViewHolder(itemLayoutView, clickListener);
 

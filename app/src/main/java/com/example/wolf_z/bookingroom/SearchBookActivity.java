@@ -340,7 +340,7 @@ public class SearchBookActivity extends AppCompatActivity {
             }
 
             if (bookBeans_to_list.size() == 0) {
-                txtstatus.setBackgroundColor(0xff00ff00);
+                txtstatus.setBackgroundColor(getResources().getColor(R.color.search_empty));
                 txtstatus.setText("Room is empty this time.");
                 /**set value intent*/
                 try {
@@ -352,7 +352,7 @@ public class SearchBookActivity extends AppCompatActivity {
                 }
                 intent_roomid = bookBean_select.getRoomid();
             } else {
-                txtstatus.setBackgroundColor(0xffff0000);
+                txtstatus.setBackgroundColor(getResources().getColor(R.color.search_notempty));
                 txtstatus.setText("Room is not empty this time.");
                 //set adapter
                 adapter = new CustomAdapter_search(getApplicationContext(), bookBeans_to_list);

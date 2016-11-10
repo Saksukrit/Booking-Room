@@ -5,4 +5,6 @@
     <color name="colorAccent">#ee551d</color>
     <color name="colorTextView">#000000</color>
     <color name="bg_ch_password">#efefef</color>
+    <color name="search_notempty">#ff4949</color>
+    <color name="search_empty">#affc50</color>
 </resources>

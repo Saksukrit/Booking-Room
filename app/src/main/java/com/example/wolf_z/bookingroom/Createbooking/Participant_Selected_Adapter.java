@@ -39,7 +39,7 @@ class Participant_Selected_Adapter extends RecyclerView.Adapter<Participant_Sele
 
         if (itemsPendingRemoval.contains(accountBeen.get(position))) {
             // we need to show the "undo" state of the row
-            holder.itemView.setBackgroundColor(Color.RED);
+            holder.itemView.setBackgroundColor(Color.parseColor("#ff4949"));
             holder.tvdisplayname.setVisibility(View.VISIBLE); // show text
             holder.tvdisplayname.setText(displayname);
             holder.tvdepartment.setVisibility(View.GONE); // show text
