@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.Bean.Participant;
+import com.example.wolf_z.bookingroom.Config.Check_Internet_Connection;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.example.wolf_z.bookingroom.Createbooking.Createbooking;
 import com.example.wolf_z.bookingroom.Custom.CustomAdapter_subject;
@@ -55,6 +56,7 @@ import java.util.Date;
 
 public class MainBookingActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private Check_Internet_Connection connection = new Check_Internet_Connection(this);
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     private Participant participant = new Participant();
     private AccountBean accountBean = new AccountBean();
@@ -101,7 +103,12 @@ public class MainBookingActivity extends AppCompatActivity implements Navigation
                 , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/mainrest/restservice/getprofile"};
         //  Params
         participant.setUsername(username);
-        new MainApp().execute(URL);
+        //check internet connection
+        if (!connection.isOnline()) {
+            Toast.makeText(getApplicationContext(), "Sorry ,Not internet connected", Toast.LENGTH_LONG).show();
+        } else {
+            new MainApp().execute(URL);
+        }
 
 
         createbooking = (Button) findViewById(R.id.createbooking);

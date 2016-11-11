@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.BookBean;
 import com.example.wolf_z.bookingroom.Bean.RoomBean;
+import com.example.wolf_z.bookingroom.Config.Check_Internet_Connection;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.example.wolf_z.bookingroom.Createbooking.Createbooking;
 import com.example.wolf_z.bookingroom.Custom.CustomAdapter_search;
@@ -49,6 +50,7 @@ import java.util.Objects;
 
 public class SearchBookActivity extends AppCompatActivity {
 
+    private Check_Internet_Connection connection = new Check_Internet_Connection(this);
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     private BookBean bookBean_select = new BookBean();
     private ArrayList<BookBean> bookBeans_to_list = new ArrayList<>();
@@ -218,7 +220,12 @@ public class SearchBookActivity extends AppCompatActivity {
                     bookBean_select.setStarttime(getStartTime());
                     bookBean_select.setEndtime(getEndTime());
                     bookBean_select.setRoomid(roomid_token);
-                    new Search().execute(URL);
+                    //check internet connection
+                    if (!connection.isOnline()) {
+                        Toast.makeText(getApplicationContext(), "Sorry ,Not internet connected", Toast.LENGTH_LONG).show();
+                    } else {
+                        new Search().execute(URL);
+                    }
                 }
             }
         });

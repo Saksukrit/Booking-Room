@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Bean.DepartmentBean;
+import com.example.wolf_z.bookingroom.Config.Check_Internet_Connection;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.google.gson.Gson;
 
@@ -44,6 +45,8 @@ import java.util.regex.Pattern;
  * Created by Wolf-Z on 12/9/2559. _
  */
 public class RegisterActivity extends AppCompatActivity {
+
+    private Check_Internet_Connection connection = new Check_Internet_Connection(this);
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     private ArrayList<DepartmentBean> departmentBeens = new ArrayList<>();
     private ArrayList<String> Adepartment = new ArrayList<>();
@@ -165,7 +168,12 @@ public class RegisterActivity extends AppCompatActivity {
                     accountbean.setUsername(usernameET.getText().toString());
                     accountbean.setPassword(pwdET.getText().toString());
                     accountbean.setDepartment(department.getSelectedItem().toString());
-                    new doRegister().execute(URL);
+                    //check internet connection
+                    if (!connection.isOnline()) {
+                        Toast.makeText(getApplicationContext(), "Sorry ,Not internet connected", Toast.LENGTH_LONG).show();
+                    } else {
+                        new doRegister().execute(URL);
+                    }
                 }
             }
         });
@@ -243,8 +251,7 @@ public class RegisterActivity extends AppCompatActivity {
                 loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(loginIntent);
             } else {
-                String OutputData = " Ops! : Register " + status + " "
-                        + " ," + error_msg;
+                String OutputData = "Register Fails ," + error_msg;
                 Toast toast = Toast.makeText(getBaseContext(), OutputData, Toast.LENGTH_LONG);
                 toast.show();
             }

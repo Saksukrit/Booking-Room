@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
 import com.example.wolf_z.bookingroom.Bean.DepartmentBean;
+import com.example.wolf_z.bookingroom.Config.Check_Internet_Connection;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.example.wolf_z.bookingroom.Createbooking.Multi_select_iin_Search.MultiSelectRecyclerViewAdapter;
 import com.example.wolf_z.bookingroom.R;
@@ -47,6 +48,8 @@ import java.util.HashSet;
 import java.util.Objects;
 
 public class ParticipantSearchActivity extends AppCompatActivity implements MultiSelectRecyclerViewAdapter.ViewHolder.ClickListener {
+
+    private Check_Internet_Connection connection = new Check_Internet_Connection(this);
     private ServiceURLconfig serviceURLconfig = new ServiceURLconfig();
     protected ActionBar actionBar;
     protected ProgressDialog prgDialog;
@@ -82,6 +85,10 @@ public class ParticipantSearchActivity extends AppCompatActivity implements Mult
         prgDialog.setCancelable(false);
         snack_view = findViewById(R.id.snack_view);
 
+
+        if (!connection.isOnline()) {
+            Toast.makeText(getApplicationContext(), "Sorry ,Not internet connected", Toast.LENGTH_LONG).show();
+        }
 
         String[] URL = {serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/getdepartment"
                 , serviceURLconfig.getLocalhosturl() + "/BookingRoomService/bookingrest/restservice/account_all_autocomplete"};

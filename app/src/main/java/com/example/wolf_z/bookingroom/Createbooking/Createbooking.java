@@ -24,6 +24,7 @@ import com.example.wolf_z.bookingroom.Bean.ParticipantArray;
 import com.example.wolf_z.bookingroom.Bean.ProjectorBean;
 import com.example.wolf_z.bookingroom.Bean.RoomBean;
 import com.example.wolf_z.bookingroom.BookingDetail;
+import com.example.wolf_z.bookingroom.Config.Check_Internet_Connection;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.example.wolf_z.bookingroom.R;
 import com.google.gson.Gson;
@@ -54,6 +55,7 @@ import java.util.Objects;
 
 public class Createbooking extends AppCompatActivity {
 
+    private Check_Internet_Connection connection = new Check_Internet_Connection(this);
     public static final String participantarray_KEY = "participantarray";
     private final int REQ_CODE_participant_search = 12345;
 
@@ -234,11 +236,21 @@ public class Createbooking extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case 0://save
-                setOptionSave();
+                //check internet connection
+                if (!connection.isOnline()) {
+                    Toast.makeText(getApplicationContext(), "Sorry ,Not internet connected", Toast.LENGTH_LONG).show();
+                } else {
+                    setOptionSave();
+                }
                 return true;
             case 1://create
-                accountBeen_selected_arraylist.size();
-                setOptionCreate();
+                //check internet connection
+                if (!connection.isOnline()) {
+                    Toast.makeText(getApplicationContext(), "Sorry ,Not internet connected", Toast.LENGTH_LONG).show();
+                } else {
+                    accountBeen_selected_arraylist.size();
+                    setOptionCreate();
+                }
                 return true;
             case android.R.id.home:
                 Intent intent = new Intent();
@@ -538,7 +550,7 @@ public class Createbooking extends AppCompatActivity {
                     new doCreateParticipant().execute(URL);
 
                 } else {//Create Book Unsuccess
-                    String OutputData = "Sory!! ,Booking : " + error_msg;
+                    String OutputData = "Sory ,Booking : " + error_msg;
                     Toast toast = Toast.makeText(getApplicationContext(), OutputData, Toast.LENGTH_SHORT);
                     toast.show();
                 }

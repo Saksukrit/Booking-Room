@@ -1,9 +1,11 @@
 package com.example.wolf_z.bookingroom;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -13,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.wolf_z.bookingroom.Bean.AccountBean;
+import com.example.wolf_z.bookingroom.Config.Check_Internet_Connection;
 import com.example.wolf_z.bookingroom.Config.ServiceURLconfig;
 import com.google.gson.Gson;
 
@@ -39,6 +42,9 @@ public class LoginActivity extends AppCompatActivity {
     private View view_password;
     private View view_username;
 
+    private Check_Internet_Connection connection = new Check_Internet_Connection(this);
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,10 @@ public class LoginActivity extends AppCompatActivity {
         prgDialog = new ProgressDialog(this);
         prgDialog.setMessage("Please wait...");
         prgDialog.setCancelable(false);
+
+        if (!connection.isOnline()) {
+            Toast.makeText(this, "Not internet connected", Toast.LENGTH_LONG).show();
+        }
 
 
         anim = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.scale);
@@ -83,11 +93,21 @@ public class LoginActivity extends AppCompatActivity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/loginrest/restservice/dologin";
-                /**  Params **/
-                accountBean.setUsername(usernameET.getText().toString());
-                accountBean.setPassword(pwdET.getText().toString());
-                new doLogin().execute(URL);
+                if (!connection.isOnline()) {
+                    Toast.makeText(getApplicationContext(), "Sorry ,Not internet connected", Toast.LENGTH_LONG).show();
+                } else {
+                    if (Objects.equals(usernameET.getText().toString(), "") || usernameET.getText().toString() == null) {
+                        Snackbar.make(v, "Please enter Username ", Snackbar.LENGTH_SHORT).show();
+                    } else if (Objects.equals(pwdET.getText().toString(), "") || pwdET.getText().toString() == null) {
+                        Snackbar.make(v, "Please enter Password ", Snackbar.LENGTH_SHORT).show();
+                    } else {
+                        String URL = serviceURLconfig.getLocalhosturl() + "/BookingRoomService/loginrest/restservice/dologin";
+                        /**  Params **/
+                        accountBean.setUsername(usernameET.getText().toString());
+                        accountBean.setPassword(pwdET.getText().toString());
+                        new doLogin().execute(URL);
+                    }
+                }
             }
         });
 
@@ -137,11 +157,9 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             prgDialog.dismiss();
-            String status = "";
             String error_msg = "";
             try {
                 JSONObject jsonObject = new JSONObject(result);
-                status = jsonObject.getString("status");
                 error_msg = jsonObject.getString("error_msg");
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -156,9 +174,8 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(homeIntent);
                 finish();
             } else {
-                String OutputData = " Ops! : Login " + status + " "
-                        + " ," + error_msg;
-                Toast toast = Toast.makeText(getBaseContext(), OutputData, Toast.LENGTH_LONG);
+                String fail = "Login Fails ," + error_msg;
+                Toast toast = Toast.makeText(getBaseContext(), fail, Toast.LENGTH_LONG);
                 toast.show();
             }
         }
