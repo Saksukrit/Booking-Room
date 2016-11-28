@@ -69,6 +69,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             Notification notification = builder.setContentTitle(intent.getExtras().getString("subject"))
                     .setContentText("Your have a meeting at " + intent.getExtras().getString("date") + " , " + intent.getExtras().getString("starttime"))
                     .setLargeIcon(bm)
+                    .setSmallIcon(R.drawable.bookinglogo)
                     .setSound(notif_sound)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent).build();
